@@ -171,23 +171,23 @@
 
 /* ====== Your program colors (same mapping) ====== */
 .fc-event.evt-stickpuck {
-  background: linear-gradient(135deg, #22c55e, #16a34a42) !important;
+  background: linear-gradient(135deg, #116d34, #16a34a42) !important;
   border-color: rgba(34, 197, 94, 0.9) !important;
 }
 
 .fc-event.evt-publicskate {
-  background: linear-gradient(135deg, #ef4444, #dc262650) !important;
+  background: linear-gradient(135deg, #b43434, #dc262650) !important;
   border-color: rgba(239, 68, 68, 0.9) !important;
 }
 
 .fc-event.evt-cosmic {
-  background: linear-gradient(135deg, #a78bfa, #7c3aed4d) !important;
+  background: linear-gradient(135deg, #6c54b4, #7c3aed4d) !important;
   border-color: rgba(167, 139, 250, 0.9) !important;
 }
 
 .fc-event.evt-dropin,
 .fc-event.evt-openhockey {
-  background: linear-gradient(135deg, #fbbf24, #f59f0b4f) !important;
+  background: linear-gradient(135deg, #c4900f, #f59f0b4f) !important;
   border-color: rgba(251, 191, 36, 0.92) !important;
 }
 
