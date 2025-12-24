@@ -1,18 +1,311 @@
-.page {
-  min-height: 100vh;
-  padding: 16px;
-  background: #0f172a;
-  color: #e5e7eb;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+/* src/calendar.css */
+
+/* ====== App shell ====== */
+:root {
+  --bg-0: #00325a;
+  --bg-1: #0b1224;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-2: rgba(255, 255, 255, 0.08);
+  --stroke: rgba(255, 255, 255, 0.10);
+  --stroke-2: rgba(255, 255, 255, 0.14);
+  --text: #e5e7eb;
+  --muted: rgba(229, 231, 235, 0.72);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  --radius: 18px;
+  --radius-lg: 26px;
 }
 
-.fc { background: #0b1224; }
+.page {
+  min-height: 100vh;
+  padding: 22px;
+  background:
+    radial-gradient(900px 600px at 12% 10%, rgba(124, 58, 237, 0.20), transparent 60%),
+    radial-gradient(900px 600px at 92% 18%, rgba(37, 99, 235, 0.18), transparent 62%),
+    radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
+    linear-gradient(180deg, var(--bg-0), var(--bg-1));
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
 
-.fc-event.evt-stickpuck { background:#16a34a !important; border-color:#16a34a !important; }
-.fc-event.evt-publicskate { background:#dc2626 !important; border-color:#dc2626 !important; }
-.fc-event.evt-cosmic { background:#7c3aed !important; border-color:#7c3aed !important; }
+/* Optional: if your App.jsx has a header area, this makes it look modern */
+.page > h1 {
+  margin: 0 0 14px 0;
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+/* ====== Calendar “card” wrapper (works with your existing .cal-wrap div too) ====== */
+.cal-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--stroke);
+  background: rgba(11, 18, 36, 0.65);
+  backdrop-filter: blur(14px);
+}
+
+.fc {
+  background: transparent;
+}
+
+/* ====== FullCalendar general typography + grid ====== */
+.fc,
+.fc * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-section > td,
+.fc .fc-timegrid-axis,
+.fc .fc-timegrid-slot,
+.fc .fc-col-header-cell {
+  border-color: #d5003998 !important;
+}
+
+.fc .fc-timegrid-slot {
+  background: rgba(255, 51, 51, 0);
+}
+
+.fc .fc-timegrid-slot-minor {
+  background: #d5003900;
+}
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-timegrid-axis-cushion,
+.fc .fc-timegrid-slot-label-cushion {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 850;
+  font-size: 18px;
+}
+
+/* “Now” indicator */
+.fc .fc-timegrid-now-indicator-line {
+  border-color: rgba(239, 213, 68, 0.85) !important;
+}
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: rgba(239, 68, 68, 0.85) transparent transparent transparent !important;
+}
+
+/* ====== Header / toolbar: modern pill buttons ====== */
+.fc .fc-toolbar {
+  padding: 14px 14px 10px 14px;
+  margin: 0 !important;
+}
+
+.fc .fc-toolbar-title {
+  color: #d50038;
+  font-size: 23px;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+}
+
+.fc .fc-button-group {
+  gap: 19px;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 19px !important;
+}
+
+.fc .fc-button {
+  border: 1px solid var(--stroke) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: rgba(229, 231, 235, 0.92) !important;
+  border-radius: 10px !important;
+  padding: 8px 22px !important;
+  font-weight: 750 !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.fc .fc-button:hover {
+  background: rgba(255, 255, 255, 0.205) !important;
+  border-color: var(--stroke-2) !important;
+  transform: translateY(-1px);
+}
+
+.fc .fc-button:focus,
+.fc .fc-button:active,
+.fc .fc-button:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.28) !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: rgba(37, 99, 235, 0.22) !important;
+  border-color: rgba(37, 99, 235, 0.45) !important;
+}
+
+/* Make “Today” look slightly special */
+.fc .fc-today-button {
+  background: rgba(255, 255, 255, 0.10) !important;
+}
+
+/* ====== Day “today” highlight ====== */
+.fc .fc-day-today {
+  background: rgba(37, 99, 235, 0.08) !important;
+}
+
+/* ====== Events: modern chips w/ subtle shadow ====== */
+.fc .fc-event {
+  border-radius: 20px !important;
+  border-width: 1px !important;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  text-align: center;
+
+  /* your width tweak */
+  width: calc(100% - 35px) !important;
+  margin: 0 20px !important;
+}
+
+/* Optional: slightly tighter spacing between stacked events */
+.fc .fc-timegrid-event-harness {
+  margin-bottom: 2px;
+}
+
+/* ====== Your program colors (same mapping) ====== */
+.fc-event.evt-stickpuck {
+  background: linear-gradient(135deg, #22c55e, #16a34a42) !important;
+  border-color: rgba(34, 197, 94, 0.9) !important;
+}
+
+.fc-event.evt-publicskate {
+  background: linear-gradient(135deg, #ef4444, #dc262650) !important;
+  border-color: rgba(239, 68, 68, 0.9) !important;
+}
+
+.fc-event.evt-cosmic {
+  background: linear-gradient(135deg, #a78bfa, #7c3aed4d) !important;
+  border-color: rgba(167, 139, 250, 0.9) !important;
+}
+
 .fc-event.evt-dropin,
-.fc-event.evt-openhockey { background:#f59e0b !important; border-color:#f59e0b !important; }
-.fc-event.evt-default { background:#2563eb !important; border-color:#2563eb !important; }
+.fc-event.evt-openhockey {
+  background: linear-gradient(135deg, #fbbf24, #f59f0b4f) !important;
+  border-color: rgba(251, 191, 36, 0.92) !important;
+}
 
-.fc-event .fc-event-main { color:#0b1224 !important; font-weight:700; }
+.fc-event.evt-default {
+  background: linear-gradient(135deg, #60a5fa, #2564eb44) !important;
+  border-color: rgba(96, 165, 250, 0.95) !important;
+}
+
+/* ====== List view styling (looks cleaner) ====== */
+.fc .fc-list {
+  border: 0 !important;
+}
+
+.fc .fc-list-day-cushion {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: rgba(229, 231, 235, 0.92) !important;
+  font-weight: 850;
+  border: 0 !important;
+}
+
+.fc .fc-list-event:hover td {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.fc .fc-list-event-time,
+.fc .fc-list-event-title {
+  color: rgba(255, 0, 0, 0.9) !important;
+}
+
+.fc .fc-list-event-dot {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* ====== Responsive tweaks ====== */
+@media (max-width: 768px) {
+  .page {
+    padding: 14px;
+  }
+
+  .fc .fc-toolbar {
+    padding: 12px;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 15px;
+  }
+
+  .fc .fc-button {
+    padding: 7px 10px !important;
+    font-size: 12px !important;
+  }
+
+  /* Keep events full-width on small screens so they stay readable */
+  .fc .fc-event {
+    width: calc(100% - 8px) !important;
+    margin: 0 4px !important;
+  }
+}
+
+/* =========================================================
+   TRUE vertical centering for timeGrid event text + bigger time
+   (keep this at the VERY BOTTOM so it overrides everything)
+   ========================================================= */
+
+/* Make sure the event uses the full height for layout */
+.fc a.fc-timegrid-event,
+.fc .fc-timegrid-event {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+/*
+  The key: center on .fc-event-main (not just the frame),
+  because .fc-event-main is what carries the real height/padding.
+*/
+.fc .fc-timegrid-event .fc-event-main {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important; /* vertical center */
+  align-items: center !important;     /* horizontal center */
+  height: 100% !important;
+  width: 100% !important;
+
+  /* FullCalendar often adds padding-top that makes text sit at the top */
+  padding: 5px !important;
+}
+
+/* Keep the frame centered too (belt + suspenders) */
+.fc .fc-timegrid-event .fc-event-main-frame {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important; /* vertical center */
+  align-items: center !important;
+  height: 100% !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove spacing that nudges text upward */
+.fc .fc-timegrid-event .fc-event-time,
+.fc .fc-timegrid-event .fc-event-title-container,
+.fc .fc-timegrid-event .fc-event-title {
+  margin: 0 !important;
+  padding: 0 0px !important;
+}
+
+/* Make the time a tad larger (your request) */
+.fc .fc-timegrid-event .fc-event-time {
+  font-size: 14px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  opacity: 0.98 !important;
+}
+
+/* Title balance */
+.fc .fc-timegrid-event .fc-event-title {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  font-weight: 850 !important;
+}
