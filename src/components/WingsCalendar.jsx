@@ -57,11 +57,30 @@ export default function WingsCalendar() {
         right: "timeGridWeek,timeGridDay,listWeek",
       }}
       height="auto"
+      allDaySlot={false}
       expandRows
       nowIndicator
       timeZone={timeZone}
       googleCalendarApiKey={apiKey}
       events={{ googleCalendarId: calendarId }}
+
+      /* ✅ AM/PM formatting (axis + event times in the chips + list view times) */
+      slotLabelFormat={{
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }}
+      eventTimeFormat={{
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }}
+
+      /* ✅ Remove 12:00AM–5:00AM entirely */
+      slotMinTime="05:00:00"
+      slotMaxTime="24:00:00"
+      scrollTime="05:00:00"
+
       eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
       eventClick={(info) => {
         // Prevent FullCalendar's default navigation
@@ -72,8 +91,6 @@ export default function WingsCalendar() {
           window.open(info.event.url, "_blank", "noopener,noreferrer");
         }
       }}
-      // Surface what Google returns (this will show useful info in the console
-      // like "Requests from referer are blocked" or "The calendar is not public")
       eventSourceFailure={(error) => {
         // eslint-disable-next-line no-console
         console.error("[WingsCalendar] Google event source failed:", error);
