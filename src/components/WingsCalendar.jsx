@@ -1,5 +1,6 @@
 // src/components/WingsCalendar.jsx
 
+import { useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
@@ -11,9 +12,73 @@ function getClassForTitle(title = "") {
   if (t.includes("stick") && t.includes("puck")) return "evt-stickpuck";
   if (t.includes("public") && t.includes("skate")) return "evt-publicskate";
   if (t.includes("cosmic") && t.includes("skate")) return "evt-cosmic";
-  if (t.includes("drop") && t.includes("in")) return "evt-dropin";
+  if (t.includes("freestyle")) return "evt-freestyle";
   if (t.includes("open") && t.includes("hockey")) return "evt-openhockey";
   return "evt-default";
+}
+
+function getProgramMeta(title = "") {
+  const t = title.toLowerCase();
+
+  if (t.includes("public") && t.includes("skate")) {
+    return {
+      label: "Public Skate",
+      pricing: "Admission - $14, Skate Rentals - $6",
+      desc:
+        "An open skate for all ages and abilities. Whether you're practicing your skills or just skating for fun!",
+    };
+  }
+
+  if (t.includes("cosmic") && t.includes("skate")) {
+    return {
+      label: "Cosmic Skate",
+      pricing: "Admission - 13 & Older - $20, 12 & Under $15, Skate Rentals - INCLUDED",
+      desc:
+        "Join us for Cosmic Skate — an atmosphere that turns skating into a party on ice. A unique twist on a classic skate, perfect for friends, families, and anyone looking for a fun night on ice full of music and lights.",
+    };
+  }
+
+  if (t.includes("stick") && t.includes("puck")) {
+    return {
+      label: "Stick & Puck",
+      pricing: "Admission - $20",
+      desc:
+        "Stick & Puck is open ice time for individual skill development. Players can work on shooting, passing, stickhandling, and skating at their own pace—no organized games or scrimmages.",
+    };
+  }
+
+  if (t.includes("open") && t.includes("hockey")) {
+    return {
+      label: "Open Hockey",
+      pricing: "Admission - $25",
+      desc:
+        "Open Hockey is a casual, non-league skate where players within a designated age group can sign-up, show up, and play in a fun, low-pressure game with a variety of other players of all skill levels. Just bring your gear and hit the ice!",
+    };
+  }
+
+  if (t.includes("freestyle")) {
+    return {
+      label: "Freestyle",
+      pricing: "Admission - $20",
+      desc:
+        "Freestyle sessions are designated ice time for figure skaters only, providing a focused environment for individual practice and private lessons. These sessions are open to all levels—unless otherwise noted—and are ideal for skaters looking to improve jumps, spins, and moves in the field.",
+    };
+  }
+
+  return {
+    label: "Session",
+    pricing: "",
+    desc: "",
+  };
+}
+
+function escapeHtml(str = "") {
+  return str
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 export default function WingsCalendar() {
@@ -21,8 +86,130 @@ export default function WingsCalendar() {
   const apiKey = (import.meta.env.VITE_GCAL_API_KEY || "").trim();
   const calendarId = (import.meta.env.VITE_GCAL_ID || "").trim();
 
-  // Helps you immediately confirm env vars are actually loading (common cause of 403)
-  // NOTE: After editing .env you MUST restart `npm run dev`
+  const tipRef = useRef(null);
+  const moveMapRef = useRef(new WeakMap());
+
+  useEffect(() => {
+    // cleanup tooltip on unmount
+    return () => {
+      if (tipRef.current) {
+        tipRef.current.remove();
+        tipRef.current = null;
+      }
+    };
+  }, []);
+
+  function ensureTooltipEl() {
+    if (tipRef.current) return tipRef.current;
+    const el = document.createElement("div");
+    el.className = "wa-tooltip";
+    document.body.appendChild(el);
+    tipRef.current = el;
+    return el;
+  }
+
+  function positionTooltip(el, mouseEvent) {
+    const pad = 12;
+    const offset = 14;
+
+    // Start near cursor
+    let x = mouseEvent.clientX + offset;
+    let y = mouseEvent.clientY + offset;
+
+    // Temporarily place to measure
+    el.style.transform = "translate3d(-9999px, -9999px, 0)";
+    const r = el.getBoundingClientRect();
+
+    // Clamp to viewport
+    if (x + r.width > window.innerWidth - pad) x = window.innerWidth - r.width - pad;
+    if (y + r.height > window.innerHeight - pad) y = window.innerHeight - r.height - pad;
+    if (x < pad) x = pad;
+    if (y < pad) y = pad;
+
+    el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+  }
+
+  function showTooltip(info) {
+    const el = ensureTooltipEl();
+
+    const start = info.event.start;
+    // Prefer official end; fallback to instance range end if needed
+    const end = info.event.end || info.event?._instance?.range?.end || null;
+
+    const cal = info.view.calendar;
+
+    // Date line
+    const dateStr = start
+      ? cal.formatDate(start, {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          omitCommas: true,
+        })
+      : "";
+
+    // Time range line (THIS keeps it accurate to the actual slot)
+    let timeStr = "";
+    if (start && end) {
+      timeStr = cal.formatRange(start, end, {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        meridiem: "short",
+        omitCommas: true,
+      });
+    } else if (start) {
+      timeStr = cal.formatDate(start, {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        meridiem: "short",
+        omitCommas: true,
+      });
+    }
+
+    const meta = getProgramMeta(info.event.title);
+
+    el.innerHTML = `
+      <div class="wa-tipTitle">${escapeHtml(info.event.title || "")}</div>
+      <div class="wa-tipRow">
+        <span class="wa-tipLabel">Date</span>
+        <span class="wa-tipValue">${escapeHtml(dateStr)}</span>
+      </div>
+      <div class="wa-tipRow">
+        <span class="wa-tipLabel">Time</span>
+        <span class="wa-tipValue wa-tipTime">${escapeHtml(timeStr)}</span>
+      </div>
+
+      ${
+        meta.pricing
+          ? `<div class="wa-tipRow">
+               <span class="wa-tipLabel">Pricing</span>
+               <span class="wa-tipValue">${escapeHtml(meta.pricing)}</span>
+             </div>`
+          : ""
+      }
+
+      ${
+        meta.desc
+          ? `<div class="wa-tipDesc">${escapeHtml(meta.desc)}</div>`
+          : ""
+      }
+    `;
+
+    el.classList.add("is-visible");
+    positionTooltip(el, info.jsEvent);
+  }
+
+  function hideTooltip() {
+    const el = tipRef.current;
+    if (!el) return;
+    el.classList.remove("is-visible");
+    // keep it in DOM for reuse
+  }
+
+  // Env sanity logs
   if (import.meta.env.DEV) {
     // eslint-disable-next-line no-console
     console.log("[WingsCalendar] GCAL key loaded?", !!apiKey);
@@ -32,7 +219,6 @@ export default function WingsCalendar() {
     console.log("[WingsCalendar] TZ:", timeZone);
   }
 
-  // If the key/id isn't loaded, don't even render the Google source (prevents confusing 403s)
   if (!apiKey || !calendarId) {
     return (
       <div style={{ padding: 16 }}>
@@ -64,29 +250,51 @@ export default function WingsCalendar() {
       googleCalendarApiKey={apiKey}
       events={{ googleCalendarId: calendarId }}
 
-      /* ✅ AM/PM formatting (axis + event times in the chips + list view times) */
+      // ✅ AM/PM in axis + in-event time + list times
       slotLabelFormat={{
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
+        meridiem: "short",
       }}
       eventTimeFormat={{
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
+        meridiem: "short",
       }}
 
-      /* ✅ Remove 12:00AM–5:00AM entirely */
+      // ✅ Remove 12:00AM–5:00AM
       slotMinTime="05:00:00"
       slotMaxTime="24:00:00"
       scrollTime="05:00:00"
 
       eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
-      eventClick={(info) => {
-        // Prevent FullCalendar's default navigation
-        info.jsEvent.preventDefault();
 
-        // If Google provides a URL, open it
+      // ✅ Hover tooltip
+      eventMouseEnter={(info) => {
+        showTooltip(info);
+
+        // keep tooltip tracking cursor while moving within the event element
+        const move = (ev) => {
+          if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
+            positionTooltip(tipRef.current, ev);
+          }
+        };
+        moveMapRef.current.set(info.el, move);
+        info.el.addEventListener("mousemove", move);
+      }}
+      eventMouseLeave={(info) => {
+        const move = moveMapRef.current.get(info.el);
+        if (move) {
+          info.el.removeEventListener("mousemove", move);
+          moveMapRef.current.delete(info.el);
+        }
+        hideTooltip();
+      }}
+
+      eventClick={(info) => {
+        info.jsEvent.preventDefault();
         if (info.event.url) {
           window.open(info.event.url, "_blank", "noopener,noreferrer");
         }
