@@ -1,6 +1,6 @@
 // src/components/WingsCalendar.jsx
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
@@ -85,6 +85,46 @@ export default function WingsCalendar() {
   const tipRef = useRef(null);
   const moveMapRef = useRef(new WeakMap());
 
+  // ✅ Calendar API ref (needed to force view changes on resize)
+  const calendarRef = useRef(null);
+
+  // ✅ NEW: phone-only breakpoint (treat <= 640px as “mobile phone”)
+  const MOBILE_QUERY = "(max-width: 640px)";
+
+  const [isPhone, setIsPhone] = useState(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return false;
+    return window.matchMedia(MOBILE_QUERY).matches;
+  });
+
+  useEffect(() => {
+    if (!window.matchMedia) return;
+
+    const mql = window.matchMedia(MOBILE_QUERY);
+    const onChange = (e) => setIsPhone(e.matches);
+
+    // modern + fallback
+    if (mql.addEventListener) mql.addEventListener("change", onChange);
+    else mql.addListener(onChange);
+
+    // ensure state is correct on mount
+    setIsPhone(mql.matches);
+
+    return () => {
+      if (mql.removeEventListener) mql.removeEventListener("change", onChange);
+      else mql.removeListener(onChange);
+    };
+  }, []);
+
+  // ✅ NEW: force listWeek as the default view on phones,
+  // and switch back to week view when leaving phone size.
+  useEffect(() => {
+    const api = calendarRef.current?.getApi?.();
+    if (!api) return;
+
+    const targetView = isPhone ? "listWeek" : "timeGridWeek";
+    if (api.view?.type !== targetView) api.changeView(targetView);
+  }, [isPhone]);
+
   useEffect(() => {
     return () => {
       if (tipRef.current) {
@@ -104,30 +144,24 @@ export default function WingsCalendar() {
   }
 
   function positionTooltip(el, mouseEvent) {
-  const offsetX = 15;  // slightly right of cursor
-  const offsetY = -230; // slightly above cursor (2 o’clock position)
-  const pad = 10;
+    const offsetX = 15;
+    const offsetY = -230;
+    const pad = 10;
 
-  let x = mouseEvent.clientX + offsetX;
-  let y = mouseEvent.clientY + offsetY;
+    el.style.visibility = "hidden";
+    const rect = el.getBoundingClientRect();
 
-  // temporarily hide to measure size
-  el.style.transform = "translate3d(-9999px, -9999px, 0)";
-  const rect = el.getBoundingClientRect();
+    let x = mouseEvent.clientX + offsetX;
+    let y = mouseEvent.clientY + offsetY;
 
-  // keep within viewport
-  if (x + rect.width > window.innerWidth - pad) {
-    x = window.innerWidth - rect.width - pad;
+    if (x + rect.width > window.innerWidth - pad) x = window.innerWidth - rect.width - pad;
+    if (y + rect.height > window.innerHeight - pad) y = window.innerHeight - rect.height - pad;
+    if (x < pad) x = pad;
+    if (y < pad) y = pad;
+
+    el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+    el.style.visibility = "visible";
   }
-  if (y + rect.height > window.innerHeight - pad) {
-    y = window.innerHeight - rect.height - pad;
-  }
-  if (x < pad) x = pad;
-  if (y < pad) y = pad;
-
-  el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
-}
-
 
   function showTooltip(info) {
     const el = ensureTooltipEl();
@@ -177,7 +211,6 @@ export default function WingsCalendar() {
         <span class="wa-tipLabel">Time</span>
         <span class="wa-tipValue wa-tipTime">${escapeHtml(timeStr)}</span>
       </div>
-
       ${
         meta.pricing
           ? `<div class="wa-tipRow">
@@ -186,12 +219,7 @@ export default function WingsCalendar() {
              </div>`
           : ""
       }
-
-      ${
-        meta.desc
-          ? `<div class="wa-tipDesc">${escapeHtml(meta.desc)}</div>`
-          : ""
-      }
+      ${meta.desc ? `<div class="wa-tipDesc">${escapeHtml(meta.desc)}</div>` : ""}
     `;
 
     el.classList.add("is-visible");
@@ -204,14 +232,20 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
+  // ✅ list button ONLY on phones
+  const rightButtons = isPhone
+    ? "timeGridWeek,timeGridDay,listWeek"
+    : "timeGridWeek,timeGridDay";
+
   return (
     <FullCalendar
+      ref={calendarRef}
       plugins={[timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
-      initialView="timeGridWeek"
+      initialView={isPhone ? "listWeek" : "timeGridWeek"}
       headerToolbar={{
         left: "prev,next today",
         center: "title",
-        right: "timeGridWeek,timeGridDay,listWeek",
+        right: rightButtons,
       }}
       height="auto"
       allDaySlot={false}
@@ -237,6 +271,9 @@ export default function WingsCalendar() {
       scrollTime="05:00:00"
       eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
       eventMouseEnter={(info) => {
+        // no hover tooltips on phones (prevents weird behavior on touch)
+        if (isPhone) return;
+
         showTooltip(info);
         const move = (ev) => {
           if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
@@ -247,6 +284,8 @@ export default function WingsCalendar() {
         info.el.addEventListener("mousemove", move);
       }}
       eventMouseLeave={(info) => {
+        if (isPhone) return;
+
         const move = moveMapRef.current.get(info.el);
         if (move) {
           info.el.removeEventListener("mousemove", move);

@@ -19,8 +19,8 @@
   min-height: 100vh;
   padding: 100px;
   background:
-    radial-gradient(900px 600px at 12% 10%, rgba(237, 94, 58, 0.2), transparent 60%),
-    radial-gradient(900px 600px at 92% 18%, rgba(37, 99, 235, 0.18), transparent 62%),
+    radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.26), transparent 60%),
+    radial-gradient(900px 600px at 92% 18%, rgba(37, 100, 235, 0.11), transparent 62%),
     radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
     linear-gradient(180deg, var(--bg-0), var(--bg-1));
   color: var(--text);
@@ -40,18 +40,20 @@
   width: min(980px, 96vw);
   margin: 0 auto;
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow: visible;
   box-shadow: var(--shadow);
   border: 1px solid var(--stroke);
   background: rgba(11, 18, 36, 0.65);
   backdrop-filter: blur(14px);
   padding: 0 18px;
   position: relative;
+  z-index: 0;
 }
 
-/* ====== Default logo background (base) ====== */
+/* ====== Logo watermark behind the calendar ====== */
 .fc .fc-view-harness {
   position: relative;
+  overflow: visible !important;
 }
 
 .fc .fc-view-harness::before {
@@ -69,37 +71,34 @@
   transition: all 0.35s ease;
 }
 
-/* ====== Per-view control (now working correctly) ====== */
-
-/* WEEK view */
+/* Per-view watermark tuning */
 .fc-timeGridWeek-view .fc-view-harness::before {
   background-size: min(1500px, 78%) !important;
   opacity: 0.14 !important;
   background-position: center 50% !important;
 }
 
-/* DAY view */
 .fc-timeGridDay-view .fc-view-harness::before {
   background-size: min(950px, 70%) !important;
   opacity: 0.22 !important;
   background-position: center 45% !important;
 }
 
-/* LIST view */
-.fc-listWeek-view .fc-view-harness::before {
-  background-size: min(600px, 55%) !important;
-  opacity: 0.09 !important;
-  background-position: center 35% !important;
+.fc-listWeek-view .fc-view-harness::before,
+.fc-listDay-view .fc-view-harness::before {
+  background-size: min(1000px, 65%) !important;
+  opacity: 0.08 !important;
+  background-position: center 50% !important;
 }
 
-/* Keep content above the logo */
+/* Ensure content stays above watermark */
 .fc .fc-view-harness > * {
   position: relative;
   z-index: 1;
 }
 
 /* =========================================================
-   ✅ FullCalendar visual styling (unchanged from your design)
+   FullCalendar base
    ========================================================= */
 .fc {
   background: transparent;
@@ -118,16 +117,13 @@
   background: transparent !important;
 }
 
-.fc .fc-timegrid-slot {
-  max-width: 250px !important;
-}
-
-/* ====== Grid, typography ====== */
+/* ====== Typography ====== */
 .fc * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ====== Grid borders ====== */
 .fc .fc-scrollgrid,
 .fc .fc-timegrid-slot,
 .fc .fc-col-header-cell {
@@ -194,6 +190,17 @@
   border-color: var(--stroke-2) !important;
 }
 
+/* =========================================================
+   ✅ Hide LIST button on anything bigger than a phone
+   (JS already does this, but this is a safety net)
+   ========================================================= */
+@media (min-width: 641px) {
+  .fc .fc-listWeek-button,
+  .fc .fc-listDay-button {
+    display: none !important;
+  }
+}
+
 /* ====== Events ====== */
 .fc .fc-event {
   border-radius: 20px !important;
@@ -212,33 +219,28 @@
   background: linear-gradient(135deg, #116d34, #16a34aab) !important;
   border-color: rgba(34, 197, 94, 0.9) !important;
 }
-
 .fc-event.evt-publicskate {
   background: linear-gradient(135deg, #b43434, #dc26269c) !important;
   border-color: rgba(239, 68, 68, 0.9) !important;
 }
-
 .fc-event.evt-cosmic {
   background: linear-gradient(135deg, #6b4ec2, #7c3aed91) !important;
   border-color: rgba(125, 85, 245, 0.9) !important;
 }
-
 .fc-event.evt-openhockey {
   background: linear-gradient(135deg, #c4900f, #f59f0b4f) !important;
   border-color: rgba(251, 191, 36, 0.92) !important;
 }
-
 .fc-event.evt-freestyle {
   background: linear-gradient(135deg, #2aa8a8, rgba(42, 168, 168, 0.541)) !important;
   border-color: rgba(42, 168, 168, 0.9) !important;
 }
-
 .fc-event.evt-default {
   background: linear-gradient(135deg, #4497fc, #2564eb9f) !important;
   border-color: rgba(80, 157, 250, 0.95) !important;
 }
 
-/* ====== Centered Title Above Time ====== */
+/* ====== Center Title Above Time inside event (timeGrid views) ====== */
 .fc a.fc-timegrid-event,
 .fc .fc-timegrid-event {
   display: flex !important;
@@ -284,7 +286,124 @@
   opacity: 0.95 !important;
 }
 
-/* ====== Tooltip ====== */
+/* =========================================================
+   ✅ LIST VIEW LAYOUT (desktop/tablet base)
+   ========================================================= */
+
+/* Keep view + scrollers spanning full width (prevents the 50% bug) */
+.fc .fc-listWeek-view.fc-view,
+.fc .fc-listDay-view.fc-view,
+.fc .fc-list-view.fc-view {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.fc .fc-listWeek-view .fc-scroller-harness,
+.fc .fc-listWeek-view .fc-scroller,
+.fc .fc-listWeek-view .fc-scroller-liquid,
+.fc .fc-listWeek-view .fc-scroller-liquid-absolute,
+.fc .fc-listWeek-view .fc-list,
+.fc .fc-listDay-view .fc-scroller-harness,
+.fc .fc-listDay-view .fc-scroller,
+.fc .fc-listDay-view .fc-scroller-liquid,
+.fc .fc-listDay-view .fc-scroller-liquid-absolute,
+.fc .fc-listDay-view .fc-list {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Desktop “card” width */
+.fc .fc-listWeek-view .fc-list-table,
+.fc .fc-listDay-view .fc-list-table {
+  width: min(1200px, 92vw) !important;
+  margin: 0 auto !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+}
+
+.fc .fc-listWeek-view .fc-list-table table,
+.fc .fc-listDay-view .fc-list-table table {
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+/* Row padding + alignment */
+.fc .fc-list-event td {
+  padding: 12px 16px !important;
+  vertical-align: middle !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+}
+
+/* Columns: TIME | DOT | TITLE (desktop) */
+.fc td.fc-list-event-time {
+  width: 220px !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  font-weight: 850 !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.fc td.fc-list-event-graphic {
+  width: 64px !important;
+  text-align: center !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.fc td.fc-list-event-title {
+  width: auto !important;
+  text-align: left !important;
+  font-weight: 900 !important;
+  font-size: 18px !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  padding-left: 28px !important;
+}
+
+/* Dot: centered + consistent size */
+.fc .fc-list-event-dot {
+  margin: 0 auto !important;
+  border-width: 6px !important;
+  border-radius: 999px !important;
+  transform: translateY(1px);
+}
+
+/* Day header row: left = weekday, right = date */
+.fc .fc-list-day-cushion {
+  padding: 14px 18px !important;
+}
+
+.fc .fc-list-day-cushion > th {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  gap: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.fc .fc-list-day-text {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+  font-size: 22px !important;
+  letter-spacing: 0.01em !important;
+  text-decoration: none !important;
+}
+
+.fc .fc-list-day-side-text {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 850 !important;
+  font-size: 18px !important;
+  text-decoration: underline !important;
+  white-space: nowrap !important;
+}
+
+/* =========================================================
+   Tooltip (Smooth Fade)
+   ========================================================= */
 .wa-tooltip {
   position: fixed !important;
   left: 0;
@@ -295,54 +414,189 @@
   background: #0f172a;
   border: 1px solid #1f2a44;
   border-radius: 12px;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
   color: #e5e7eb;
   opacity: 0;
   pointer-events: none;
   transform: translate(-9999px, -9999px);
-  transition: opacity 120ms ease;
-  will-change: transform;
+  transition: opacity 150ms ease;
+  will-change: opacity;
 }
 
 .wa-tooltip.is-visible {
   opacity: 1;
 }
 
-/* ====== Disable Event Clicks ====== */
+.wa-tipTitle {
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1.25;
+  color: #f8fafc;
+  margin-bottom: 8px;
+}
+
+.wa-tipRow {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding: 4px 0;
+}
+
+.wa-tipLabel {
+  color: #93c5fd;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.wa-tipValue {
+  color: #e5e7eb;
+  font-weight: 700;
+  font-size: 12.5px;
+  line-height: 1.25;
+}
+
+.wa-tipTime {
+  text-transform: uppercase;
+}
+
+.wa-tipDesc {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #1f2a44;
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Hover/click behavior
+   ========================================================= */
 .fc-event,
 .fc .fc-event,
 .fc-list-event,
 .fc .fc-list-event {
-  pointer-events: none !important;
   cursor: default !important;
 }
 
+.fc-event a {
+  pointer-events: none !important;
+}
+
 /* =========================================================
-   ✅ FIX: Ensure week/day calendar uses full available height
+   ✅ Phone-first LIST responsiveness (320px → 640px)
    ========================================================= */
-.fc .fc-view-harness,
-.fc .fc-timegrid {
-  min-height: 90vh !important;
-  height: auto !important;
+@media (max-width: 640px) {
+  .page {
+    padding: 12px;
+  }
+
+  /* Make the list table fully utilize the phone width */
+  .fc .fc-listWeek-view .fc-list-table,
+  .fc .fc-listDay-view .fc-list-table {
+    width: calc(100vw - 16px) !important;
+    margin: 0 auto !important;
+  }
+
+  /* Tighten day header */
+  .fc .fc-list-day-cushion {
+    padding: 10px 12px !important;
+  }
+
+  .fc .fc-list-day-text {
+    font-size: 18px !important;
+  }
+
+  .fc .fc-list-day-side-text {
+    font-size: 14px !important;
+  }
+
+  /* Tighten rows */
+  .fc .fc-list-event td {
+    padding: 10px 10px !important;
+  }
+
+  /* Columns scale with screen size */
+  .fc td.fc-list-event-time {
+    width: clamp(92px, 28vw, 125px) !important;
+    font-size: 12.5px !important;
+  }
+
+  .fc td.fc-list-event-graphic {
+    width: 34px !important;
+  }
+
+  .fc .fc-list-event-dot {
+    border-width: 5px !important;
+  }
+
+  .fc td.fc-list-event-title {
+    padding-left: 10px !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Toolbar fits phones better */
+  .fc .fc-toolbar.fc-header-toolbar {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    padding: 10px 10px 8px 10px !important;
+    column-gap: 10px !important;
+    row-gap: 10px !important;
+  }
+
+  .fc .fc-button {
+    padding: 7px 10px !important;
+    font-size: 12px !important;
+  }
+
+  /* Mobile watermark tuning */
+  .fc .fc-view-harness::before {
+    background-size: min(900px, 86%) !important;
+    opacity: 0.08 !important;
+  }
 }
 
-.fc .fc-scroller-harness,
-.fc .fc-scroller {
-  overflow: visible !important;
+/* ====== Existing responsive ====== */
+@media (max-width: 768px) {
+  .page {
+    padding: 14px;
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    padding: 12px 12px 10px 12px !important;
+    column-gap: 14px !important;
+    row-gap: 10px !important;
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk {
+    gap: 10px !important;
+  }
+
+  .fc .fc-button {
+    padding: 7px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .fc .fc-event {
+    width: 96% !important;
+    max-width: 96% !important;
+  }
 }
 
-/* keeps list view normal height */
-.fc-listWeek-view .fc-view-harness,
-.fc-listWeek-view .fc-scroller {
-  min-height: auto !important;
-  height: auto !important;
-  overflow: visible !important;
+@media (max-width: 560px) {
+  .page > h1 {
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
 }
 
-/* Optional: mobile adaptation */
-@media (max-width: 900px) {
-  .fc .fc-view-harness,
-  .fc .fc-timegrid {
-    min-height: 70vh !important;
+@media (min-width: 1200px) {
+  .page > h1 {
+    letter-spacing: 0.16em;
   }
 }
