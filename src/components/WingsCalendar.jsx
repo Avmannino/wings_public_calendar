@@ -65,11 +65,7 @@ function getProgramMeta(title = "") {
     };
   }
 
-  return {
-    label: "Session",
-    pricing: "",
-    desc: "",
-  };
+  return { label: "Session", pricing: "", desc: "" };
 }
 
 function escapeHtml(str = "") {
@@ -90,7 +86,6 @@ export default function WingsCalendar() {
   const moveMapRef = useRef(new WeakMap());
 
   useEffect(() => {
-    // cleanup tooltip on unmount
     return () => {
       if (tipRef.current) {
         tipRef.current.remove();
@@ -112,15 +107,12 @@ export default function WingsCalendar() {
     const pad = 12;
     const offset = 14;
 
-    // Start near cursor
     let x = mouseEvent.clientX + offset;
     let y = mouseEvent.clientY + offset;
 
-    // Temporarily place to measure
     el.style.transform = "translate3d(-9999px, -9999px, 0)";
     const r = el.getBoundingClientRect();
 
-    // Clamp to viewport
     if (x + r.width > window.innerWidth - pad) x = window.innerWidth - r.width - pad;
     if (y + r.height > window.innerHeight - pad) y = window.innerHeight - r.height - pad;
     if (x < pad) x = pad;
@@ -133,12 +125,9 @@ export default function WingsCalendar() {
     const el = ensureTooltipEl();
 
     const start = info.event.start;
-    // Prefer official end; fallback to instance range end if needed
     const end = info.event.end || info.event?._instance?.range?.end || null;
-
     const cal = info.view.calendar;
 
-    // Date line
     const dateStr = start
       ? cal.formatDate(start, {
           weekday: "short",
@@ -149,7 +138,6 @@ export default function WingsCalendar() {
         })
       : "";
 
-    // Time range line (THIS keeps it accurate to the actual slot)
     let timeStr = "";
     if (start && end) {
       timeStr = cal.formatRange(start, end, {
@@ -206,10 +194,8 @@ export default function WingsCalendar() {
     const el = tipRef.current;
     if (!el) return;
     el.classList.remove("is-visible");
-    // keep it in DOM for reuse
   }
 
-  // Env sanity logs
   if (import.meta.env.DEV) {
     // eslint-disable-next-line no-console
     console.log("[WingsCalendar] GCAL key loaded?", !!apiKey);
@@ -250,7 +236,6 @@ export default function WingsCalendar() {
       googleCalendarApiKey={apiKey}
       events={{ googleCalendarId: calendarId }}
 
-      // ✅ AM/PM in axis + in-event time + list times
       slotLabelFormat={{
         hour: "numeric",
         minute: "2-digit",
@@ -264,18 +249,15 @@ export default function WingsCalendar() {
         meridiem: "short",
       }}
 
-      // ✅ Remove 12:00AM–5:00AM
       slotMinTime="05:00:00"
       slotMaxTime="24:00:00"
       scrollTime="05:00:00"
 
       eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
 
-      // ✅ Hover tooltip
       eventMouseEnter={(info) => {
         showTooltip(info);
 
-        // keep tooltip tracking cursor while moving within the event element
         const move = (ev) => {
           if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
             positionTooltip(tipRef.current, ev);

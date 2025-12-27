@@ -34,14 +34,12 @@
   font-weight: 800;
   letter-spacing: 0.15em;
   text-align: center;
-
-  /* ✅ fluid type between breakpoints */
   font-size: clamp(22px, 3.2vw + 8px, 48px);
 }
 
-/* ====== Calendar “card” wrapper (works with your existing .cal-wrap div too) ====== */
+/* ====== Calendar “card” wrapper ====== */
 .cal-wrap {
-  width: min(980px, 96vw);   /* ✅ responsive “smaller” */
+  width: min(980px, 96vw);
   margin: 0 auto;
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -50,11 +48,63 @@
   background: rgba(11, 18, 36, 0.65);
   backdrop-filter: blur(14px);
   padding: 0 18px;
+
+  /* ✅ required for watermark layering */
+  position: relative;
 }
+
+/* ✅ watermark inside the actual calendar view (most reliable) */
+.fc .fc-view-harness {
+  position: relative;
+}
+
+/* The watermark image layer */
+.fc .fc-view-harness::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  background-image: url("/wings-logo.png");
+  background-repeat: no-repeat;
+  background-position: center 50%;
+  background-size: min(1520px, 80%);
+  opacity: 0.14; /* bump up/down as needed */
+  filter: saturate(1.05) contrast(1.05);
+}
+
+/* Ensure the real calendar UI sits above the watermark */
+.fc .fc-view-harness > * {
+  position: relative;
+  z-index: 1;
+}
+
 
 .fc {
   background: transparent;
   width: 100%;
+}
+
+/* ✅ allow watermark to show through FullCalendar surfaces */
+.fc,
+.fc .fc-view-harness,
+.fc .fc-view-harness-active,
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-section,
+.fc .fc-scrollgrid-section > td,
+.fc .fc-scroller,
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc .fc-timegrid-col,
+.fc .fc-timegrid-body,
+.fc .fc-timegrid-slots,
+.fc .fc-timegrid-slot,
+.fc .fc-timegrid-axis,
+.fc .fc-daygrid-body,
+.fc .fc-daygrid-day-frame {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 /* ====== FullCalendar general typography + grid ====== */
@@ -72,14 +122,16 @@
 }
 
 .fc .fc-col-header-cell {
-  background-color: rgba(1, 0, 70, 0.884);
+  /* slightly reduced opacity so watermark can breathe */
+  background-color: rgba(1, 0, 70, 0.55);
 }
 
 .fc .fc-timegrid-axis,
 .fc .fc-timegrid-axis-frame,
 .fc .fc-daygrid-day-frame,
 .fc .fc-scrollgrid-sync-inner {
-  background-color: rgba(0, 0, 0, 0.411);
+  /* slightly reduced opacity so watermark can show */
+  background-color: rgba(0, 0, 0, 0.22);
 }
 
 .fc .fc-timegrid-slot {
@@ -125,13 +177,10 @@
 
 .fc .fc-toolbar-title {
   color: #ffffff;
-  font-size: 23px; /* desktop default */
+  font-size: 23px;
   font-weight: 850;
   letter-spacing: -0.01em;
-
-  /* ✅ fluid type for toolbar title too */
   font-size: clamp(14px, 1.2vw + 10px, 23px);
-
   padding: 0 12px !important;
   margin: 0 !important;
   white-space: nowrap;
@@ -192,7 +241,6 @@
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.28);
   overflow: hidden;
   text-align: center;
-
   width: calc(100% - 35px) !important;
   margin: 0 20px !important;
 }
@@ -207,7 +255,7 @@
   margin-bottom: 2px;
 }
 
-/* ====== Your program colors (same mapping) ====== */
+/* ====== Your program colors ====== */
 .fc-event.evt-stickpuck {
   background: linear-gradient(135deg, #116d34, #16a34a42) !important;
   border-color: rgba(34, 197, 94, 0.9) !important;
@@ -240,7 +288,7 @@
   border-color: rgba(80, 157, 250, 0.95) !important;
 }
 
-/* ====== List view styling (looks cleaner) ====== */
+/* ====== List view styling ====== */
 .fc .fc-list {
   border: 0 !important;
 }
@@ -249,7 +297,6 @@
   background: #013567 !important;
   font-weight: 850;
   border-bottom: dotted 3px red !important;
-
   padding: 14px 12px !important;
   margin-top: 12px !important;
 }
@@ -307,9 +354,14 @@
     width: calc(100% - 8px) !important;
     margin: 0 4px !important;
   }
+
+  /* Mobile watermark: smaller + slightly dimmer */
+  .cal-wrap::before {
+    background-size: min(420px, 78%);
+    opacity: 0.09;
+  }
 }
 
-/* ✅ Extra: H1 + toolbar-title “breakpoint locks” */
 @media (max-width: 560px) {
   .page > h1 {
     letter-spacing: 0.08em;
@@ -387,81 +439,13 @@
   font-weight: 850 !important;
   opacity: 0.98 !important;
   margin-top: 0 !important;
+  text-transform: uppercase;
 }
 
 /* =========================================================
    ✅ HOVER TOOLTIP (CUSTOM)
    ========================================================= */
 
-.wa-event-tooltip {
-  position: absolute;
-  z-index: 99999;
-  display: none;
-  pointer-events: none;
-
-  width: min(380px, 86vw);
-  background: rgba(15, 23, 42, 0.96);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  border-radius: 14px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(10px);
-
-  padding: 12px 12px 12px 12px;
-  color: #e5e7eb;
-}
-
-.wa-tip-title {
-  font-weight: 900;
-  font-size: 14px;
-  letter-spacing: 0.01em;
-  margin: 0 0 6px 0;
-}
-
-.wa-tip-meta {
-  display: grid;
-  gap: 3px;
-  color: rgba(226, 232, 240, 0.92);
-  font-size: 12.5px;
-  line-height: 1.25;
-  margin-bottom: 8px;
-}
-
-.wa-tip-k {
-  color: rgba(147, 197, 253, 0.95);
-  font-weight: 800;
-}
-
-.wa-tip-section {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(148, 163, 184, 0.18);
-}
-
-.wa-tip-label {
-  font-size: 12px;
-  font-weight: 900;
-  color: rgba(147, 197, 253, 0.95);
-  margin-bottom: 6px;
-}
-
-.wa-tip-list {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 3px;
-  color: rgba(226, 232, 240, 0.92);
-  font-size: 12.5px;
-}
-
-.wa-tip-desc {
-  color: rgba(226, 232, 240, 0.92);
-  font-size: 12.5px;
-  line-height: 1.35;
-}
-
-/* =========================
-   Hover tooltip (event hover)
-   ========================= */
 .wa-tooltip {
   position: fixed;
   left: 0;
@@ -516,12 +500,10 @@
   line-height: 1.25;
 }
 
-/* Uppercase AM/PM in tooltip time */
 .wa-tipTime {
   text-transform: uppercase;
 }
 
-/* Description block */
 .wa-tipDesc {
   margin-top: 8px;
   padding-top: 8px;
@@ -531,9 +513,3 @@
   font-size: 12.5px;
   line-height: 1.5;
 }
-
-/* Uppercase AM/PM in the actual event box time text */
-.fc .fc-timegrid-event .fc-event-time {
-  text-transform: uppercase;
-}
-
