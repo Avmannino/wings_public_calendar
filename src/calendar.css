@@ -27,17 +27,15 @@
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* Optional: if your App.jsx has a header area, this makes it look modern */
 .page > h1 {
-  margin: 0 0 0px 0;
-  font-size: 48px; /* desktop default */
+  margin: 0;
+  font-size: clamp(22px, 3.2vw + 8px, 48px);
   font-weight: 800;
   letter-spacing: 0.15em;
   text-align: center;
-  font-size: clamp(22px, 3.2vw + 8px, 48px);
 }
 
-/* ====== Calendar “card” wrapper ====== */
+/* ====== Calendar wrapper ====== */
 .cal-wrap {
   width: min(980px, 96vw);
   margin: 0 auto;
@@ -48,98 +46,72 @@
   background: rgba(11, 18, 36, 0.65);
   backdrop-filter: blur(14px);
   padding: 0 18px;
-
-  /* ✅ required for watermark layering */
   position: relative;
 }
 
-/* ✅ watermark inside the actual calendar view (most reliable) */
 .fc .fc-view-harness {
   position: relative;
 }
 
-/* The watermark image layer */
 .fc .fc-view-harness::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-
   background-image: url("/wings-logo.png");
   background-repeat: no-repeat;
   background-position: center 50%;
   background-size: min(1520px, 80%);
-  opacity: 0.14; /* bump up/down as needed */
+  opacity: 0.14;
   filter: saturate(1.05) contrast(1.05);
 }
 
-/* Ensure the real calendar UI sits above the watermark */
 .fc .fc-view-harness > * {
   position: relative;
   z-index: 1;
 }
-
 
 .fc {
   background: transparent;
   width: 100%;
 }
 
-/* ✅ allow watermark to show through FullCalendar surfaces */
 .fc,
 .fc .fc-view-harness,
-.fc .fc-view-harness-active,
 .fc .fc-scrollgrid,
 .fc .fc-scrollgrid-section,
-.fc .fc-scrollgrid-section > td,
-.fc .fc-scroller,
-.fc-theme-standard td,
-.fc-theme-standard th,
 .fc .fc-timegrid-col,
 .fc .fc-timegrid-body,
-.fc .fc-timegrid-slots,
 .fc .fc-timegrid-slot,
-.fc .fc-timegrid-axis,
-.fc .fc-daygrid-body,
-.fc .fc-daygrid-day-frame {
+.fc-theme-standard td,
+.fc-theme-standard th {
   background: transparent !important;
-  background-color: transparent !important;
 }
 
-/* ====== FullCalendar general typography + grid ====== */
-.fc,
+.fc .fc-timegrid-slot {
+  max-width: 250px !important;
+}
+
+/* ====== Grid, typography ====== */
 .fc * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .fc .fc-scrollgrid,
-.fc .fc-scrollgrid-section > td,
 .fc .fc-timegrid-slot,
 .fc .fc-col-header-cell {
   border-color: #ffffff52 !important;
 }
 
 .fc .fc-col-header-cell {
-  /* slightly reduced opacity so watermark can breathe */
   background-color: rgba(1, 0, 70, 0.55);
 }
 
 .fc .fc-timegrid-axis,
-.fc .fc-timegrid-axis-frame,
-.fc .fc-daygrid-day-frame,
-.fc .fc-scrollgrid-sync-inner {
-  /* slightly reduced opacity so watermark can show */
+.fc .fc-timegrid-axis-frame {
   background-color: rgba(0, 0, 0, 0.22);
-}
-
-.fc .fc-timegrid-slot {
-  background: rgba(255, 51, 51, 0);
-}
-
-.fc .fc-timegrid-slot-minor {
-  background: #d5003900;
 }
 
 .fc .fc-col-header-cell-cushion,
@@ -150,50 +122,25 @@
   font-size: 18px;
 }
 
-/* “Now” indicator */
-.fc .fc-timegrid-now-indicator-line {
-  border-color: rgba(239, 213, 68, 0.85) !important;
-}
-.fc .fc-timegrid-now-indicator-arrow {
-  border-color: rgba(239, 68, 68, 0.85) transparent transparent transparent !important;
-}
-
-/* =========================================================
-   ✅ FIX THE TOOLBAR SPACING
-   ========================================================= */
-
+/* ====== Toolbar ====== */
 .fc .fc-toolbar.fc-header-toolbar {
-  padding: 14px 18px 12px 18px !important;
-  margin: 0 !important;
+  padding: 14px 18px 12px !important;
   column-gap: 18px !important;
   row-gap: 10px !important;
 }
-
 .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk {
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
 }
-
 .fc .fc-toolbar-title {
-  color: #ffffff;
-  font-size: 23px;
+  color: #fff;
   font-weight: 850;
-  letter-spacing: -0.01em;
   font-size: clamp(14px, 1.2vw + 10px, 23px);
   padding: 0 12px !important;
-  margin: 0 !important;
-  white-space: nowrap;
 }
 
-/* ====== Header / toolbar: modern pill buttons ====== */
-.fc .fc-button-group {
-  gap: 19px;
-  margin-left: 15px;
-  margin-right: 15px;
-  border-radius: 19px !important;
-}
-
+/* ====== Buttons ====== */
 .fc .fc-button {
   border: 1px solid var(--stroke) !important;
   background: rgba(255, 255, 255, 0.06) !important;
@@ -201,269 +148,106 @@
   border-radius: 10px !important;
   padding: 8px 22px !important;
   font-weight: 750 !important;
-  text-transform: none !important;
-  box-shadow: none !important;
-  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
 }
-
 .fc .fc-button:hover {
   background: rgba(255, 255, 255, 0.205) !important;
   border-color: var(--stroke-2) !important;
-  transform: translateY(-1px);
 }
 
-.fc .fc-button:focus,
-.fc .fc-button:active,
-.fc .fc-button:focus-visible {
-  outline: none !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.28) !important;
-}
-
-.fc .fc-button-primary:not(:disabled).fc-button-active {
-  background: rgba(37, 99, 235, 0.22) !important;
-  border-color: rgba(37, 99, 235, 0.45) !important;
-}
-
-/* Make “Today” look slightly special */
-.fc .fc-today-button {
-  background: rgba(255, 255, 255, 0.10) !important;
-}
-
-/* ====== Day “today” highlight ====== */
-.fc .fc-day-today {
-  background: rgba(37, 100, 235, 0.226) !important;
-}
-
-/* ====== Events: modern chips w/ subtle shadow ====== */
+/* ====== Events ====== */
+/* ====== Events: prevent overflow & keep centered ====== */
 .fc .fc-event {
   border-radius: 20px !important;
   border-width: 1px !important;
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.28);
   overflow: hidden;
   text-align: center;
-  width: calc(100% - 35px) !important;
-  margin: 0 20px !important;
+  box-sizing: border-box !important;
+  width: 90% !important; /* keeps a small buffer inside slot */
+  margin: 0 auto !important; /* center it perfectly in its slot */
+  max-width: 95% !important;
 }
 
-/* subtle hover feedback */
-.fc .fc-event:hover {
-  filter: brightness(1.07);
-}
 
-/* Optional: slightly tighter spacing between stacked events */
-.fc .fc-timegrid-event-harness {
-  margin-bottom: 2px;
-}
-
-/* ====== Your program colors ====== */
-.fc-event.evt-stickpuck {
-  background: linear-gradient(135deg, #116d34, #16a34a42) !important;
-  border-color: rgba(34, 197, 94, 0.9) !important;
-}
-
-.fc-event.evt-publicskate {
-  background: linear-gradient(135deg, #b43434, #dc262650) !important;
-  border-color: rgba(239, 68, 68, 0.9) !important;
-}
-
-.fc-event.evt-cosmic {
-  background: linear-gradient(135deg, #6b4ec2, #7c3aed4d) !important;
-  border-color: rgba(125, 85, 245, 0.9) !important;
-}
-
-.fc-event.evt-openhockey {
-  background: linear-gradient(135deg, #c4900f, #f59f0b4f) !important;
-  border-color: rgba(251, 191, 36, 0.92) !important;
-}
-
-/* NEW: Freestyle color */
-.fc-event.evt-freestyle {
-  background: linear-gradient(135deg, #2aa8a8, rgba(42, 168, 168, 0.25)) !important;
-  border-color: rgba(42, 168, 168, 0.9) !important;
-}
-
-.fc-event.evt-dropin,
-.fc-event.evt-default {
-  background: linear-gradient(135deg, #4497fc, #2564eb44) !important;
-  border-color: rgba(80, 157, 250, 0.95) !important;
-}
-
-/* ====== List view styling ====== */
-.fc .fc-list {
-  border: 0 !important;
-}
-
-.fc .fc-list-day-cushion {
-  background: #013567 !important;
-  font-weight: 850;
-  border-bottom: dotted 3px red !important;
-  padding: 14px 12px !important;
-  margin-top: 12px !important;
-}
-
-.fc-list-day-text {
-  color: white;
-  font-weight: 600;
-  font-size: 1.2em;
-}
-
-.fc-list-day-side-text {
-  color: white;
-  font-weight: 800;
-  font-size: 1.25em;
-}
-
-.fc .fc-list-event:hover td {
-  background: rgba(255, 255, 255, 0.05) !important;
-}
-
-.fc .fc-list-event-time,
-.fc .fc-list-event-title {
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-weight: 700 !important;
-}
-
-.fc .fc-list-event-dot {
-  border-color: rgba(255, 255, 255, 0.35) !important;
-}
-
-/* ====== Responsive tweaks ====== */
-@media (max-width: 768px) {
-  .page {
-    padding: 14px;
-  }
-
-  .fc .fc-toolbar.fc-header-toolbar {
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    padding: 12px 12px 10px 12px !important;
-    column-gap: 14px !important;
-    row-gap: 10px !important;
-  }
-
-  .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk {
-    gap: 10px !important;
-  }
-
-  .fc .fc-button {
-    padding: 7px 10px !important;
-    font-size: 12px !important;
-  }
-
-  .fc .fc-event {
-    width: calc(100% - 8px) !important;
-    margin: 0 4px !important;
-  }
-
-  /* Mobile watermark: smaller + slightly dimmer */
-  .cal-wrap::before {
-    background-size: min(420px, 78%);
-    opacity: 0.09;
-  }
-}
-
-@media (max-width: 560px) {
-  .page > h1 {
-    letter-spacing: 0.08em;
-    margin-bottom: 6px;
-  }
-  .fc .fc-toolbar-title {
-    letter-spacing: -0.005em;
-    padding: 0 8px !important;
-  }
-}
-
-@media (min-width: 1200px) {
-  .page > h1 {
-    letter-spacing: 0.16em;
-  }
-}
+/* Colors */
+.fc-event.evt-stickpuck { background: linear-gradient(135deg, #116d34, #16a34a42) !important; border-color: rgba(34,197,94,0.9)!important;}
+.fc-event.evt-publicskate { background: linear-gradient(135deg,#b43434,#dc262650)!important; border-color: rgba(239,68,68,0.9)!important;}
+.fc-event.evt-cosmic { background: linear-gradient(135deg,#6b4ec2,#7c3aed4d)!important; border-color: rgba(125,85,245,0.9)!important;}
+.fc-event.evt-openhockey { background: linear-gradient(135deg,#c4900f,#f59f0b4f)!important; border-color: rgba(251,191,36,0.92)!important;}
+.fc-event.evt-freestyle { background: linear-gradient(135deg,#2aa8a8,rgba(42,168,168,0.25))!important; border-color: rgba(42,168,168,0.9)!important;}
+.fc-event.evt-default { background: linear-gradient(135deg,#4497fc,#2564eb44)!important; border-color: rgba(80,157,250,0.95)!important;}
 
 /* =========================================================
-   TRUE vertical centering for timeGrid event text
-   + SHOW TITLE ABOVE TIME
-   + CLOSE THE GAP BETWEEN THEM
+   ✅ FINAL TRUE CENTERING FIX (TITLE ABOVE TIME, NO GAP)
    ========================================================= */
-
 .fc a.fc-timegrid-event,
 .fc .fc-timegrid-event {
   display: flex !important;
-  align-items: stretch !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  height: 100% !important;
+  width: 100% !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 .fc .fc-timegrid-event .fc-event-main {
-  display: flex !important;
+  display: inline-flex !important;
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  height: 100% !important;
+  text-align: center !important;
+  height: auto !important;
   width: 100% !important;
-  padding: 6.2px !important;
+  line-height: 1 !important;
+  gap: 0 !important;
+  transform: translateY(2%); /* subtle correction for visual centering */
 }
 
-.fc .fc-timegrid-event .fc-event-main-frame {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  height: 100% !important;
-  width: 100% !important;
-  min-height: 0 !important;
-  padding: 0px !important;
-  gap: 1px !important;
-}
-
-.fc .fc-timegrid-event .fc-event-title-container {
-  order: 1 !important;
-}
-.fc .fc-timegrid-event .fc-event-time {
-  order: 2 !important;
-}
-
-.fc .fc-timegrid-event .fc-event-time,
-.fc .fc-timegrid-event .fc-event-title-container,
 .fc .fc-timegrid-event .fc-event-title {
+  order: 1 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
   margin: 0 !important;
   padding: 0 !important;
-}
-
-.fc .fc-timegrid-event .fc-event-title {
-  font-size: 14px !important;
-  line-height: 1.05 !important;
-  font-weight: 900 !important;
+  line-height: 1.5 !important;
 }
 
 .fc .fc-timegrid-event .fc-event-time {
-  font-size: 14px !important;
-  line-height: 1 !important;
-  font-weight: 850 !important;
-  opacity: 0.98 !important;
-  margin-top: 0 !important;
-  text-transform: uppercase;
+  order: 2 !important;
+  font-size: 13px !important;
+  font-weight: 750 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-transform: uppercase !important;
+  line-height: 1.5 !important;
+  opacity: 0.95 !important;
 }
 
 /* =========================================================
-   ✅ HOVER TOOLTIP (CUSTOM)
+   ✅ TOOLTIP
    ========================================================= */
-
+/* =========================================================
+   ✅ FIXED TOOLTIP POSITIONING (2 o'clock offset)
+   ========================================================= */
 .wa-tooltip {
-  position: fixed;
+  position: absolute !important;  /* ensures it's relative to <body> */
   left: 0;
   top: 0;
-  z-index: 99999;
+  z-index: 999999 !important;
   width: min(360px, calc(100vw - 24px));
   padding: 12px 12px 10px;
-
   background: #0f172a;
   border: 1px solid #1f2a44;
   border-radius: 12px;
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
-
   color: #e5e7eb;
   opacity: 0;
   pointer-events: none;
-  transform: translate3d(-9999px, -9999px, 0);
+  transform: translate(-9999px, -9999px);
   transition: opacity 120ms ease;
+  will-change: transform; /* helps smooth repositioning */
 }
 
 .wa-tooltip.is-visible {
@@ -477,7 +261,6 @@
   color: #f8fafc;
   margin-bottom: 8px;
 }
-
 .wa-tipRow {
   display: grid;
   grid-template-columns: 70px 1fr;
@@ -485,25 +268,18 @@
   align-items: baseline;
   padding: 4px 0;
 }
-
 .wa-tipLabel {
   color: #93c5fd;
   font-weight: 800;
   font-size: 12px;
   letter-spacing: 0.02em;
 }
-
 .wa-tipValue {
   color: #e5e7eb;
   font-weight: 700;
   font-size: 12.5px;
   line-height: 1.25;
 }
-
-.wa-tipTime {
-  text-transform: uppercase;
-}
-
 .wa-tipDesc {
   margin-top: 8px;
   padding-top: 8px;

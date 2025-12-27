@@ -19,7 +19,6 @@ function getClassForTitle(title = "") {
 
 function getProgramMeta(title = "") {
   const t = title.toLowerCase();
-
   if (t.includes("public") && t.includes("skate")) {
     return {
       label: "Public Skate",
@@ -32,7 +31,8 @@ function getProgramMeta(title = "") {
   if (t.includes("cosmic") && t.includes("skate")) {
     return {
       label: "Cosmic Skate",
-      pricing: "Admission - 13 & Older - $20, 12 & Under $15, Skate Rentals - INCLUDED",
+      pricing:
+        "Admission - 13 & Older - $20, 12 & Under $15, Skate Rentals - INCLUDED",
       desc:
         "Join us for Cosmic Skate — an atmosphere that turns skating into a party on ice. A unique twist on a classic skate, perfect for friends, families, and anyone looking for a fun night on ice full of music and lights.",
     };
@@ -104,22 +104,30 @@ export default function WingsCalendar() {
   }
 
   function positionTooltip(el, mouseEvent) {
-    const pad = 12;
-    const offset = 14;
+  const offsetX = 15;  // slightly right of cursor
+  const offsetY = -230; // slightly above cursor (2 o’clock position)
+  const pad = 10;
 
-    let x = mouseEvent.clientX + offset;
-    let y = mouseEvent.clientY + offset;
+  let x = mouseEvent.clientX + offsetX;
+  let y = mouseEvent.clientY + offsetY;
 
-    el.style.transform = "translate3d(-9999px, -9999px, 0)";
-    const r = el.getBoundingClientRect();
+  // temporarily hide to measure size
+  el.style.transform = "translate3d(-9999px, -9999px, 0)";
+  const rect = el.getBoundingClientRect();
 
-    if (x + r.width > window.innerWidth - pad) x = window.innerWidth - r.width - pad;
-    if (y + r.height > window.innerHeight - pad) y = window.innerHeight - r.height - pad;
-    if (x < pad) x = pad;
-    if (y < pad) y = pad;
-
-    el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+  // keep within viewport
+  if (x + rect.width > window.innerWidth - pad) {
+    x = window.innerWidth - rect.width - pad;
   }
+  if (y + rect.height > window.innerHeight - pad) {
+    y = window.innerHeight - rect.height - pad;
+  }
+  if (x < pad) x = pad;
+  if (y < pad) y = pad;
+
+  el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+}
+
 
   function showTooltip(info) {
     const el = ensureTooltipEl();
@@ -196,29 +204,6 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
-  if (import.meta.env.DEV) {
-    // eslint-disable-next-line no-console
-    console.log("[WingsCalendar] GCAL key loaded?", !!apiKey);
-    // eslint-disable-next-line no-console
-    console.log("[WingsCalendar] GCAL id:", calendarId);
-    // eslint-disable-next-line no-console
-    console.log("[WingsCalendar] TZ:", timeZone);
-  }
-
-  if (!apiKey || !calendarId) {
-    return (
-      <div style={{ padding: 16 }}>
-        <div style={{ fontWeight: 800, marginBottom: 8 }}>Calendar is not configured</div>
-        <div style={{ opacity: 0.85, lineHeight: 1.4 }}>
-          Missing <code>VITE_GCAL_API_KEY</code> or <code>VITE_GCAL_ID</code>.
-          <br />
-          Make sure your <code>.env</code> is in the project root (next to <code>package.json</code>)
-          and restart the dev server.
-        </div>
-      </div>
-    );
-  }
-
   return (
     <FullCalendar
       plugins={[timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
@@ -235,7 +220,6 @@ export default function WingsCalendar() {
       timeZone={timeZone}
       googleCalendarApiKey={apiKey}
       events={{ googleCalendarId: calendarId }}
-
       slotLabelFormat={{
         hour: "numeric",
         minute: "2-digit",
@@ -248,16 +232,12 @@ export default function WingsCalendar() {
         hour12: true,
         meridiem: "short",
       }}
-
       slotMinTime="05:00:00"
       slotMaxTime="24:00:00"
       scrollTime="05:00:00"
-
       eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
-
       eventMouseEnter={(info) => {
         showTooltip(info);
-
         const move = (ev) => {
           if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
             positionTooltip(tipRef.current, ev);
@@ -274,7 +254,6 @@ export default function WingsCalendar() {
         }
         hideTooltip();
       }}
-
       eventClick={(info) => {
         info.jsEvent.preventDefault();
         if (info.event.url) {
@@ -282,7 +261,6 @@ export default function WingsCalendar() {
         }
       }}
       eventSourceFailure={(error) => {
-        // eslint-disable-next-line no-console
         console.error("[WingsCalendar] Google event source failed:", error);
       }}
     />
