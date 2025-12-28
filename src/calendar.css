@@ -60,15 +60,15 @@
 
 .fc .fc-view-harness::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   background-image: url("/wings-logo.png");
   background-repeat: no-repeat;
-  background-position: center 50%;
-  background-size: min(1520px, 80%);
-  opacity: 0.14;
+  background-position: 150% 50%;
+  background-size: min(1520px, 70%);
+  opacity: 0.06;
   filter: saturate(1.05) contrast(1.05);
   transition: all 0.35s ease;
 }
@@ -554,13 +554,86 @@
 /* =========================================================
    Phone-first LIST responsiveness (320px → 640px)
    ========================================================= */
-/* === FIXED MOBILE FULL-WIDTH EVENT SPANNING === */
-/* === MOBILE FULL-WIDTH LIST VIEW FIXED + INLINE TIME/TITLE === */
-/* === FINAL FIX: MOBILE FULL-WIDTH CARD + INLINE TIME/TITLE === */
 @media (max-width: 640px) {
-  /* === MOBILE LIST VIEW: full-width flex row === */
 
-  /* Full width table */
+
+  /* ===== Toolbar (Header + Arrows) ===== */
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
+    position: relative !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 40px !important;
+    /* space for the title */
+  }
+
+    /* Inject logo above the pseudo title */
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::after {
+    content: "" !important;
+    position: absolute !important;
+    top: -3px !important; /* adjust vertical position */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 65px !important;  /* logo width */
+    height: 65px !important; /* logo height */
+    background-image: url("/wings-logo2.png") !important; /* ✅ your logo */
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    background-position: center !important;
+  }
+
+
+  /* Inject a pseudo-element title above the arrows */
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
+    content: "THIS WEEK'S LINEUP" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    color: #fff !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.1em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    margin-top: 55px;
+  }
+
+  /* Circular, larger arrow buttons */
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button {
+    width: 75px !important;
+    height: 28px !important;
+    border-radius: 12px !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #fff !important;
+    transition: all 0.2s ease-in-out !important;
+    margin-bottom: -12px;
+    margin-top: 55px;
+  }
+
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    transform: scale(1.05);
+  }
+
+  /* Spacing between arrow buttons */
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button-group {
+    gap: 18px !important;
+  }
+
+  /* Hide "Today" button in mobile list view */
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-today-button {
+    display: none !important;
+  }
+
+  /* ===== List layout ===== */
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
   .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table {
     width: 100% !important;
@@ -569,26 +642,26 @@
     table-layout: auto !important;
   }
 
-  /* Each row is now a flex container */
+  /* Each event row behaves like a card */
   .wa-cal.is-phone-list .fc tr.fc-list-event {
     display: flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    background: var(--panel-2) !important;
-    border-radius: 12px !important;
+    width: 100% !important;
     margin: 8px 0 !important;
-    overflow: hidden !important;
+    border-radius: 12px !important;
+    background: var(--panel-2) !important;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
+    overflow: hidden !important;
   }
 
-  /* Remove table padding/spacing */
+  /* Remove default table look */
   .wa-cal.is-phone-list .fc .fc-list-event td {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
     border: none !important;
-    padding: 14px 16px !important;
+    padding: 12px 14px !important;
     background: transparent !important;
+    display: flex !important;
+    align-items: center !important;
   }
 
   /* Hide the dot column */
@@ -596,54 +669,100 @@
     display: none !important;
   }
 
-  /* Time (left side) */
+  /* === Time column with colored dot === */
   .wa-cal.is-phone-list .fc td.fc-list-event-time {
     flex: 0 0 auto !important;
-    width: auto !important;
-    font-size: 14px !important;
+    font-size: 13.5px !important;
     font-weight: 850 !important;
     color: #fff !important;
-    opacity: 0.9 !important;
     white-space: nowrap !important;
-    text-align: left !important;
-    padding-right: 10px !important;
+    position: relative !important;
+    padding-left: 30px !important;
+    /* space for the dot */
+    display: flex !important;
+    align-items: center !important;
+    max-width: 165px;
   }
 
-  /* Title (right side) */
+  /* Base dot */
+  .wa-cal.is-phone-list .fc td.fc-list-event-time::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 8px !important;
+    top: 50% !important;
+    width: 15px !important;
+    height: 15px !important;
+    border-radius: 50% !important;
+    transform: translateY(-50%);
+    background: #888 !important;
+    /* fallback */
+  }
+
+  /* === Title column === */
   .wa-cal.is-phone-list .fc td.fc-list-event-title {
-    flex: 1 1 auto !important;
+    flex: 1 !important;
     text-align: left !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    /* space between | and title text */
+  }
+
+  /* Separator before title */
+  .wa-cal.is-phone-list .fc td.fc-list-event-title::before {
+    content: "|" !important;
+    color: #d50239 !important;
+    /* red separator */
+    font-weight: 700 !important;
+    font-size: 20px !important;
+    line-height: 1.2 !important;
+    margin-left: -15px !important;
   }
 
   /* Title link */
-  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
+  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
     display: inline-block !important;
     width: 100% !important;
-    font-size: 19px !important;
-    font-weight: 800 !important;
     color: #fff !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
     text-decoration: none !important;
-    line-height: 1.3 !important;
-    margin-left: 20px;
+    line-height: 1.2 !important;
+    margin-left: 8px;
   }
 
-  /* Hide table background bleed */
-  .wa-cal.is-phone-list .fc-list-event + .fc-list-event {
-    border-top: none !important;
+  /* === Color-coded dots per event type === */
+  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-publicskate td.fc-list-event-time::before {
+    background: #ef4444 !important;
+    /* red */
   }
 
-  /* Remove dot/graphic space entirely */
-  .wa-cal.is-phone-list .fc td.fc-list-event-graphic {
-    display: none !important;
+  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-stickpuck td.fc-list-event-time::before {
+    background: #109b43 !important;
+    /* green */
   }
 
-  /* Keep view wrapper clean */
-  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list,
-  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list {
-    overflow-x: hidden !important;
+  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-cosmic td.fc-list-event-time::before {
+    background: #7c3aed !important;
+    /* purple */
   }
 
-  /* Day header spacing */
+  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-openhockey td.fc-list-event-time::before {
+    background: #fbbf24 !important;
+    /* gold */
+  }
+
+  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-freestyle td.fc-list-event-time::before {
+    background: #1ce4e4 !important;
+    /* teal */
+  }
+
+  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-default td.fc-list-event-time::before {
+    background: #fbbf24 !important;
+    /* fallback gold */
+  }
+
+  /* ===== Day headers ===== */
   .wa-cal.is-phone-list .fc .fc-list-day-cushion {
     padding: 10px 12px !important;
   }
@@ -656,12 +775,28 @@
     font-size: 14px !important;
   }
 
-  /* Mobile watermark */
+  /* ===== Watermark/Logo ===== */
+  .fc .fc-view-harness {
+    position: relative;
+    overflow: visible !important;
+  }
+
   .fc .fc-view-harness::before {
-    background-size: min(900px, 86%) !important;
-    opacity: 0.08 !important;
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("/wings-logo.png");
+    background-repeat: no-repeat;
+    background-position: 50% -120%;
+    background-size: min(1520px, 210%);
+    opacity: 0.07;
+    filter: saturate(1.05) contrast(1.05);
+    transition: all 0.35s ease;
   }
 }
+
 
 
 
