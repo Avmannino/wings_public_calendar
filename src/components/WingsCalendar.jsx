@@ -279,10 +279,8 @@ export default function WingsCalendar() {
         slotMaxTime="24:00:00"
         scrollTime="05:00:00"
         eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
-
         // ✅ update isListView anytime FC changes view (needed for toolbar hiding)
         datesSet={(arg) => setIsListView(arg.view.type?.startsWith("list"))}
-
         eventMouseEnter={(info) => {
           if (isPhone) return; // no hover tooltips on touch
           showTooltip(info);
