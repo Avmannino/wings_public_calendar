@@ -85,19 +85,13 @@ export default function WingsCalendar() {
 
   const tipRef = useRef(null);
   const moveMapRef = useRef(new WeakMap());
-
-  // ✅ Calendar API ref (needed to force view changes on resize)
   const calendarRef = useRef(null);
 
-  // ✅ phone-only breakpoint (treat <= 640px as “mobile phone”)
   const MOBILE_QUERY = "(max-width: 640px)";
-
   const [isPhone, setIsPhone] = useState(() => {
     if (typeof window === "undefined" || !window.matchMedia) return false;
     return window.matchMedia(MOBILE_QUERY).matches;
   });
-
-  // ✅ track whether current view is list (so CSS can target toolbar correctly)
   const [isListView, setIsListView] = useState(false);
 
   useEffect(() => {
@@ -117,14 +111,34 @@ export default function WingsCalendar() {
     };
   }, []);
 
-  // ✅ force listWeek as the default view on phones,
-  // and switch back to week view when leaving phone size.
   useEffect(() => {
     const api = calendarRef.current?.getApi?.();
     if (!api) return;
-
     const targetView = isPhone ? "listWeek" : "timeGridWeek";
     if (api.view?.type !== targetView) api.changeView(targetView);
+  }, [isPhone]);
+
+  // ✅ Bulletproof fix: Continuously remove sticky headers (covers all re-renders)
+  useEffect(() => {
+    let rafId;
+
+    const loop = () => {
+      const stickyEls = document.querySelectorAll(".fc-list-day.fc-list-sticky, th.fc-list-day-cushion");
+      stickyEls.forEach((el) => {
+        el.style.position = "static";
+        el.style.top = "auto";
+        el.style.zIndex = "auto";
+        el.style.transform = "none";
+        el.style.background = "transparent";
+      });
+      rafId = requestAnimationFrame(loop);
+    };
+
+    if (isPhone) {
+      loop(); // start continuous override
+    }
+
+    return () => cancelAnimationFrame(rafId);
   }, [isPhone]);
 
   useEffect(() => {
@@ -156,18 +170,21 @@ export default function WingsCalendar() {
     let x = mouseEvent.clientX + offsetX;
     let y = mouseEvent.clientY + offsetY;
 
-    if (x + rect.width > window.innerWidth - pad) x = window.innerWidth - rect.width - pad;
-    if (y + rect.height > window.innerHeight - pad) y = window.innerHeight - rect.height - pad;
+    if (x + rect.width > window.innerWidth - pad)
+      x = window.innerWidth - rect.width - pad;
+    if (y + rect.height > window.innerHeight - pad)
+      y = window.innerHeight - rect.height - pad;
     if (x < pad) x = pad;
     if (y < pad) y = pad;
 
-    el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+    el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(
+      y
+    )}px, 0)`;
     el.style.visibility = "visible";
   }
 
   function showTooltip(info) {
     const el = ensureTooltipEl();
-
     const start = info.event.start;
     const end = info.event.end || info.event?._instance?.range?.end || null;
     const cal = info.view.calendar;
@@ -234,7 +251,6 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
-  // ✅ list button ONLY on phones (keeps desktop/tablet clean)
   const rightButtons = isPhone
     ? "timeGridWeek,timeGridDay,listWeek"
     : "timeGridWeek,timeGridDay";
@@ -279,14 +295,18 @@ export default function WingsCalendar() {
         slotMaxTime="24:00:00"
         scrollTime="05:00:00"
         eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
-        // ✅ update isListView anytime FC changes view (needed for toolbar hiding)
-        datesSet={(arg) => setIsListView(arg.view.type?.startsWith("list"))}
+        datesSet={(arg) => {
+          setIsListView(arg.view.type?.startsWith("list"));
+        }}
         eventMouseEnter={(info) => {
-          if (isPhone) return; // no hover tooltips on touch
+          if (isPhone) return;
           showTooltip(info);
 
           const move = (ev) => {
-            if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
+            if (
+              tipRef.current &&
+              tipRef.current.classList.contains("is-visible")
+            ) {
               positionTooltip(tipRef.current, ev);
             }
           };
@@ -295,7 +315,6 @@ export default function WingsCalendar() {
         }}
         eventMouseLeave={(info) => {
           if (isPhone) return;
-
           const move = moveMapRef.current.get(info.el);
           if (move) {
             info.el.removeEventListener("mousemove", move);

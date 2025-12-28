@@ -15,6 +15,14 @@
   --radius-lg: 26px;
 }
 
+/* ===== Fix: disable sticky headers in FullCalendar ===== */
+.fc .fc-scrollgrid-section-sticky>* {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+}
+
+
 .page {
   min-height: 100vh;
   padding: 90px;
@@ -267,17 +275,17 @@
 
 /* Event Colors (timeGrid) */
 .fc-event.evt-stickpuck {
-  background: linear-gradient(135deg, #093d1d, #16a34aab) !important;
+  background: linear-gradient(135deg, #093b1c, #16a34aab) !important;
   border-color: rgba(34, 197, 94, 0.9) !important;
 }
 
 .fc-event.evt-publicskate {
-  background: linear-gradient(135deg, #631c1c, #dc26269c) !important;
+  background: linear-gradient(135deg, #461414, #dc26269c) !important;
   border-color: rgba(239, 68, 68, 0.9) !important;
 }
 
 .fc-event.evt-cosmic {
-  background: linear-gradient(135deg, #3c2c6b, #7c3aed91) !important;
+  background: linear-gradient(135deg, #281d47, #7c3aed91) !important;
   border-color: rgba(125, 85, 245, 0.9) !important;
 }
 
@@ -556,7 +564,6 @@
    ========================================================= */
 @media (max-width: 640px) {
 
-
   /* ===== Toolbar (Header + Arrows) ===== */
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
     position: relative !important;
@@ -567,16 +574,20 @@
     /* space for the title */
   }
 
-    /* Inject logo above the pseudo title */
+  /* Inject logo above the pseudo title */
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::after {
     content: "" !important;
     position: absolute !important;
-    top: -3px !important; /* adjust vertical position */
+    top: -3px !important;
+    /* adjust vertical position */
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: 65px !important;  /* logo width */
-    height: 65px !important; /* logo height */
-    background-image: url("/wings-logo2.png") !important; /* ✅ your logo */
+    width: 65px !important;
+    /* logo width */
+    height: 65px !important;
+    /* logo height */
+    background-image: url("/wings-logo2.png") !important;
+    /* ✅ your logo */
     background-repeat: no-repeat !important;
     background-size: contain !important;
     background-position: center !important;
@@ -795,6 +806,24 @@
     filter: saturate(1.05) contrast(1.05);
     transition: all 0.35s ease;
   }
+
+  /* ===== FINAL FIX for sticky day headers in FullCalendar list view ===== */
+
+  /* In some FullCalendar builds, the sticky behavior applies directly to <th> */
+  .th.fc-list-day-cushion {
+    position: relative !important;
+    top: auto !important;
+    z-index: auto !important;
+    /* transform: none !important; */
+  }
+
+  .fc-cell-shaded {
+    position: relative !important;
+    top: auto !important;
+    z-index: auto !important;
+    /* transform: none !important; */
+  }
+
 }
 
 
