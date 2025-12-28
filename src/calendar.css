@@ -192,7 +192,6 @@
 
 /* =========================================================
    ✅ Hide LIST button on anything bigger than a phone
-   (JS already does this, but this is a safety net)
    ========================================================= */
 @media (min-width: 641px) {
   .fc .fc-listWeek-button,
@@ -201,7 +200,46 @@
   }
 }
 
-/* ====== Events ====== */
+/* =========================================================
+   ✅ MOBILE LIST VIEW TOOLBAR: ONLY PREV/NEXT ARROWS
+   - Uses wrapper class from WingsCalendar.jsx: .wa-cal.is-phone-list
+   ========================================================= */
+/* center the arrows under your “This Week’s Lineup” text */
+.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 10px 12px 0px !important;
+  column-gap: 0 !important;
+  row-gap: 0 !important;
+  width: 100% !important;
+}
+
+/* keep the prev/next grouped nicely */
+.wa-cal.is-phone-list .fc .fc-button-group {
+  gap: 12px !important;
+  margin: 0 !important;
+}
+
+/* Hide center (title) + right (view buttons) chunks entirely */
+.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(2),
+.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(3) {
+  display: none !important;
+}
+
+/* Hide the "today" button (left chunk) */
+.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-today-button {
+  display: none !important;
+}
+
+/* Safety-net: if view buttons appear anywhere, nuke them in phone list view */
+.wa-cal.is-phone-list .fc .fc-timeGridWeek-button,
+.wa-cal.is-phone-list .fc .fc-timeGridDay-button,
+.wa-cal.is-phone-list .fc .fc-listWeek-button,
+.wa-cal.is-phone-list .fc .fc-listDay-button {
+  display: none !important;
+}
+
+/* ====== Events (timeGrid) ====== */
 .fc .fc-event {
   border-radius: 20px !important;
   border-width: 1px !important;
@@ -214,7 +252,7 @@
   max-width: 95% !important;
 }
 
-/* Event Colors */
+/* Event Colors (timeGrid) */
 .fc-event.evt-stickpuck {
   background: linear-gradient(135deg, #116d34, #16a34aab) !important;
   border-color: rgba(34, 197, 94, 0.9) !important;
@@ -287,7 +325,7 @@
 }
 
 /* =========================================================
-   ✅ LIST VIEW LAYOUT (desktop/tablet base)
+   ✅ LIST VIEW LAYOUT
    ========================================================= */
 
 /* Keep view + scrollers spanning full width (prevents the 50% bug) */
@@ -332,9 +370,10 @@
   padding: 12px 16px !important;
   vertical-align: middle !important;
   border-color: rgba(255, 255, 255, 0.22) !important;
+  background: inherit !important;
 }
 
-/* Columns: TIME | DOT | TITLE (desktop) */
+/* Columns: TIME | GRAPHIC | TITLE (base) */
 .fc td.fc-list-event-time {
   width: 220px !important;
   white-space: nowrap !important;
@@ -359,7 +398,7 @@
   padding-left: 28px !important;
 }
 
-/* Dot: centered + consistent size */
+/* Dot */
 .fc .fc-list-event-dot {
   margin: 0 auto !important;
   border-width: 6px !important;
@@ -367,38 +406,47 @@
   transform: translateY(1px);
 }
 
-/* Day header row: left = weekday, right = date */
+/* =========================================================
+   ✅ LIST HEADER ROW: STACK weekday + date vertically
+   ========================================================= */
 .fc .fc-list-day-cushion {
   padding: 14px 18px !important;
 }
 
 .fc .fc-list-day-cushion > th {
   display: flex !important;
-  justify-content: space-between !important;
-  align-items: baseline !important;
-  gap: 16px !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 4px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
 
-.fc .fc-list-day-text {
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+  display: block !important;
+  width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+.fc .fc-list-day-text {
   color: #fff !important;
-  font-weight: 900 !important;
+  font-weight: 950 !important;
   font-size: 22px !important;
   letter-spacing: 0.01em !important;
   text-decoration: none !important;
 }
 
 .fc .fc-list-day-side-text {
-  margin: 0 !important;
-  padding: 0 !important;
   color: rgba(255, 255, 255, 0.92) !important;
   font-weight: 850 !important;
   font-size: 18px !important;
   text-decoration: underline !important;
-  white-space: nowrap !important;
 }
 
 /* =========================================================
@@ -487,6 +535,8 @@
 
 /* =========================================================
    ✅ Phone-first LIST responsiveness (320px → 640px)
+   - FIX: collapse the GRAPHIC column instead of display:none
+   - This prevents the “empty 1/3 column on the right”
    ========================================================= */
 @media (max-width: 640px) {
   .page {
@@ -494,62 +544,92 @@
   }
 
   /* Make the list table fully utilize the phone width */
-  .fc .fc-listWeek-view .fc-list-table,
-  .fc .fc-listDay-view .fc-list-table {
-    width: calc(100vw - 16px) !important;
+  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table {
+    width: calc(100vw - 28px) !important;
     margin: 0 auto !important;
   }
 
+  /* Ensure the actual <table> fills the wrapper */
+  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table table,
+  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table table {
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
   /* Tighten day header */
-  .fc .fc-list-day-cushion {
+  .wa-cal.is-phone-list .fc .fc-list-day-cushion {
     padding: 10px 12px !important;
   }
-
-  .fc .fc-list-day-text {
+  .wa-cal.is-phone-list .fc .fc-list-day-text {
     font-size: 18px !important;
   }
-
-  .fc .fc-list-day-side-text {
+  .wa-cal.is-phone-list .fc .fc-list-day-side-text {
     font-size: 14px !important;
   }
 
-  /* Tighten rows */
-  .fc .fc-list-event td {
-    padding: 10px 10px !important;
+  /* =========================================================
+     ✅ NEW: Combine “middle + right” into ONE column by turning
+     each event row into a 2-col grid: TIME | TITLE
+     (this eliminates the blank right-side space)
+     ========================================================= */
+
+  /* Each event row becomes a 2-column grid */
+  .wa-cal.is-phone-list .fc .fc-listWeek-view tr.fc-list-event,
+  .wa-cal.is-phone-list .fc .fc-listDay-view tr.fc-list-event {
+    display: grid !important;
+    grid-template-columns: clamp(92px, 28vw, 125px) 1fr !important;
+    align-items: stretch !important;
   }
 
-  /* Columns scale with screen size */
-  .fc td.fc-list-event-time {
-    width: clamp(92px, 28vw, 125px) !important;
+  /* Make each TD behave nicely as grid items */
+  .wa-cal.is-phone-list .fc .fc-listWeek-view tr.fc-list-event > td,
+  .wa-cal.is-phone-list .fc .fc-listDay-view tr.fc-list-event > td {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    background: inherit !important; /* preserves your colored fill */
+    padding: 0 !important;          /* we’ll apply padding per-cell below */
+  }
+
+  /* TIME column (left) */
+  .wa-cal.is-phone-list .fc td.fc-list-event-time {
+    grid-column: 1 !important;
+    text-align: center !important;
     font-size: 12.5px !important;
+    font-weight: 850 !important;
+    padding: 10px 10px !important;
+    white-space: nowrap !important;
   }
 
-  .fc td.fc-list-event-graphic {
-    width: 34px !important;
+  /* Kill the graphic cell entirely (no dot / no wasted space) */
+  .wa-cal.is-phone-list .fc td.fc-list-event-graphic {
+    /* display: none !important; */
+    min-width: 90% !important;
   }
 
-  .fc .fc-list-event-dot {
-    border-width: 5px !important;
-  }
-
-  .fc td.fc-list-event-title {
-    padding-left: 10px !important;
+  /* TITLE column (right) fills to the table border */
+  .wa-cal.is-phone-list .fc td.fc-list-event-title {
+    grid-column: 1 !important;
+    width: 100% !important;
+    padding: 0 !important; /* padding goes on <a> so it can stretch */
+    text-align: center !important;
     font-size: 14px !important;
     line-height: 1.2 !important;
   }
 
-  /* Toolbar fits phones better */
-  .fc .fc-toolbar.fc-header-toolbar {
-    flex-wrap: wrap !important;
+  /* Ensure the <a> fills the entire title cell */
+  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
+    display: flex !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    padding: 10px 10px !important;
+    align-items: center !important;
     justify-content: center !important;
-    padding: 10px 10px 8px 10px !important;
-    column-gap: 10px !important;
-    row-gap: 10px !important;
-  }
-
-  .fc .fc-button {
-    padding: 7px 10px !important;
-    font-size: 12px !important;
+    text-align: center !important;
   }
 
   /* Mobile watermark tuning */
@@ -558,6 +638,7 @@
     opacity: 0.08 !important;
   }
 }
+
 
 /* ====== Existing responsive ====== */
 @media (max-width: 768px) {

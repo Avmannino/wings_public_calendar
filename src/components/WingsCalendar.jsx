@@ -19,6 +19,7 @@ function getClassForTitle(title = "") {
 
 function getProgramMeta(title = "") {
   const t = title.toLowerCase();
+
   if (t.includes("public") && t.includes("skate")) {
     return {
       label: "Public Skate",
@@ -88,7 +89,7 @@ export default function WingsCalendar() {
   // ✅ Calendar API ref (needed to force view changes on resize)
   const calendarRef = useRef(null);
 
-  // ✅ NEW: phone-only breakpoint (treat <= 640px as “mobile phone”)
+  // ✅ phone-only breakpoint (treat <= 640px as “mobile phone”)
   const MOBILE_QUERY = "(max-width: 640px)";
 
   const [isPhone, setIsPhone] = useState(() => {
@@ -96,17 +97,18 @@ export default function WingsCalendar() {
     return window.matchMedia(MOBILE_QUERY).matches;
   });
 
+  // ✅ track whether current view is list (so CSS can target toolbar correctly)
+  const [isListView, setIsListView] = useState(false);
+
   useEffect(() => {
     if (!window.matchMedia) return;
 
     const mql = window.matchMedia(MOBILE_QUERY);
     const onChange = (e) => setIsPhone(e.matches);
 
-    // modern + fallback
     if (mql.addEventListener) mql.addEventListener("change", onChange);
     else mql.addListener(onChange);
 
-    // ensure state is correct on mount
     setIsPhone(mql.matches);
 
     return () => {
@@ -115,7 +117,7 @@ export default function WingsCalendar() {
     };
   }, []);
 
-  // ✅ NEW: force listWeek as the default view on phones,
+  // ✅ force listWeek as the default view on phones,
   // and switch back to week view when leaving phone size.
   useEffect(() => {
     const api = calendarRef.current?.getApi?.();
@@ -232,76 +234,87 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
-  // ✅ list button ONLY on phones
+  // ✅ list button ONLY on phones (keeps desktop/tablet clean)
   const rightButtons = isPhone
     ? "timeGridWeek,timeGridDay,listWeek"
     : "timeGridWeek,timeGridDay";
 
   return (
-    <FullCalendar
-      ref={calendarRef}
-      plugins={[timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
-      initialView={isPhone ? "listWeek" : "timeGridWeek"}
-      headerToolbar={{
-        left: "prev,next today",
-        center: "title",
-        right: rightButtons,
-      }}
-      height="auto"
-      allDaySlot={false}
-      expandRows
-      nowIndicator
-      timeZone={timeZone}
-      googleCalendarApiKey={apiKey}
-      events={{ googleCalendarId: calendarId }}
-      slotLabelFormat={{
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-        meridiem: "short",
-      }}
-      eventTimeFormat={{
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-        meridiem: "short",
-      }}
-      slotMinTime="05:00:00"
-      slotMaxTime="24:00:00"
-      scrollTime="05:00:00"
-      eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
-      eventMouseEnter={(info) => {
-        // no hover tooltips on phones (prevents weird behavior on touch)
-        if (isPhone) return;
+    <div
+      className={[
+        "wa-cal",
+        isPhone ? "is-phone" : "",
+        isPhone && isListView ? "is-phone-list" : "",
+      ].join(" ")}
+    >
+      <FullCalendar
+        ref={calendarRef}
+        plugins={[timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
+        initialView={isPhone ? "listWeek" : "timeGridWeek"}
+        headerToolbar={{
+          left: "prev,next today",
+          center: "title",
+          right: rightButtons,
+        }}
+        height="auto"
+        allDaySlot={false}
+        expandRows
+        nowIndicator
+        timeZone={timeZone}
+        googleCalendarApiKey={apiKey}
+        events={{ googleCalendarId: calendarId }}
+        slotLabelFormat={{
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+          meridiem: "short",
+        }}
+        eventTimeFormat={{
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+          meridiem: "short",
+        }}
+        slotMinTime="05:00:00"
+        slotMaxTime="24:00:00"
+        scrollTime="05:00:00"
+        eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
 
-        showTooltip(info);
-        const move = (ev) => {
-          if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
-            positionTooltip(tipRef.current, ev);
+        // ✅ update isListView anytime FC changes view (needed for toolbar hiding)
+        datesSet={(arg) => setIsListView(arg.view.type?.startsWith("list"))}
+
+        eventMouseEnter={(info) => {
+          if (isPhone) return; // no hover tooltips on touch
+          showTooltip(info);
+
+          const move = (ev) => {
+            if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
+              positionTooltip(tipRef.current, ev);
+            }
+          };
+          moveMapRef.current.set(info.el, move);
+          info.el.addEventListener("mousemove", move);
+        }}
+        eventMouseLeave={(info) => {
+          if (isPhone) return;
+
+          const move = moveMapRef.current.get(info.el);
+          if (move) {
+            info.el.removeEventListener("mousemove", move);
+            moveMapRef.current.delete(info.el);
           }
-        };
-        moveMapRef.current.set(info.el, move);
-        info.el.addEventListener("mousemove", move);
-      }}
-      eventMouseLeave={(info) => {
-        if (isPhone) return;
-
-        const move = moveMapRef.current.get(info.el);
-        if (move) {
-          info.el.removeEventListener("mousemove", move);
-          moveMapRef.current.delete(info.el);
-        }
-        hideTooltip();
-      }}
-      eventClick={(info) => {
-        info.jsEvent.preventDefault();
-        if (info.event.url) {
-          window.open(info.event.url, "_blank", "noopener,noreferrer");
-        }
-      }}
-      eventSourceFailure={(error) => {
-        console.error("[WingsCalendar] Google event source failed:", error);
-      }}
-    />
+          hideTooltip();
+        }}
+        eventClick={(info) => {
+          info.jsEvent.preventDefault();
+          if (info.event.url) {
+            window.open(info.event.url, "_blank", "noopener,noreferrer");
+          }
+        }}
+        eventSourceFailure={(error) => {
+          console.error("[WingsCalendar] Google event source failed:", error);
+        }}
+      />
+    </div>
   );
 }
