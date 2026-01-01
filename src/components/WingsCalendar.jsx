@@ -1,5 +1,3 @@
-// src/components/WingsCalendar.jsx
-
 import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -118,28 +116,31 @@ export default function WingsCalendar() {
     if (api.view?.type !== targetView) api.changeView(targetView);
   }, [isPhone]);
 
-  // ✅ Bulletproof fix: Continuously remove sticky headers (covers all re-renders)
+  // Ensure list headers are never sticky on phones
   useEffect(() => {
-    let rafId;
+    if (!isPhone || !isListView) return;
 
-    const loop = () => {
-      const stickyEls = document.querySelectorAll(".fc-list-day.fc-list-sticky, th.fc-list-day-cushion");
+    const fixStickyHeaders = () => {
+      const stickyEls = document.querySelectorAll(
+        ".fc-list-day.fc-list-sticky, .fc-list-sticky .fc-list-day > *, th.fc-list-day-cushion"
+      );
       stickyEls.forEach((el) => {
         el.style.position = "static";
         el.style.top = "auto";
         el.style.zIndex = "auto";
         el.style.transform = "none";
-        el.style.background = "transparent";
       });
-      rafId = requestAnimationFrame(loop);
     };
 
-    if (isPhone) {
-      loop(); // start continuous override
-    }
+    fixStickyHeaders();
+    window.addEventListener("scroll", fixStickyHeaders, { passive: true });
+    window.addEventListener("resize", fixStickyHeaders);
 
-    return () => cancelAnimationFrame(rafId);
-  }, [isPhone]);
+    return () => {
+      window.removeEventListener("scroll", fixStickyHeaders);
+      window.removeEventListener("resize", fixStickyHeaders);
+    };
+  }, [isPhone, isListView]);
 
   useEffect(() => {
     return () => {
@@ -295,6 +296,7 @@ export default function WingsCalendar() {
         slotMaxTime="24:00:00"
         scrollTime="05:00:00"
         eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
+        stickyHeaderDates={false}
         datesSet={(arg) => {
           setIsListView(arg.view.type?.startsWith("list"));
         }}

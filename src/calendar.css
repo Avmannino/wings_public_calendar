@@ -1,5 +1,3 @@
-/* src/calendar.css */
-
 /* ====== App shell ====== */
 :root {
   --bg-0: #0b1224;
@@ -15,13 +13,12 @@
   --radius-lg: 26px;
 }
 
-/* ===== Fix: disable sticky headers in FullCalendar ===== */
-.fc .fc-scrollgrid-section-sticky>* {
+/* Disable sticky headers in FullCalendar scrollgrid */
+.fc .fc-scrollgrid-section-sticky > * {
   position: static !important;
   top: auto !important;
   z-index: auto !important;
 }
-
 
 .page {
   min-height: 100vh;
@@ -35,7 +32,14 @@
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-.page>h1 {
+/* Make page padding shrink nicely on smaller viewports */
+@media (max-width: 768px) {
+  .page {
+    padding: 16px;
+  }
+}
+
+.page > h1 {
   font-size: clamp(22px, 3.2vw + 8px, 48px);
   font-weight: 800;
   letter-spacing: 0.15em;
@@ -47,7 +51,8 @@
 
 /* ====== Calendar wrapper ====== */
 .cal-wrap {
-  width: min(980px, 96vw);
+  width: min(980px, 100%);
+  max-width: 100%;
   margin: 0 auto;
   border-radius: var(--radius-lg);
   overflow: visible;
@@ -60,12 +65,22 @@
   z-index: 0;
 }
 
+/* On very small screens, remove side padding so calendar can use full width */
+@media (max-width: 640px) {
+  .cal-wrap {
+    padding: 0 8px;
+    border-radius: 18px;
+  }
+}
+
 /* ====== Logo watermark behind the calendar ====== */
 .fc .fc-view-harness {
   position: relative;
   overflow: visible !important;
+  width: 100% !important;
 }
 
+/* Make the watermark responsive and tied to viewport, but not clipping on narrow widths */
 .fc .fc-view-harness::before {
   content: "";
   position: fixed;
@@ -74,7 +89,7 @@
   z-index: 0;
   background-image: url("/wings-logo.png");
   background-repeat: no-repeat;
-  background-position: 150% 50%;
+  background-position: center 50%;
   background-size: min(1520px, 70%);
   opacity: 0.06;
   filter: saturate(1.05) contrast(1.05);
@@ -102,7 +117,7 @@
 }
 
 /* Ensure content stays above watermark */
-.fc .fc-view-harness>* {
+.fc .fc-view-harness > * {
   position: relative;
   z-index: 1;
 }
@@ -204,11 +219,8 @@
   border-color: var(--stroke-2) !important;
 }
 
-/* =========================================================
-   Hide LIST button on anything bigger than a phone
-   ========================================================= */
+/* Hide LIST button on anything bigger than a phone */
 @media (min-width: 641px) {
-
   .fc .fc-listWeek-button,
   .fc .fc-listDay-button {
     display: none !important;
@@ -217,7 +229,6 @@
 
 /* =========================================================
    MOBILE LIST VIEW TOOLBAR: ONLY PREV/NEXT ARROWS
-   - Uses wrapper class from WingsCalendar.jsx: .wa-cal.is-phone-list
    ========================================================= */
 .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
   justify-content: center !important;
@@ -234,13 +245,22 @@
 }
 
 /* Hide center (title) + right (view buttons) chunks entirely */
-.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(2),
-.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(3) {
+.wa-cal.is-phone-list
+  .fc
+  .fc-toolbar.fc-header-toolbar
+  .fc-toolbar-chunk:nth-child(2),
+.wa-cal.is-phone-list
+  .fc
+  .fc-toolbar.fc-header-toolbar
+  .fc-toolbar-chunk:nth-child(3) {
   display: none !important;
 }
 
 /* Hide the "today" button (left chunk) */
-.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-today-button {
+.wa-cal.is-phone-list
+  .fc
+  .fc-toolbar.fc-header-toolbar
+  .fc-today-button {
   display: none !important;
 }
 
@@ -261,7 +281,6 @@
   text-align: center;
   box-sizing: border-box !important;
   width: 100% !important;
-  /* 🔑 full width everywhere by default */
   max-width: 100% !important;
   margin: 0 !important;
 }
@@ -272,7 +291,6 @@
   max-width: 90% !important;
   margin: 0 auto !important;
 }
-
 
 /* Event Colors (timeGrid) */
 .fc-event.evt-stickpuck {
@@ -305,7 +323,7 @@
   border-color: rgba(251, 191, 36, 0.92) !important;
 }
 
-/* ====== Center Title Above Time inside event (timeGrid views) ====== */
+/* Center Title Above Time inside event (timeGrid views) */
 .fc a.fc-timegrid-event,
 .fc .fc-timegrid-event {
   display: flex !important;
@@ -440,7 +458,7 @@
   padding: 14px 18px !important;
 }
 
-.fc .fc-list-day-cushion>th {
+.fc .fc-list-day-cushion > th {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -564,15 +582,13 @@
    Phone-first LIST responsiveness (320px → 640px)
    ========================================================= */
 @media (max-width: 640px) {
-
-  /* ===== Toolbar (Header + Arrows) ===== */
+  /* Toolbar (Header + Arrows) */
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
     position: relative !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
     padding-top: 40px !important;
-    /* space for the title */
   }
 
   /* Inject logo above the pseudo title */
@@ -580,20 +596,15 @@
     content: "" !important;
     position: absolute !important;
     top: -3px !important;
-    /* adjust vertical position */
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: 65px !important;
-    /* logo width */
     height: 65px !important;
-    /* logo height */
     background-image: url("/wings-logo2.png") !important;
-    /* ✅ your logo */
     background-repeat: no-repeat !important;
     background-size: contain !important;
     background-position: center !important;
   }
-
 
   /* Inject a pseudo-element title above the arrows */
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
@@ -635,17 +646,15 @@
     transform: scale(1.05);
   }
 
-  /* Spacing between arrow buttons */
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button-group {
     gap: 18px !important;
   }
 
-  /* Hide "Today" button in mobile list view */
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-today-button {
     display: none !important;
   }
 
-  /* ===== List layout ===== */
+  /* List layout */
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
   .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table {
     width: 100% !important;
@@ -654,7 +663,6 @@
     table-layout: auto !important;
   }
 
-  /* Each event row behaves like a card */
   .wa-cal.is-phone-list .fc tr.fc-list-event {
     display: flex !important;
     align-items: center !important;
@@ -667,7 +675,6 @@
     overflow: hidden !important;
   }
 
-  /* Remove default table look */
   .wa-cal.is-phone-list .fc .fc-list-event td {
     border: none !important;
     padding: 12px 14px !important;
@@ -676,12 +683,10 @@
     align-items: center !important;
   }
 
-  /* Hide the dot column */
   .wa-cal.is-phone-list .fc td.fc-list-event-graphic {
     display: none !important;
   }
 
-  /* === Time column with colored dot === */
   .wa-cal.is-phone-list .fc td.fc-list-event-time {
     flex: 0 0 auto !important;
     font-size: 13.5px !important;
@@ -690,13 +695,11 @@
     white-space: nowrap !important;
     position: relative !important;
     padding-left: 30px !important;
-    /* space for the dot */
     display: flex !important;
     align-items: center !important;
     max-width: 165px;
   }
 
-  /* Base dot */
   .wa-cal.is-phone-list .fc td.fc-list-event-time::before {
     content: "" !important;
     position: absolute !important;
@@ -707,32 +710,26 @@
     border-radius: 50% !important;
     transform: translateY(-50%);
     background: #888 !important;
-    /* fallback */
   }
 
-  /* === Title column === */
   .wa-cal.is-phone-list .fc td.fc-list-event-title {
     flex: 1 !important;
     text-align: left !important;
     display: flex !important;
     align-items: center !important;
     gap: 10px !important;
-    /* space between | and title text */
   }
 
-  /* Separator before title */
   .wa-cal.is-phone-list .fc td.fc-list-event-title::before {
     content: "|" !important;
     color: #d50239 !important;
-    /* red separator */
     font-weight: 700 !important;
     font-size: 20px !important;
     line-height: 1.2 !important;
     margin-left: -15px !important;
   }
 
-  /* Title link */
-  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
+  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
     display: inline-block !important;
     width: 100% !important;
     color: #fff !important;
@@ -743,38 +740,48 @@
     margin-left: 8px;
   }
 
-  /* === Color-coded dots per event type === */
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-publicskate td.fc-list-event-time::before {
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-publicskate
+    td.fc-list-event-time::before {
     background: #ef4444 !important;
-    /* red */
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-stickpuck td.fc-list-event-time::before {
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-stickpuck
+    td.fc-list-event-time::before {
     background: #109b43 !important;
-    /* green */
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-cosmic td.fc-list-event-time::before {
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-cosmic
+    td.fc-list-event-time::before {
     background: #7c3aed !important;
-    /* purple */
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-openhockey td.fc-list-event-time::before {
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-openhockey
+    td.fc-list-event-time::before {
     background: #fbbf24 !important;
-    /* gold */
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-freestyle td.fc-list-event-time::before {
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-freestyle
+    td.fc-list-event-time::before {
     background: #1ce4e4 !important;
-    /* teal */
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-default td.fc-list-event-time::before {
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-default
+    td.fc-list-event-time::before {
     background: #fbbf24 !important;
-    /* fallback gold */
   }
 
-  /* ===== Day headers ===== */
   .wa-cal.is-phone-list .fc .fc-list-day-cushion {
     padding: 10px 12px !important;
   }
@@ -787,54 +794,16 @@
     font-size: 14px !important;
   }
 
-  /* ===== Watermark/Logo ===== */
-  .fc .fc-view-harness {
-    position: relative;
-    overflow: visible !important;
-  }
-
+  /* Adjust watermark on very small screens so it stays centered behind list */
   .fc .fc-view-harness::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image: url("/wings-logo.png");
-    background-repeat: no-repeat;
     background-position: 50% -120%;
     background-size: min(1520px, 210%);
     opacity: 0.07;
-    filter: saturate(1.05) contrast(1.05);
-    transition: all 0.35s ease;
   }
-
-  /* ===== FINAL FIX for sticky day headers in FullCalendar list view ===== */
-
-  /* In some FullCalendar builds, the sticky behavior applies directly to <th> */
-  .th.fc-list-day-cushion {
-    position: relative !important;
-    top: auto !important;
-    z-index: auto !important;
-    /* transform: none !important; */
-  }
-
-  .fc-cell-shaded {
-    position: relative !important;
-    top: auto !important;
-    z-index: auto !important;
-    /* transform: none !important; */
-  }
-
 }
 
-
-
-
+/* Additional responsive tweak already present */
 @media (max-width: 768px) {
-  .page {
-    padding: 14px;
-  }
-
   .fc .fc-toolbar.fc-header-toolbar {
     flex-wrap: wrap !important;
     justify-content: center !important;
@@ -852,7 +821,6 @@
     font-size: 12px !important;
   }
 
-  /* 🔑 only adjust timeGrid events here */
   .fc .fc-timegrid-event {
     width: 96% !important;
     max-width: 96% !important;
@@ -860,14 +828,15 @@
 }
 
 @media (max-width: 560px) {
-  .page>h1 {
+  .page > h1 {
     letter-spacing: 0.08em;
     margin-bottom: 6px;
+    display: none;
   }
 }
 
 @media (min-width: 1200px) {
-  .page>h1 {
+  .page > h1 {
     letter-spacing: 0.16em;
   }
 }
