@@ -1,3 +1,5 @@
+// src/components/WingsCalendar.jsx
+
 import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -252,9 +254,7 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
-  const rightButtons = isPhone
-    ? "timeGridWeek,timeGridDay,listWeek"
-    : "timeGridWeek,timeGridDay";
+  const rightButtons = isPhone ? "timeGridWeek,timeGridDay,listWeek" : "timeGridWeek,timeGridDay";
 
   return (
     <div
@@ -305,10 +305,7 @@ export default function WingsCalendar() {
           showTooltip(info);
 
           const move = (ev) => {
-            if (
-              tipRef.current &&
-              tipRef.current.classList.contains("is-visible")
-            ) {
+            if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
               positionTooltip(tipRef.current, ev);
             }
           };

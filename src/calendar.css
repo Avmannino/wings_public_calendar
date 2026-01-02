@@ -1,3 +1,5 @@
+/* src/calendar.css */
+
 /* ====== App shell ====== */
 :root {
   --bg-0: #0b1224;
@@ -13,6 +15,30 @@
   --radius-lg: 26px;
 }
 
+/* Ensure background always covers full viewport width/height */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Gradient on body so it paints full viewport */
+body {
+  background:
+    radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.26), transparent 60%),
+    radial-gradient(900px 600px at 92% 18%, rgba(37, 100, 235, 0.11), transparent 62%),
+    radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
+    linear-gradient(180deg, var(--bg-0), var(--bg-1));
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
 /* Disable sticky headers in FullCalendar scrollgrid */
 .fc .fc-scrollgrid-section-sticky > * {
   position: static !important;
@@ -20,16 +46,11 @@
   z-index: auto !important;
 }
 
+/* Page acts as inner container */
 .page {
   min-height: 100vh;
   padding: 90px;
-  background:
-    radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.26), transparent 60%),
-    radial-gradient(900px 600px at 92% 18%, rgba(37, 100, 235, 0.11), transparent 62%),
-    radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
-    linear-gradient(180deg, var(--bg-0), var(--bg-1));
-  color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 /* Make page padding shrink nicely on smaller viewports */
@@ -63,13 +84,17 @@
   padding: 0 18px;
   position: relative;
   z-index: 0;
+  box-sizing: border-box;
 }
 
-/* On very small screens, remove side padding so calendar can use full width */
+/* On <=640px, full-width card that fills viewport height under header */
 @media (max-width: 640px) {
   .cal-wrap {
     padding: 0 8px;
     border-radius: 18px;
+    width: 100%;
+    max-width: 100%;
+    min-height: calc(100vh - 32px);
   }
 }
 
@@ -80,7 +105,7 @@
   width: 100% !important;
 }
 
-/* Make the watermark responsive and tied to viewport, but not clipping on narrow widths */
+/* Watermark */
 .fc .fc-view-harness::before {
   content: "";
   position: fixed;
@@ -217,6 +242,13 @@
 .fc .fc-button:hover {
   background: rgba(255, 255, 255, 0.205) !important;
   border-color: var(--stroke-2) !important;
+}
+
+/* Desktop calendar only (not phone list layout) */
+@media (min-width: 641px) {
+  .wa-cal:not(.is-phone-list) .fc .fc-today-button {
+    margin-bottom: -64px !important; /* tweak this value */
+  }
 }
 
 /* Hide LIST button on anything bigger than a phone */
@@ -395,19 +427,61 @@
   max-width: 100% !important;
 }
 
-/* Desktop “card” width */
+/* === LIST WIDTH / CENTERING (works for all viewports) ===
+   Outer list table fills cal-wrap; inner table is a centered card with max-width. */
 .fc .fc-listWeek-view .fc-list-table,
 .fc .fc-listDay-view .fc-list-table {
-  width: min(1200px, 92vw) !important;
+  width: 100% !important;               /* fill wrapper width */
   margin: 0 auto !important;
-  table-layout: fixed !important;
+  padding: 0 !important;
   border-collapse: collapse !important;
+  table-layout: fixed !important;
 }
 
 .fc .fc-listWeek-view .fc-list-table table,
 .fc .fc-listDay-view .fc-list-table table {
-  width: 100% !important;
+  width: 100% !important;               /* content table full width of wrapper */
+  max-width: 1200px !important;         /* max card width */
+  margin: 0 auto !important;            /* centered within wrapper */
   table-layout: fixed !important;
+}
+
+/* Optional: tighten list width slightly on small phones so it stays centered nicely */
+@media (max-width: 640px) {
+  .fc .fc-listWeek-view .fc-list-table table,
+  .fc .fc-listDay-view .fc-list-table table {
+    max-width: 100% !important;         /* on narrow screens, use full width */
+  }
+}
+
+/* =========================================================
+   FIX: Center LIST view between 475px and 640px
+   (Your screenshot shows the list "card" drifting left in this range.)
+   We center the actual calendar content (toolbar + view harness) by
+   constraining to a max-width and using auto margins.
+   ========================================================= */
+@media (min-width: 475px) and (max-width: 640px) {
+  /* Keep the header/arrow area centered with the same width as the list */
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
+    max-width: 560px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Center the entire view content (this is what was visually off-left) */
+  .wa-cal.is-phone-list .fc .fc-view-harness {
+    max-width: 560px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Ensure the list table itself follows the centered harness */
+  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table {
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
 
 /* Row padding + alignment */
@@ -588,7 +662,7 @@
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    padding-top: 40px !important;
+    padding-top: 80px !important;
   }
 
   /* Inject logo above the pseudo title */
@@ -837,6 +911,6 @@
 
 @media (min-width: 1200px) {
   .page > h1 {
-    letter-spacing: 0.16em;
+    letter-spacing: 0.10em;
   }
 }
