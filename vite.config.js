@@ -4,6 +4,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  // ⬇️ IMPORTANT: change this to your repo name
-  base: "/wings_public_calendar/",
+  base: "/wings_public_calendar/", // ✅ matches repo name
 });
