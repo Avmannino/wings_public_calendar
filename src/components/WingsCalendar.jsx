@@ -87,7 +87,9 @@ export default function WingsCalendar() {
   const moveMapRef = useRef(new WeakMap());
   const calendarRef = useRef(null);
 
-  const MOBILE_QUERY = "(max-width: 640px)";
+  // BREAKPOINT: list view at <= 750px
+  const MOBILE_QUERY = "(max-width: 750px)";
+
   const [isPhone, setIsPhone] = useState(() => {
     if (typeof window === "undefined" || !window.matchMedia) return false;
     return window.matchMedia(MOBILE_QUERY).matches;
@@ -95,7 +97,7 @@ export default function WingsCalendar() {
   const [isListView, setIsListView] = useState(false);
 
   useEffect(() => {
-    if (!window.matchMedia) return;
+    if (typeof window === "undefined" || !window.matchMedia) return;
 
     const mql = window.matchMedia(MOBILE_QUERY);
     const onChange = (e) => setIsPhone(e.matches);
@@ -111,6 +113,7 @@ export default function WingsCalendar() {
     };
   }, []);
 
+  // Switch between timeGridWeek and listWeek based on breakpoint
   useEffect(() => {
     const api = calendarRef.current?.getApi?.();
     if (!api) return;
