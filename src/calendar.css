@@ -759,9 +759,6 @@ body {
     background-position: center !important;
   }
 
-  /* ✅ FIX: removed the ::before title from this 850px block so it doesn't
-     duplicate the real H1 from 562px–850px */
-
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button {
     width: 75px !important;
     height: 28px !important;
@@ -950,5 +947,51 @@ body {
 @media (min-width: 1200px) {
   .page>h1 {
     letter-spacing: 0.10em;
+  }
+}
+
+/* =========================================================
+   ✅ NEW: 90% VIEWPORT WIDTH RAIL FOR LIST VIEW (grows with screen)
+   Centers: logo + title + arrows + list
+   Forces list to be 90% of viewport width at all times (when in phone list view)
+   ========================================================= */
+@media (max-width: 750px) {
+  .wa-cal.is-phone-list {
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  /* Kill any prior left shoves */
+  .wa-cal.is-phone-list .fc-media-screen {
+    left: auto !important;
+    transform: none !important;
+  }
+
+  /* Make the whole calendar/list rail 90% of the viewport, centered */
+  .wa-cal.is-phone-list .fc,
+  .wa-cal.is-phone-list .fc-media-screen,
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar,
+  .wa-cal.is-phone-list .fc .fc-view-harness {
+    width: 90vw !important;
+    max-width: 90vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Force the list table to follow the same 90% width (overrides the 120% rule) */
+  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table table,
+  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table table {
+    width: 90vw !important;
+    max-width: 90vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* When the real H1 is visible on wider phones, remove the left offset so it stays centered */
+  .page > h1 {
+    margin-left: 0 !important;
+    text-align: center !important;
   }
 }
