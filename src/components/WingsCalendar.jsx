@@ -1,5 +1,3 @@
-// src/components/WingsCalendar.jsx
-
 import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -330,10 +328,7 @@ export default function WingsCalendar() {
           showTooltip(info);
 
           const move = (ev) => {
-            if (
-              tipRef.current &&
-              tipRef.current.classList.contains("is-visible")
-            ) {
+            if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
               positionTooltip(tipRef.current, ev);
             }
           };

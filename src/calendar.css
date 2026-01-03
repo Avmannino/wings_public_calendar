@@ -1,3 +1,12 @@
+/* Custom global font */
+@font-face {
+  font-family: "Lulo Clean One Bold";
+  src: url("/fonts/Lulo Clean One Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ====== App shell ====== */
 :root {
   --bg-0: #0b1224;
@@ -47,15 +56,8 @@ body {
 /* Page acts as inner container */
 .page {
   min-height: 100vh;
-  padding: 90px;
+  padding: 15px;
   box-sizing: border-box;
-}
-
-/* Make page padding shrink nicely on smaller viewports */
-@media (max-width: 768px) {
-  .page {
-    padding: 16px;
-  }
 }
 
 .page>h1 {
@@ -63,8 +65,8 @@ body {
   font-weight: 800;
   letter-spacing: 0.15em;
   text-align: center;
-  margin-top: -45px;
-  margin-bottom: -20px;
+  margin-top: 55px;
+  margin-bottom: -30px;
   margin-left: 45px;
 }
 
@@ -204,8 +206,8 @@ body {
 .fc .fc-col-header-cell-cushion,
 .fc .fc-timegrid-axis-cushion,
 .fc .fc-timegrid-slot-label-cushion {
-  color: rgba(255, 255, 255, 0.712);
-  font-weight: 850;
+  color: rgba(255, 255, 255, 0.914);
+  font-weight: 750;
   font-size: clamp(10px, 0.4vw + 9px, 14px);
 }
 
@@ -466,7 +468,7 @@ body {
 }
 
 /* Optional: tighten list width slightly on small phones so it stays centered nicely */
-@media (max-width: 750px) {
+@media (max-width: 850px) {
   .fc .fc-listWeek-view .fc-list-table table,
   .fc .fc-listDay-view .fc-list-table table {
     max-width: 120% !important;
@@ -474,7 +476,7 @@ body {
   }
 }
 
-@media (min-width: 475px) and (max-width: 750px) {
+@media (min-width: 475px) and (max-width: 850px) {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
     max-width: 850px !important;
     margin-left: 0px !important;
@@ -484,6 +486,7 @@ body {
   .fc-media-screen {
     position: relative !important;
     left: 1% !important;
+    border-radius: 19px;
   }
 
   .wa-cal.is-phone-list .fc .fc-view-harness {
@@ -500,21 +503,52 @@ body {
   }
 }
 
-@media (min-width: 492px) and (max-width: 750px) {
+/* ✅ UPDATED: 562px–850px — center the header + toolbar + list together */
+@media (min-width: 562px) and (max-width: 850px) {
+  /* Make the page H1 line up with the centered list/toolbar */
+  .page > h1 {
+    width: min(680px, 110%) !important;
+    text-align: center;
+    margin-right: auto !important;
+  }
+
+  /* Center the FullCalendar outer shell (remove the left shove) */
+  .fc-media-screen {
+    position: relative !important;
+    left: 15% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Center the toolbar to the same width as the list */
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
-    max-width: 850px !important;
-    margin-left: 0px !important;
-    margin-top: 30px;
+    width: min(580px, 100%) !important;
+    max-width: 580px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: -50px;
     text-align: center !important;
   }
 
-  .fc-media-screen {
-    position: relative !important;
-    left: 9% !important;
+  /* Ensure the view harness matches that same centered width */
+  .wa-cal.is-phone-list .fc .fc-view-harness {
+    width: min(580px, 100%) !important;
+    max-width: 580px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Override the 120% list width in this range so it matches the toolbar */
+  .fc .fc-listWeek-view .fc-list-table table,
+  .fc .fc-listDay-view .fc-list-table table {
+    width: 100% !important;
+    max-width: 580px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 }
 
-@media (min-width: 492px) and (max-width: 562px) {
+@media (min-width: 492px) and (max-width: 560px) {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
     max-width: 850px !important;
     margin-left: 0px !important;
@@ -576,6 +610,7 @@ body {
    ========================================================= */
 .fc .fc-list-day-cushion {
   padding: 14px 18px !important;
+  background-color: #df0038cf !important;
 }
 
 .fc .fc-list-day-cushion>th {
@@ -611,7 +646,7 @@ body {
   color: rgba(255, 255, 255, 0.92) !important;
   font-weight: 850 !important;
   font-size: clamp(12px, 0.4vw + 11px, 15px) !important;
-  text-decoration: underline !important;
+  text-decoration: none !important;
 }
 
 /* =========================================================
@@ -701,7 +736,7 @@ body {
 /* =========================================================
    Phone-first LIST responsiveness (320px → 750px)
    ========================================================== */
-@media (max-width: 750px) {
+@media (max-width: 850px) {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
     position: relative !important;
     flex-direction: column !important;
@@ -713,7 +748,7 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::after {
     content: "" !important;
     position: absolute !important;
-    top: -3px !important;
+    top: -15px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: 65px !important;
@@ -724,20 +759,8 @@ body {
     background-position: center !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
-    content: "THIS WEEK'S LINEUP" !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    color: #fff !important;
-    font-size: clamp(17px, 3vw + 6px, 21px) !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.1em !important;
-    text-align: center !important;
-    white-space: nowrap !important;
-    margin-top: 55px;
-  }
+  /* ✅ FIX: removed the ::before title from this 850px block so it doesn't
+     duplicate the real H1 from 562px–850px */
 
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button {
     width: 75px !important;
@@ -827,6 +850,16 @@ body {
     background: #888 !important;
   }
 
+  /* PIPE SEPARATOR BETWEEN TIME AND TITLE ON MOBILE LIST */
+  .wa-cal.is-phone-list .fc td.fc-list-event-time::after {
+    content: "|";
+    margin-left: 16px;
+    margin-right: 6px;
+    opacity: 0.75;
+    font-size: 16px;
+    color: #df0038;
+  }
+
   .wa-cal.is-phone-list .fc td.fc-list-event-title {
     flex: 1 !important;
     text-align: left !important;
@@ -835,7 +868,7 @@ body {
     gap: 10px !important;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
+  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
     display: inline-block !important;
     width: 100% !important;
     color: #fff !important;
@@ -847,7 +880,7 @@ body {
   }
 
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-publicskate td.fc-list-event-time::before {
-    background: #ef4444 !important;
+    background: #df0038 !important;
   }
 
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-stickpuck td.fc-list-event-time::before {
@@ -889,28 +922,21 @@ body {
   }
 }
 
-/* Additional responsive tweak already present */
-@media (max-width: 768px) {
-  .fc .fc-toolbar.fc-header-toolbar {
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    padding: 12px 12px 10px 12px !important;
-    column-gap: 14px !important;
-    row-gap: 10px !important;
-  }
-
-  .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk {
-    gap: 10px !important;
-  }
-
-  .fc .fc-button {
-    padding: 7px 10px !important;
-    font-size: clamp(9px, 0.25vw + 8px, 11px) !important;
-  }
-
-  .fc .fc-timegrid-event {
-    width: 96% !important;
-    max-width: 96% !important;
+/* ✅ FIX: Only show the injected "THIS WEEK'S LINEUP" title when the real H1 is hidden */
+@media (max-width: 560px) {
+  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
+    content: "THIS WEEK'S LINEUP" !important;
+    position: absolute !important;
+    top: -5px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    color: #fff !important;
+    font-size: clamp(17px, 3vw + 6px, 21px) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.1em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    margin-top: 55px;
   }
 }
 
