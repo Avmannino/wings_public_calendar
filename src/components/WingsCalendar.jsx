@@ -12,7 +12,8 @@ function getClassForTitle(title = "") {
   if (t.includes("stick") && t.includes("puck")) return "evt-stickpuck";
   if (t.includes("public") && t.includes("skate")) return "evt-publicskate";
   if (t.includes("cosmic") && t.includes("skate")) return "evt-cosmic";
-  if (t.includes("freestyle")) return "evt-freestyle";
+  if (t.includes("freestyle") || (t.includes("figure") && t.includes("skating")))
+    return "evt-freestyle";
   if (t.includes("open") && t.includes("hockey")) return "evt-openhockey";
   return "evt-default";
 }
@@ -24,6 +25,7 @@ function getProgramMeta(title = "") {
     return {
       label: "Public Skate",
       pricing: "Admission - $14, Skate Rentals - $6",
+      equipment: "",
       desc:
         "An open skate for all ages and abilities. Whether you're practicing your skills or just skating for fun!",
     };
@@ -34,6 +36,7 @@ function getProgramMeta(title = "") {
       label: "Cosmic Skate",
       pricing:
         "Admission - 13 & Older - $20, 12 & Under $15, Skate Rentals - INCLUDED",
+      equipment: "",
       desc:
         "Join us for Cosmic Skate — an atmosphere that turns skating into a party on ice. A unique twist on a classic skate, perfect for friends, families, and anyone looking for a fun night on ice full of music and lights.",
     };
@@ -43,6 +46,7 @@ function getProgramMeta(title = "") {
     return {
       label: "Stick & Puck",
       pricing: "Admission - $20",
+      equipment: "Helmet, Skates, Gloves, Stick",
       desc:
         "Stick & Puck is open ice time for individual skill development. Players can work on shooting, passing, stickhandling, and skating at their own pace—no organized games or scrimmages.",
     };
@@ -52,21 +56,23 @@ function getProgramMeta(title = "") {
     return {
       label: "Open Hockey",
       pricing: "Admission - $25",
+      equipment: "Full Equipment Required",
       desc:
         "Open Hockey is a casual, non-league skate where players within a designated age group can sign-up, show up, and play in a fun, low-pressure game with a variety of other players of all skill levels. Just bring your gear and hit the ice!",
     };
   }
 
-  if (t.includes("freestyle")) {
+  if (t.includes("freestyle") || (t.includes("figure") && t.includes("skating"))) {
     return {
       label: "Freestyle",
-      pricing: "Admission - $20",
+      pricing: "Admission: $25 (Skaters) | $10 (Coaches)",
+      equipment: "",
       desc:
-        "Freestyle sessions are designated ice time for figure skaters only, providing a focused environment for individual practice and private lessons. These sessions are open to all levels—unless otherwise noted—and are ideal for skaters looking to improve jumps, spins, and moves in the field.",
+        "Designated ice time for figure skaters only, providing a focused environment for individual practice and private lessons. These sessions are open to all levels—unless otherwise noted—and are ideal for skaters looking to improve jumps, spins, and moves in the field.\n\nSkaters must be familiar with standard ice patterns and etiquette to ensure a safe and productive experience for everyone. If your skater is new to Freestyle and unsure about the proper ice patterns, please ask a coach for a quick overview.",
     };
   }
 
-  return { label: "Session", pricing: "", desc: "" };
+  return { label: "Session", pricing: "", equipment: "", desc: "" };
 }
 
 function escapeHtml(str = "") {
@@ -75,7 +81,7 @@ function escapeHtml(str = "") {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("'", "'");
 }
 
 export default function WingsCalendar() {
@@ -225,6 +231,9 @@ export default function WingsCalendar() {
     }
 
     const meta = getProgramMeta(info.event.title);
+    const descHtml = meta.desc
+      ? escapeHtml(meta.desc).replaceAll("\n\n", "<br><br>")
+      : "";
 
     el.innerHTML = `
       <div class="wa-tipTitle">${escapeHtml(info.event.title || "")}</div>
@@ -244,7 +253,15 @@ export default function WingsCalendar() {
              </div>`
           : ""
       }
-      ${meta.desc ? `<div class="wa-tipDesc">${escapeHtml(meta.desc)}</div>` : ""}
+      ${
+        meta.equipment
+          ? `<div class="wa-tipRow">
+               <span class="wa-tipLabel">Equipment</span>
+               <span class="wa-tipValue">${escapeHtml(meta.equipment)}</span>
+             </div>`
+          : ""
+      }
+      ${meta.desc ? `<div class="wa-tipDesc">${descHtml}</div>` : ""}
     `;
 
     el.classList.add("is-visible");
@@ -257,7 +274,11 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
-  const rightButtons = isPhone ? "timeGridWeek,timeGridDay,listWeek" : "timeGridWeek,timeGridDay";
+  const rightButtons = isPhone
+    ? "timeGridWeek,timeGridDay,listWeek"
+    : "timeGridWeek,timeGridDay";
+
+  const calendarHeight = isPhone ? "auto" : "100vh";
 
   return (
     <div
@@ -276,7 +297,8 @@ export default function WingsCalendar() {
           center: "title",
           right: rightButtons,
         }}
-        height="auto"
+        height={calendarHeight}
+        contentHeight={isPhone ? "auto" : "auto"}
         allDaySlot={false}
         expandRows
         nowIndicator
@@ -295,9 +317,9 @@ export default function WingsCalendar() {
           hour12: true,
           meridiem: "short",
         }}
-        slotMinTime="05:00:00"
-        slotMaxTime="24:00:00"
-        scrollTime="05:00:00"
+        slotMinTime="07:00:00"
+        slotMaxTime="23:00:00"
+        scrollTime="07:00:00"
         eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
         stickyHeaderDates={false}
         datesSet={(arg) => {
@@ -308,7 +330,10 @@ export default function WingsCalendar() {
           showTooltip(info);
 
           const move = (ev) => {
-            if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
+            if (
+              tipRef.current &&
+              tipRef.current.classList.contains("is-visible")
+            ) {
               positionTooltip(tipRef.current, ev);
             }
           };
