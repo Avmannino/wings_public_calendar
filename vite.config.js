@@ -4,5 +4,6 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/wings_public_calendar/", // ✅ matches repo name
+  // 👇 use relative paths so it works no matter where it's hosted
+  base: "./",
 });
