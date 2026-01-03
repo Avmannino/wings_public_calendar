@@ -1,7 +1,7 @@
 /* Custom global font */
 @font-face {
-  font-family: "Lulo Clean One Bold";
-  src: url("/fonts/Lulo Clean One Bold.otf") format("opentype");
+  font-family: "Liberator";
+  src: url("/fonts/Liberator.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -43,7 +43,7 @@ body {
   background-size: cover;
   background-position: center top;
   color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: Liberator;
 }
 
 /* Disable sticky headers in FullCalendar scrollgrid */
