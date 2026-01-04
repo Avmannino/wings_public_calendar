@@ -614,7 +614,7 @@ body {
   font-weight: 900 !important;
   font-size: clamp(13px, 0.45vw + 11px, 16px) !important;
   color: rgba(255, 255, 255, 0.95) !important;
-  padding-left: 28px !important;
+  padding-left: 0px !important;
 }
 
 /* Dot */
@@ -870,10 +870,10 @@ body {
   /* PIPE SEPARATOR BETWEEN TIME AND TITLE ON MOBILE LIST */
   .wa-cal.is-phone-list .fc td.fc-list-event-time::after {
     content: "|";
-    margin-left: 16px;
+    margin-left: 28px;
     margin-right: 6px;
     opacity: 0.75;
-    font-size: 16px;
+    font-size: 20px;
     color: #df0038;
   }
 
@@ -992,8 +992,8 @@ body {
   .wa-cal.is-phone-list .fc-media-screen,
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar,
   .wa-cal.is-phone-list .fc .fc-view-harness {
-    width: 90vw !important;
-    max-width: 90vw !important;
+    width: 95vw !important;
+    max-width: 95vw !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
@@ -1003,8 +1003,8 @@ body {
   .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table table,
   .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table table {
-    width: 90vw !important;
-    max-width: 90vw !important;
+    width: 88vw !important;
+    max-width: 88vw !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
