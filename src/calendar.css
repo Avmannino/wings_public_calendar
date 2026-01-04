@@ -856,7 +856,7 @@ body {
 
   .wa-cal.is-phone-list .fc td.fc-list-event-time {
     flex: 0 0 auto !important;
-    font-size: clamp(13px, 3.4vw, 15px) !important;
+    font-size: clamp(15px, 3.4vw, 15px) !important;
     /* ✅ UPDATED: bigger time text (mobile list only) */
     font-weight: 100 !important;
     color: #fff !important;
@@ -872,7 +872,7 @@ body {
     content: "" !important;
     position: absolute !important;
     left: 8px !important;
-    top: 51% !important;
+    top: 50% !important;
     width: 15px !important;
     height: 15px !important;
     border-radius: 15% !important;
@@ -883,11 +883,11 @@ body {
   /* PIPE SEPARATOR BETWEEN TIME AND TITLE ON MOBILE LIST */
   .wa-cal.is-phone-list .fc td.fc-list-event-time::after {
     content: "|";
-    margin-left: 18px;
+    margin-left: 11px;
     margin-right: 5px;
     margin-bottom: 5px;
     opacity: 0.65;
-    font-size: 25px;
+    font-size: 28px;
     color: #686868;
   }
 
