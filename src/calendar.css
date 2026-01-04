@@ -777,7 +777,7 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::after {
     content: "" !important;
     position: absolute !important;
-    top: -25px !important;
+    top: -29px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: 70px !important;
@@ -962,7 +962,7 @@ body {
     color: #fff !important;
     font-size: clamp(17px, 3vw + 10px, 23px) !important;
     font-weight: 100 !important;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.21em;
     /*smallest this weeks lineup h1*/
     text-align: center !important;
     white-space: nowrap !important;
