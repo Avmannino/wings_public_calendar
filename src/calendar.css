@@ -1,11 +1,12 @@
 /* Custom global font */
 @font-face {
-  font-family: "Liberator";
-  src: url("/fonts/Liberator.otf") format("opentype");
-  font-weight: 700;
+  font-family: "Oswald";
+  src: url("/fonts/Oswald.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
+
 
 /* ====== App shell ====== */
 :root {
@@ -43,7 +44,7 @@ body {
   background-size: cover;
   background-position: center top;
   color: var(--text);
-  font-family: Liberator;
+  font-family: Oswald;
 }
 
 /* Disable sticky headers in FullCalendar scrollgrid */
@@ -63,7 +64,7 @@ body {
 .page>h1 {
   font-size: clamp(20px, 2.4vw + 6px, 34px);
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.35em;
   text-align: center;
   margin-top: 55px;
   margin-bottom: -30px;
@@ -80,7 +81,7 @@ body {
     display: block;
     width: 78px;
     height: 78px;
-    margin: -65px auto -5px;
+    margin: -70px auto 0px;
     background-image: url("/wings-logo2.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -134,7 +135,7 @@ body {
   background-image: url("/wings-logo.png");
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: min(1520px, 70%);
+  background-size: min(1520px, 60%);
   opacity: 0.06;
   filter: saturate(1.05) contrast(1.05);
   transition: all 0.35s ease;
@@ -148,9 +149,9 @@ body {
 }
 
 .fc-timeGridDay-view .fc-view-harness::before {
-  background-size: min(950px, 70%) !important;
+  background-size: min(950px, 50%) !important;
   opacity: 0.22 !important;
-  background-position: center 45% !important;
+  background-position: center 25% !important;
 }
 
 .fc-listWeek-view .fc-view-harness::before,
@@ -530,7 +531,7 @@ body {
 
   /* Make the page H1 line up with the centered list/toolbar */
   .page>h1 {
-    width: min(680px, 110%) !important;
+    width: min(680px, 100%) !important;
     text-align: center;
     margin-right: auto !important;
   }
@@ -538,7 +539,7 @@ body {
   /* Center the FullCalendar outer shell (remove the left shove) */
   .fc-media-screen {
     position: relative !important;
-    left: 15% !important;
+    left: 0% !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
@@ -633,7 +634,7 @@ body {
    ========================================================= */
 .fc .fc-list-day-cushion {
   padding: 14px 18px !important;
-  background-color: #df0038cf !important;
+  background-color: #df003896 !important;
   width: 100vw !important;
   max-width: 91vw !important;
 }
@@ -664,7 +665,7 @@ body {
   color: #fff !important;
   font-weight: 950 !important;
   font-size: clamp(16px, 0.5vw + 18px, 29px) !important;
-  letter-spacing: 0.01em !important;
+  letter-spacing: 0.12em;
   text-decoration: none !important;
 }
 
@@ -721,7 +722,7 @@ body {
   color: #93c5fd;
   font-weight: 800;
   font-size: clamp(10px, 0.3vw + 9px, 12px);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
 }
 
 .wa-tipValue {
@@ -774,7 +775,7 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::after {
     content: "" !important;
     position: absolute !important;
-    top: -12px !important;
+    top: -23px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: 75px !important;
@@ -855,7 +856,7 @@ body {
     color: #fff !important;
     white-space: nowrap !important;
     position: relative !important;
-    padding-left: 30px !important;
+    padding-left: 35px !important;
     display: flex !important;
     align-items: center !important;
     max-width: 165px;
@@ -941,8 +942,8 @@ body {
   }
 
   .fc .fc-view-harness::before {
-    background-position: 50% 50%;
-    background-size: min(1520px, 140%);
+    background-position: 50% 35%;
+    background-size: min(1520px, 120%);
     opacity: 0.07;
   }
 }
@@ -952,13 +953,13 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
     content: "THIS WEEK'S LINEUP" !important;
     position: absolute !important;
-    top: -0px !important;
+    top: -5px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     color: #fff !important;
     font-size: clamp(17px, 3vw + 10px, 23px) !important;
     font-weight: 800 !important;
-    letter-spacing: 0.1em !important;
+    letter-spacing: 0.25em; /*smallest this weeks lineup h1*/
     text-align: center !important;
     white-space: nowrap !important;
     margin-top: 55px;
@@ -967,14 +968,14 @@ body {
 
 @media (max-width: 560px) {
   .page>h1 {
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     display: none;
   }
 }
 
 @media (min-width: 1200px) {
   .page>h1 {
-    letter-spacing: 0.10em;
+    letter-spacing: 0.37em;
   }
 }
 
