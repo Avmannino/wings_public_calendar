@@ -71,11 +71,11 @@ body {
 }
 
 @media (min-width: 751px) {
-  .page > h1 {
+  .page>h1 {
     position: relative;
   }
 
-  .page > h1::before {
+  .page>h1::before {
     content: "";
     display: block;
     width: 78px;
@@ -292,6 +292,7 @@ body {
 
 /* Hide LIST button on anything bigger than a phone */
 @media (min-width: 751px) {
+
   .fc .fc-listWeek-button,
   .fc .fc-listDay-button {
     display: none !important;
@@ -489,6 +490,7 @@ body {
 
 /* Optional: tighten list width slightly on small phones so it stays centered nicely */
 @media (max-width: 850px) {
+
   .fc .fc-listWeek-view .fc-list-table table,
   .fc .fc-listDay-view .fc-list-table table {
     max-width: 120% !important;
@@ -525,8 +527,9 @@ body {
 
 /* ✅ UPDATED: 562px–850px — center the header + toolbar + list together */
 @media (min-width: 562px) and (max-width: 850px) {
+
   /* Make the page H1 line up with the centered list/toolbar */
-  .page > h1 {
+  .page>h1 {
     width: min(680px, 110%) !important;
     text-align: center;
     margin-right: auto !important;
@@ -546,7 +549,7 @@ body {
     max-width: 580px !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    margin-top: -50px;
+    margin-top: -45px;
     text-align: center !important;
   }
 
@@ -578,7 +581,7 @@ body {
 
   .fc-media-screen {
     position: relative !important;
-    left: 6.5% !important;
+    left: 6.7% !important;
   }
 }
 
@@ -597,7 +600,7 @@ body {
   text-align: center !important;
   font-weight: 850 !important;
   color: rgba(255, 255, 255, 0.92) !important;
-  font-size: clamp(11px, 0.35vw + 9px, 13px) !important;
+  font-size: clamp(14px, 0.6vw + 13px, 21px) !important; /* ✅ UPDATED: bigger time text (list view only) */
 }
 
 .fc td.fc-list-event-graphic {
@@ -614,7 +617,7 @@ body {
   font-weight: 900 !important;
   font-size: clamp(13px, 0.45vw + 11px, 16px) !important;
   color: rgba(255, 255, 255, 0.95) !important;
-  padding-left: 0px !important;
+  padding-right: 26px !important; /* ✅ UPDATED: more right padding for list titles */
 }
 
 /* Dot */
@@ -631,6 +634,8 @@ body {
 .fc .fc-list-day-cushion {
   padding: 14px 18px !important;
   background-color: #df0038cf !important;
+  width: 95vw !important;
+  max-width: 95vw !important;
 }
 
 .fc .fc-list-day-cushion>th {
@@ -642,6 +647,7 @@ body {
   gap: 4px !important;
   width: 100% !important;
   box-sizing: border-box !important;
+
 }
 
 .fc .fc-list-day-text,
@@ -657,7 +663,7 @@ body {
 .fc .fc-list-day-text {
   color: #fff !important;
   font-weight: 950 !important;
-  font-size: clamp(15px, 0.5vw + 14px, 19px) !important;
+  font-size: clamp(16px, 0.5vw + 18px, 29px) !important;
   letter-spacing: 0.01em !important;
   text-decoration: none !important;
 }
@@ -665,7 +671,7 @@ body {
 .fc .fc-list-day-side-text {
   color: rgba(255, 255, 255, 0.92) !important;
   font-weight: 850 !important;
-  font-size: clamp(12px, 0.4vw + 11px, 15px) !important;
+  font-size: clamp(15px, 0.4vw + 19px, 22px) !important;
   text-decoration: none !important;
 }
 
@@ -844,7 +850,7 @@ body {
 
   .wa-cal.is-phone-list .fc td.fc-list-event-time {
     flex: 0 0 auto !important;
-    font-size: clamp(11px, 3.1vw, 13px) !important;
+    font-size: clamp(13px, 3.4vw, 15px) !important; /* ✅ UPDATED: bigger time text (mobile list only) */
     font-weight: 850 !important;
     color: #fff !important;
     white-space: nowrap !important;
@@ -885,7 +891,7 @@ body {
     gap: 10px !important;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
+  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
     display: inline-block !important;
     width: 100% !important;
     color: #fff !important;
@@ -894,6 +900,7 @@ body {
     text-decoration: none !important;
     line-height: 1.2 !important;
     margin-left: 8px;
+    padding-right: 12px; /* ✅ UPDATED: more right padding for list titles on mobile */
   }
 
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-publicskate td.fc-list-event-time::before {
@@ -992,8 +999,8 @@ body {
   .wa-cal.is-phone-list .fc-media-screen,
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar,
   .wa-cal.is-phone-list .fc .fc-view-harness {
-    width: 95vw !important;
-    max-width: 95vw !important;
+    width: 93vw !important;
+    max-width: 93vw !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
@@ -1003,15 +1010,26 @@ body {
   .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table table,
   .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table table {
-    width: 88vw !important;
-    max-width: 88vw !important;
+    width: 83vw !important;
+    max-width: 83vw !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
 
   /* When the real H1 is visible on wider phones, remove the left offset so it stays centered */
-  .page > h1 {
+  .page>h1 {
     margin-left: 0 !important;
     text-align: center !important;
+  }
+}
+
+/* ✅ FIX: 562px–749px — prevent the H1 rail from being wider than the viewport (was 110%),
+   which made the centered text appear shifted to the right */
+@media (min-width: 562px) and (max-width: 749px) {
+  .page>h1 {
+    width: 93vw !important;
+    max-width: 93vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 }
