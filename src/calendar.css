@@ -1,7 +1,7 @@
 /* Custom global font */
 @font-face {
-  font-family: "Oswald";
-  src: url("/fonts/Oswald.ttf") format("truetype");
+  font-family: "Industrie";
+  src: url("/fonts/Industrie.otf") format("opentype");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -44,7 +44,7 @@ body {
   background-size: cover;
   background-position: center top;
   color: var(--text);
-  font-family: "Oswald";
+  font-family: Industrie;
 }
 
 /* Disable sticky headers in FullCalendar scrollgrid */
@@ -158,9 +158,9 @@ body {
 .fc-listDay-view .fc-view-harness::before {
   position: fixed !important;
   inset: 0 !important;
-  background-size: min(1000px, 55%) !important;
+  background-size: min(1000px, 58%) !important;
   opacity: 0.08 !important;
-  background-position: center center !important;
+  background-position: center 50% !important;
 }
 
 /* Ensure content stays above watermark */
@@ -358,12 +358,12 @@ body {
 
 /* Event Colors (timeGrid) */
 .fc-event.evt-stickpuck {
-  background: linear-gradient(135deg, #093b1c, #16a34aab) !important;
+  background: linear-gradient(135deg, #093b1c, #138a3fa5) !important;
   border-color: rgba(34, 197, 94, 0.9) !important;
 }
 
 .fc-event.evt-publicskate {
-  background: linear-gradient(135deg, #461414, #dc26269c) !important;
+  background: linear-gradient(135deg, #461414, #bd2222ae) !important;
   border-color: rgba(239, 68, 68, 0.9) !important;
 }
 
@@ -373,18 +373,18 @@ body {
 }
 
 .fc-event.evt-openhockey {
-  background: linear-gradient(135deg, #533f0d, #db8c04cb) !important;
-  border-color: rgba(251, 191, 36, 0.92) !important;
+  background: linear-gradient(135deg, #533f0d, #db8d06a5) !important;
+  border-color: rgba(251, 191, 36, 0.9) !important;
 }
 
 .fc-event.evt-freestyle {
-  background: linear-gradient(135deg, #123b3b, rgb(42, 168, 168)) !important;
+  background: linear-gradient(135deg, #123b3b, rgba(42, 168, 168, 0.688)) !important;
   border-color: rgba(42, 168, 168, 0.9) !important;
 }
 
 .fc-event.evt-default {
   background: linear-gradient(135deg, #533f0d, #db8c04cb) !important;
-  border-color: rgba(251, 191, 36, 0.92) !important;
+  border-color: rgba(251, 191, 36, 0.9) !important;
 }
 
 /* Center Title Above Time inside event (timeGrid views) */
@@ -398,6 +398,8 @@ body {
   width: 100% !important;
   padding: 0 !important;
   overflow: hidden !important;
+  font-family: Industrie;
+  font-weight: 100 !important;
 }
 
 .fc .fc-timegrid-event .fc-event-main {
@@ -619,7 +621,7 @@ body {
   font-weight: 100 !important;
   font-size: clamp(13px, 0.45vw + 11px, 16px) !important;
   color: rgba(255, 255, 255, 0.95) !important;
-  padding-right: 26px !important;
+  padding-right: -2px !important;
   /* ✅ UPDATED: more right padding for list titles */
 }
 
@@ -629,6 +631,7 @@ body {
   border-width: 6px !important;
   border-radius: 999px !important;
   transform: translateY(1px);
+  margin-top: -15px !important;
 }
 
 /* =========================================================
@@ -880,8 +883,8 @@ body {
   /* PIPE SEPARATOR BETWEEN TIME AND TITLE ON MOBILE LIST */
   .wa-cal.is-phone-list .fc td.fc-list-event-time::after {
     content: "|";
-    margin-left: 20px;
-    margin-right: 6px;
+    margin-left: 18px;
+    margin-right: 5px;
     margin-bottom: 5px;
     opacity: 0.65;
     font-size: 25px;
@@ -894,17 +897,18 @@ body {
     display: flex !important;
     align-items: center !important;
     gap: 10px !important;
+    margin-left: 8px;
   }
 
   .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
     display: inline-block !important;
     width: 100% !important;
     color: #fff !important;
-    font-size: clamp(13px, 3.3vw, 16px) !important;
+    font-size: clamp(16px, 3.3vw, 19px) !important;
     font-weight: 100 !important;
     text-decoration: none !important;
     line-height: 1.2 !important;
-    margin-left: 0px;
+    margin-top: 0px;
 
   }
 
@@ -937,15 +941,16 @@ body {
   }
 
   .wa-cal.is-phone-list .fc .fc-list-day-text {
-    font-size: clamp(15px, 3.3vw + 4px, 19px) !important;
+    font-size: clamp(16px, 3.3vw + 4px, 19px) !important;
+    letter-spacing: 0.08em;
   }
 
   .wa-cal.is-phone-list .fc .fc-list-day-side-text {
-    font-size: clamp(12px, 2.3vw + 4px, 15px) !important;
+    font-size: clamp(13px, 2.3vw + 4px, 15px) !important;
   }
 
   .fc .fc-view-harness::before {
-    background-position: 50% 35%;
+    background-position: 50% 74%;
     background-size: min(1520px, 120%);
     opacity: 0.07;
   }
