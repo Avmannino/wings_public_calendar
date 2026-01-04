@@ -1,7 +1,7 @@
 /* Custom global font */
 @font-face {
   font-family: "Oswald";
-  src: url("/public/fonts/Oswald.ttf") format("truetype");
+  src: url("/fonts/Oswald.ttf") format("truetype");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -956,7 +956,7 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
     content: "THIS WEEK'S LINEUP" !important;
     position: absolute !important;
-    top: -12px !important;
+    top: -10px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     color: #fff !important;
