@@ -777,7 +777,7 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::after {
     content: "" !important;
     position: absolute !important;
-    top: -29px !important;
+    top: -27px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: 70px !important;
@@ -798,12 +798,12 @@ body {
     align-items: center !important;
     justify-content: center !important;
     padding: 0 !important;
-    background: rgba(250, 0, 0, 0.228) !important;
+    background: #cb002286 !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
     color: #fff !important;
     transition: all 0.2s ease-in-out !important;
     margin-bottom: -12px;
-    margin-top: 55px;
+    margin-top: 45px;
   }
 
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button:hover {
@@ -956,7 +956,7 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
     content: "THIS WEEK'S LINEUP" !important;
     position: absolute !important;
-    top: -7px !important;
+    top: -12px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     color: #fff !important;
