@@ -956,7 +956,7 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
     content: "THIS WEEK'S LINEUP" !important;
     position: absolute !important;
-    top: -5px !important;
+    top: -7px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     color: #fff !important;
