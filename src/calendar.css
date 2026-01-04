@@ -777,7 +777,7 @@ body {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::after {
     content: "" !important;
     position: absolute !important;
-    top: -15px !important;
+    top: -19px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: 70px !important;
