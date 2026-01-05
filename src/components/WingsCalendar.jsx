@@ -1,3 +1,5 @@
+// src/components/WingsCalendar.jsx
+
 import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -87,6 +89,12 @@ export default function WingsCalendar() {
   const apiKey = (import.meta.env.VITE_GCAL_API_KEY || "").trim();
   const calendarId = (import.meta.env.VITE_GCAL_ID || "").trim();
 
+  // ✅ FIX: your Freestyle events are around 5:30am, but you were hiding anything before 7:00am.
+  // You can override these in .env if you want.
+  const slotMinTime = (import.meta.env.VITE_SLOT_MIN_TIME || "05:00:00").trim();
+  const slotMaxTime = (import.meta.env.VITE_SLOT_MAX_TIME || "23:00:00").trim();
+  const scrollTime = (import.meta.env.VITE_SCROLL_TIME || slotMinTime).trim();
+
   const tipRef = useRef(null);
   const moveMapRef = useRef(new WeakMap());
   const calendarRef = useRef(null);
@@ -99,6 +107,15 @@ export default function WingsCalendar() {
     return window.matchMedia(MOBILE_QUERY).matches;
   });
   const [isListView, setIsListView] = useState(false);
+
+  useEffect(() => {
+    if (!apiKey || !calendarId) {
+      console.warn(
+        "[WingsCalendar] Missing Google Calendar config:",
+        { apiKeyPresent: !!apiKey, calendarIdPresent: !!calendarId, calendarId }
+      );
+    }
+  }, [apiKey, calendarId]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
@@ -315,9 +332,12 @@ export default function WingsCalendar() {
           hour12: true,
           meridiem: "short",
         }}
-        slotMinTime="07:00:00"
-        slotMaxTime="23:00:00"
-        scrollTime="07:00:00"
+
+        // ✅ FIX: show early-morning events like your 5:30am Freestyle sessions
+        slotMinTime={slotMinTime}
+        slotMaxTime={slotMaxTime}
+        scrollTime={scrollTime}
+
         eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
         stickyHeaderDates={false}
         datesSet={(arg) => {
