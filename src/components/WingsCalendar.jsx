@@ -454,12 +454,10 @@ export default function WingsCalendar() {
           hour12: true,
           meridiem: "short",
         }}
-
         // ✅ FIX: show early-morning events like your 5:30am Freestyle sessions
         slotMinTime={slotMinTime}
         slotMaxTime={slotMaxTime}
         scrollTime={scrollTime}
-
         eventClassNames={(arg) => {
           const desc = arg.event.extendedProps?.description || "";
           const cancelled = isCancelled(arg.event.title, desc);
@@ -470,7 +468,6 @@ export default function WingsCalendar() {
             !cancelled && note ? "wa-adv-note" : "",
           ].filter(Boolean);
         }}
-
         stickyHeaderDates={false}
         datesSet={(arg) => {
           setIsListView(arg.view.type?.startsWith("list"));
@@ -481,7 +478,6 @@ export default function WingsCalendar() {
           const viewEnd = arg.view?.currentEnd || arg.end;
           if (viewStart && viewEnd) updateActiveAdvisories(viewStart, viewEnd);
         }}
-
         eventDidMount={(info) => {
           // ✅ add small badge for NOTE/CANCELLED (safe + lightweight)
           const desc = info.event.extendedProps?.description || "";
@@ -521,7 +517,6 @@ export default function WingsCalendar() {
             }
           }
         }}
-
         eventMouseEnter={(info) => {
           if (isPhone) return;
           showTooltip(info);
