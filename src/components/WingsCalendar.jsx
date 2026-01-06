@@ -98,7 +98,7 @@ const MANUAL_ADVISORIES = [
     start: "2026-01-09", // <-- change these dates to the week it applies
     end: "2026-01-10",   // end is exclusive (the next day is fine)
     pill: "TIME CHANGE",
-    message: " Friday Cosmic Skate is 8:35pm–9:35pm this week (instead of 7:30pm–9:30pm).",
+    message: " Friday Cosmic Skate is 8:35pm–10:00pm this week (instead of 7:30pm–9:30pm).",
   },
 ];
 
