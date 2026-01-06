@@ -76,12 +76,67 @@ function getProgramMeta(title = "") {
 }
 
 function escapeHtml(str = "") {
-  return str
+  return String(str)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "'");
+}
+
+/**
+ * ✅ SIMPLE, SAFE: Manual advisories you can edit any time.
+ * These show above the calendar when the current view overlaps the advisory range.
+ *
+ * Date format: YYYY-MM-DD (local)
+ */
+const MANUAL_ADVISORIES = [
+  // Example based on what you said:
+  // Cosmic Skate normally 7:30–9:30, but THIS WEEK it's 8:35–9:35.
+  {
+    id: "cosmic-fri-time-change",
+    start: "2026-01-09", // <-- change these dates to the week it applies
+    end: "2026-01-10",   // end is exclusive (the next day is fine)
+    pill: "TIME CHANGE",
+    message: " Friday Cosmic Skate is 8:35pm–9:35pm this week (instead of 7:30pm–9:30pm).",
+  },
+];
+
+// Helpers for advisory range checks
+function parseYMD(ymd) {
+  // ymd = "2026-01-09"
+  const [y, m, d] = String(ymd).split("-").map((n) => parseInt(n, 10));
+  if (!y || !m || !d) return null;
+  return new Date(y, m - 1, d);
+}
+
+function rangesOverlap(aStart, aEnd, bStart, bEnd) {
+  return aStart < bEnd && bStart < aEnd;
+}
+
+function extractNote(description = "") {
+  const lines = String(description || "")
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+
+  for (const line of lines) {
+    const lower = line.toLowerCase();
+    if (lower.startsWith("note:")) return line.slice(5).trim();
+    if (lower.startsWith("advisory:")) return line.slice(9).trim();
+  }
+  return "";
+}
+
+function isCancelled(title = "", description = "") {
+  const t = String(title).toLowerCase();
+  const d = String(description).toLowerCase();
+  return (
+    t.includes("cancelled") ||
+    t.includes("canceled") ||
+    d.includes("cancelled") ||
+    d.includes("canceled")
+  );
 }
 
 export default function WingsCalendar() {
@@ -108,12 +163,16 @@ export default function WingsCalendar() {
   });
   const [isListView, setIsListView] = useState(false);
 
+  // ✅ NEW: advisories shown above calendar for the current view range
+  const [activeAdvisories, setActiveAdvisories] = useState([]);
+
   useEffect(() => {
     if (!apiKey || !calendarId) {
-      console.warn(
-        "[WingsCalendar] Missing Google Calendar config:",
-        { apiKeyPresent: !!apiKey, calendarIdPresent: !!calendarId, calendarId }
-      );
+      console.warn("[WingsCalendar] Missing Google Calendar config:", {
+        apiKeyPresent: !!apiKey,
+        calendarIdPresent: !!calendarId,
+        calendarId,
+      });
     }
   }, [apiKey, calendarId]);
 
@@ -250,6 +309,10 @@ export default function WingsCalendar() {
       ? escapeHtml(meta.desc).replaceAll("\n\n", "<br><br>")
       : "";
 
+    const gDesc = info.event.extendedProps?.description || "";
+    const note = extractNote(gDesc);
+    const cancelled = isCancelled(info.event.title, gDesc);
+
     el.innerHTML = `
       <div class="wa-tipTitle">${escapeHtml(info.event.title || "")}</div>
       <div class="wa-tipRow">
@@ -260,6 +323,27 @@ export default function WingsCalendar() {
         <span class="wa-tipLabel">Time</span>
         <span class="wa-tipValue wa-tipTime">${escapeHtml(timeStr)}</span>
       </div>
+
+      ${
+        cancelled
+          ? `<div class="wa-tipRow wa-tipAdvisory">
+               <span class="wa-tipLabel">Advisory</span>
+               <span class="wa-tipValue">
+                 <span class="wa-adv-pill wa-adv-cancelled">CANCELLED</span>
+                 <span class="wa-tipAdvText">${escapeHtml(note || "This session has been cancelled.")}</span>
+               </span>
+             </div>`
+          : note
+          ? `<div class="wa-tipRow wa-tipAdvisory">
+               <span class="wa-tipLabel">Advisory</span>
+               <span class="wa-tipValue">
+                 <span class="wa-adv-pill wa-adv-note">NOTE</span>
+                 <span class="wa-tipAdvText">${escapeHtml(note)}</span>
+               </span>
+             </div>`
+          : ""
+      }
+
       ${
         meta.pricing
           ? `<div class="wa-tipRow">
@@ -289,6 +373,18 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
+  // ✅ updates banner based on current view date range
+  function updateActiveAdvisories(viewStart, viewEnd) {
+    const filtered = [];
+    for (const adv of MANUAL_ADVISORIES) {
+      const aStart = parseYMD(adv.start);
+      const aEnd = parseYMD(adv.end);
+      if (!aStart || !aEnd) continue;
+      if (rangesOverlap(aStart, aEnd, viewStart, viewEnd)) filtered.push(adv);
+    }
+    setActiveAdvisories(filtered);
+  }
+
   const rightButtons = isPhone
     ? "timeGridWeek,timeGridDay,listWeek"
     : "timeGridWeek,timeGridDay";
@@ -303,6 +399,32 @@ export default function WingsCalendar() {
         isPhone && isListView ? "is-phone-list" : "",
       ].join(" ")}
     >
+      {/* ✅ NEW: clean advisory banner */}
+      {activeAdvisories.length > 0 && (
+        <div className="wa-advisoryBar" role="status" aria-live="polite">
+          <div className="wa-advisoryBarTitle">Schedule Advisories</div>
+          <ul className="wa-advisoryList">
+            {activeAdvisories.map((a) => (
+              <li key={a.id}>
+                <span
+                  className={[
+                    "wa-adv-pill",
+                    a.pill?.toLowerCase().includes("cancel")
+                      ? "wa-adv-cancelled"
+                      : a.pill?.toLowerCase().includes("time")
+                      ? "wa-adv-time-change"
+                      : "wa-adv-note",
+                  ].join(" ")}
+                >
+                  {a.pill || "NOTE"}
+                </span>
+                <span className="wa-adv-itemText">{a.message}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <FullCalendar
         ref={calendarRef}
         plugins={[timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
@@ -338,11 +460,68 @@ export default function WingsCalendar() {
         slotMaxTime={slotMaxTime}
         scrollTime={scrollTime}
 
-        eventClassNames={(arg) => [getClassForTitle(arg.event.title)]}
+        eventClassNames={(arg) => {
+          const desc = arg.event.extendedProps?.description || "";
+          const cancelled = isCancelled(arg.event.title, desc);
+          const note = extractNote(desc);
+          return [
+            getClassForTitle(arg.event.title),
+            cancelled ? "wa-adv-cancelled" : "",
+            !cancelled && note ? "wa-adv-note" : "",
+          ].filter(Boolean);
+        }}
+
         stickyHeaderDates={false}
         datesSet={(arg) => {
           setIsListView(arg.view.type?.startsWith("list"));
+
+          // ✅ keep advisory bar in sync with current view range
+          // view.currentStart/currentEnd are reliable
+          const viewStart = arg.view?.currentStart || arg.start;
+          const viewEnd = arg.view?.currentEnd || arg.end;
+          if (viewStart && viewEnd) updateActiveAdvisories(viewStart, viewEnd);
         }}
+
+        eventDidMount={(info) => {
+          // ✅ add small badge for NOTE/CANCELLED (safe + lightweight)
+          const desc = info.event.extendedProps?.description || "";
+          const note = extractNote(desc);
+          const cancelled = isCancelled(info.event.title, desc);
+
+          // remove prior injected badge/note (avoid duplicates on rerender)
+          info.el.querySelectorAll(".wa-adv-pill, .wa-adv-noteText").forEach((n) => n.remove());
+
+          if (!cancelled && !note) return;
+
+          const pill = document.createElement("span");
+          pill.className = `wa-adv-pill ${cancelled ? "wa-adv-cancelled" : "wa-adv-note"}`;
+          pill.textContent = cancelled ? "CANCELLED" : "NOTE";
+
+          if (info.view.type?.startsWith("list")) {
+            const a = info.el.querySelector(".fc-list-event-title a");
+            if (a) {
+              pill.style.marginRight = "8px";
+              a.prepend(pill);
+            }
+            if (note) {
+              const titleCell = info.el.querySelector("td.fc-list-event-title");
+              if (titleCell) {
+                const noteEl = document.createElement("div");
+                noteEl.className = "wa-adv-noteText";
+                noteEl.textContent = note;
+                titleCell.appendChild(noteEl);
+              }
+            }
+          } else {
+            const main = info.el.querySelector(".fc-event-main");
+            if (main) {
+              main.prepend(pill);
+            } else {
+              info.el.prepend(pill);
+            }
+          }
+        }}
+
         eventMouseEnter={(info) => {
           if (isPhone) return;
           showTooltip(info);
