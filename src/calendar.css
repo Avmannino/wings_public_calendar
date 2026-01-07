@@ -72,10 +72,6 @@ body {
   margin-left: 45px;
 }
 
-/* .fc-media-screen {
-  background-color: red !important;
-} */
-
 /* =========================================================
    ✅ Schedule Advisories banner + per-event pills
    ========================================================= */
@@ -253,7 +249,7 @@ body {
   }
 }
 
-/* ✅ NEW: Drop shadow around the OUTSIDE of FullCalendar shell (calendar + list) */
+/* Drop shadow around the OUTSIDE of FullCalendar shell (calendar + list) */
 .wa-cal .fc-media-screen {
   box-shadow: var(--shadow);
 }
@@ -521,7 +517,7 @@ body {
   border-color: rgba(42, 168, 168, 0.9) !important;
 }
 
-/* ✅ NEW: Lunchtime Adult Drop-In Hockey (orange gradient) */
+/* Lunchtime Adult Drop-In Hockey (orange gradient) */
 .fc-event.evt-lunchtime-dropin {
   background: linear-gradient(135deg, #6b2400, rgba(255, 122, 24, 0.78)) !important;
   border-color: rgba(249, 115, 22, 0.95) !important;
@@ -579,6 +575,54 @@ body {
   text-transform: uppercase !important;
   line-height: 1.4 !important;
   opacity: 0.95 !important;
+}
+
+/* ✅ Register link under time (timeGrid Lunchtime Adult Drop-In Hockey only) */
+.fc-event.evt-lunchtime-dropin .wa-register-wrap {
+  order: 3 !important;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 3px;
+}
+
+.fc-event.evt-lunchtime-dropin .wa-register-link {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  font-size: clamp(10px, 0.3vw + 9px, 12px) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.fc-event.evt-lunchtime-dropin .wa-register-link:hover {
+  opacity: 0.9;
+}
+
+/* ✅ Register link under title (LIST view Lunchtime Adult Drop-In Hockey only) */
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title .wa-list-register-wrap {
+  margin-top: 6px;
+}
+
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title .wa-register-link {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  display: inline-flex;
+  align-items: center;
+  font-size: clamp(12px, 0.35vw + 11px, 14px) !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title .wa-register-link:hover {
+  opacity: 0.9;
 }
 
 /* Slight bump on very small phones so it does not get too tiny */
@@ -672,16 +716,14 @@ body {
   }
 }
 
-/* ✅ UPDATED: 562px–850px — center the header + toolbar + list together */
+/* 562px–850px — center the header + toolbar + list together */
 @media (min-width: 562px) and (max-width: 850px) {
-  /* Make the page H1 line up with the centered list/toolbar */
   .page>h1 {
     width: min(680px, 100%) !important;
     text-align: center;
     margin-right: auto !important;
   }
 
-  /* Center the FullCalendar outer shell (remove the left shove) */
   .fc-media-screen {
     position: relative !important;
     left: 0% !important;
@@ -689,7 +731,6 @@ body {
     margin-right: auto !important;
   }
 
-  /* Center the toolbar to the same width as the list */
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
     width: min(580px, 100%) !important;
     max-width: 580px !important;
@@ -699,7 +740,6 @@ body {
     text-align: center !important;
   }
 
-  /* Ensure the view harness matches that same centered width */
   .wa-cal.is-phone-list .fc .fc-view-harness {
     width: min(580px, 100%) !important;
     max-width: 580px !important;
@@ -707,7 +747,6 @@ body {
     margin-right: auto !important;
   }
 
-  /* Override the 120% list width in this range so it matches the toolbar */
   .fc .fc-listWeek-view .fc-list-table table,
   .fc .fc-listDay-view .fc-list-table table {
     width: 100% !important;
@@ -775,7 +814,7 @@ body {
   margin-top: -15px !important;
 }
 
-/* ✅ NEW: orange dot for Lunchtime Adult Drop-In Hockey (desktop list dot) */
+/* orange dot for Lunchtime Adult Drop-In Hockey (desktop list dot) */
 .fc tr.evt-lunchtime-dropin .fc-list-event-dot {
   border-color: rgba(249, 115, 22, 0.95) !important;
 }
@@ -906,8 +945,19 @@ body {
   cursor: default !important;
 }
 
+/* Disable list-view title links (no click-through), but keep Register clickable */
+.fc .fc-list-event-title a:not(.wa-register-link) {
+  pointer-events: none !important;
+  cursor: default !important;
+  text-decoration: none !important;
+}
+
+/* Disable event inner anchors, but allow the Register link */
 .fc-event a {
   pointer-events: none !important;
+}
+.fc-event a.wa-register-link {
+  pointer-events: auto !important;
 }
 
 /* =========================================================
@@ -1024,7 +1074,6 @@ body {
     background: #888 !important;
   }
 
-  /* PIPE SEPARATOR BETWEEN TIME AND TITLE ON MOBILE LIST */
   .wa-cal.is-phone-list .fc td.fc-list-event-time::after {
     content: "|";
     margin-left: 11px;
@@ -1075,7 +1124,6 @@ body {
     background: #1ce4e4 !important;
   }
 
-  /* ✅ NEW: Lunchtime Adult Drop-In Hockey marker (mobile list) */
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-lunchtime-dropin td.fc-list-event-time::before {
     background: #f97316 !important;
   }
@@ -1104,7 +1152,7 @@ body {
   }
 }
 
-/* ✅ FIX: Only show the injected "THIS WEEK'S LINEUP" title when the real H1 is hidden */
+/* Only show the injected "THIS WEEK'S LINEUP" title when the real H1 is hidden */
 @media (max-width: 560px) {
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
     content: "THIS WEEK'S LINEUP" !important;
@@ -1137,10 +1185,7 @@ body {
 }
 
 /* =========================================================
-   ✅ NEW: 90% VIEWPORT WIDTH RAIL FOR LIST VIEW (grows with screen)
-   Centers: logo + title + arrows + list
-   Forces list to be 90% of viewport width at all times (when in phone list view)
-   ✅ FIXED: stack advisory + calendar vertically (was squeezing list)
+   90% VIEWPORT WIDTH RAIL FOR LIST VIEW (grows with screen)
    ========================================================= */
 @media (max-width: 750px) {
   .wa-cal.is-phone-list {
@@ -1151,7 +1196,6 @@ body {
     gap: 10px !important;
   }
 
-  /* ✅ NEW: force calendar first, advisory second */
   .wa-cal.is-phone-list .fc-media-screen {
     order: 1 !important;
   }
@@ -1162,7 +1206,6 @@ body {
     margin-bottom: 10px !important;
   }
 
-  /* ✅ FIX: allow advisory message to wrap instead of overflowing */
   .wa-advisoryList li {
     width: 100% !important;
     display: flex !important;
@@ -1173,7 +1216,6 @@ body {
     margin-left: 0 !important;
     margin-right: 0 !important;
     flex-wrap: wrap !important;
-    /* allows wrap if needed */
   }
 
   .wa-adv-pill {
@@ -1186,24 +1228,17 @@ body {
     text-align: left !important;
     max-width: min(680px, 100%) !important;
     min-width: 0 !important;
-    /* ✅ critical: lets flex item shrink */
     flex: 1 1 260px !important;
-    /* ✅ can grow + wrap */
     white-space: normal !important;
-    /* ✅ allow wrapping */
     overflow-wrap: anywhere !important;
-    /* ✅ break long chunks */
     word-break: break-word !important;
-    /* ✅ fallback */
   }
 
-  /* Kill any prior left shoves */
   .wa-cal.is-phone-list .fc-media-screen {
     left: auto !important;
     transform: none !important;
   }
 
-  /* Make the whole calendar/list rail 90% of the viewport, centered */
   .wa-cal.is-phone-list .fc,
   .wa-cal.is-phone-list .fc-media-screen,
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar,
@@ -1214,7 +1249,6 @@ body {
     margin-right: auto !important;
   }
 
-  /* Force the list table to follow the same width */
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
   .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table table,
@@ -1231,8 +1265,6 @@ body {
   }
 }
 
-/* ✅ FIX: 562px–749px — prevent the H1 rail from being wider than the viewport (was 110%),
-   which made the centered text appear shifted to the right */
 @media (min-width: 562px) and (max-width: 749px) {
   .page>h1 {
     width: 93vw !important;
@@ -1242,26 +1274,20 @@ body {
   }
 }
 
-/* ✅ FIX: below ~420px, keep pill LEFT of the advisory text (don’t let flex wrap the pill) */
 @media (max-width: 420px) {
   .wa-cal.is-phone-list .wa-advisoryList li {
     flex-wrap: nowrap !important;
-    /* key: prevents pill from popping onto its own line */
     align-items: flex-start !important;
   }
 
   .wa-cal.is-phone-list .wa-adv-pill {
     flex: 0 0 auto !important;
-    /* pill never shrinks/wraps */
   }
 
   .wa-cal.is-phone-list .wa-adv-itemText {
     min-width: 0 !important;
-    /* key: allows flex child to shrink */
     flex: 1 1 auto !important;
-    /* text takes remaining space */
     white-space: normal !important;
-    /* text wraps */
     overflow-wrap: anywhere !important;
     word-break: break-word !important;
   }
