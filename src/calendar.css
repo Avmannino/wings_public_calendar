@@ -1,3 +1,5 @@
+/* src/calendar.css */
+
 /* Custom global font */
 @font-face {
   font-family: "Industrie";
@@ -519,6 +521,12 @@ body {
   border-color: rgba(42, 168, 168, 0.9) !important;
 }
 
+/* ✅ NEW: Lunchtime Adult Drop-In Hockey (orange gradient) */
+.fc-event.evt-lunchtime-dropin {
+  background: linear-gradient(135deg, #6b2400, rgba(255, 122, 24, 0.78)) !important;
+  border-color: rgba(249, 115, 22, 0.95) !important;
+}
+
 .fc-event.evt-default {
   background: linear-gradient(135deg, #533f0d, #db8c04cb) !important;
   border-color: rgba(251, 191, 36, 0.9) !important;
@@ -765,6 +773,11 @@ body {
   border-radius: 999px !important;
   transform: translateY(1px);
   margin-top: -15px !important;
+}
+
+/* ✅ NEW: orange dot for Lunchtime Adult Drop-In Hockey (desktop list dot) */
+.fc tr.evt-lunchtime-dropin .fc-list-event-dot {
+  border-color: rgba(249, 115, 22, 0.95) !important;
 }
 
 /* =========================================================
@@ -1060,6 +1073,11 @@ body {
 
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-freestyle td.fc-list-event-time::before {
     background: #1ce4e4 !important;
+  }
+
+  /* ✅ NEW: Lunchtime Adult Drop-In Hockey marker (mobile list) */
+  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-lunchtime-dropin td.fc-list-event-time::before {
+    background: #f97316 !important;
   }
 
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-default td.fc-list-event-time::before {

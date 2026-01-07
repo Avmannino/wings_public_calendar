@@ -14,6 +14,14 @@ function getClassForTitle(title = "") {
   if (t.includes("cosmic") && t.includes("skate")) return "evt-cosmic";
   if (t.includes("freestyle") || (t.includes("figure") && t.includes("skating")))
     return "evt-freestyle";
+  if (
+    t.includes("lunchtime") &&
+    t.includes("adult") &&
+    t.includes("drop") &&
+    t.includes("in") &&
+    t.includes("hockey")
+  )
+    return "evt-lunchtime-dropin";
   if (t.includes("open") && t.includes("hockey")) return "evt-openhockey";
   return "evt-default";
 }
@@ -52,6 +60,22 @@ function getProgramMeta(title = "") {
     };
   }
 
+  if (
+    t.includes("lunchtime") &&
+    t.includes("adult") &&
+    t.includes("drop") &&
+    t.includes("in") &&
+    t.includes("hockey")
+  ) {
+    return {
+      label: "Lunchtime Adult Drop-In Hockey",
+      pricing: "$25",
+      equipment: "Full Equipment Required",
+      desc:
+        "Lunchtime Adult Drop-In Hockey is a fast, fun midday skate built for adults who want to get on the ice without committing to a full league season. Expect a balanced pickup-style game (or organized shinny depending on turnout), a great workout, and a welcoming locker-room vibe for players of all levels.",
+    };
+  }
+
   if (t.includes("open") && t.includes("hockey")) {
     return {
       label: "Open Hockey",
@@ -84,22 +108,19 @@ function escapeHtml(str = "") {
     .replaceAll("'", "'");
 }
 
-
 const MANUAL_ADVISORIES = [
-  // Example based on what you said:
-  // Cosmic Skate normally 7:30–9:30, but THIS WEEK it's 8:35–9:35.
   {
     id: "cosmic-fri-time-change",
-    start: "2026-01-09", // <-- change these dates to the week it applies
-    end: "2026-01-10",   // end is exclusive (the next day is fine)
+    start: "2026-01-09",
+    end: "2026-01-10",
     pill: "TIME CHANGE",
-    message: " Friday Cosmic Skate is 8:35pm–10:00pm this week (instead of 7:30pm–9:30pm).",
+    message:
+      " Friday Cosmic Skate is 8:35pm–10:00pm this week (instead of 7:30pm–9:30pm).",
   },
 ];
 
 // Helpers for advisory range checks
 function parseYMD(ymd) {
-  // ymd = "2026-01-09"
   const [y, m, d] = String(ymd).split("-").map((n) => parseInt(n, 10));
   if (!y || !m || !d) return null;
   return new Date(y, m - 1, d);
@@ -139,8 +160,6 @@ export default function WingsCalendar() {
   const apiKey = (import.meta.env.VITE_GCAL_API_KEY || "").trim();
   const calendarId = (import.meta.env.VITE_GCAL_ID || "").trim();
 
-  // ✅ FIX: your Freestyle events are around 5:30am, but you were hiding anything before 7:00am.
-  // You can override these in .env if you want.
   const slotMinTime = (import.meta.env.VITE_SLOT_MIN_TIME || "05:00:00").trim();
   const slotMaxTime = (import.meta.env.VITE_SLOT_MAX_TIME || "23:00:00").trim();
   const scrollTime = (import.meta.env.VITE_SCROLL_TIME || slotMinTime).trim();
@@ -300,9 +319,7 @@ export default function WingsCalendar() {
     }
 
     const meta = getProgramMeta(info.event.title);
-    const descHtml = meta.desc
-      ? escapeHtml(meta.desc).replaceAll("\n\n", "<br><br>")
-      : "";
+    const descHtml = meta.desc ? escapeHtml(meta.desc) : "";
 
     const gDesc = info.event.extendedProps?.description || "";
     const note = extractNote(gDesc);
@@ -325,7 +342,9 @@ export default function WingsCalendar() {
                <span class="wa-tipLabel">Advisory</span>
                <span class="wa-tipValue">
                  <span class="wa-adv-pill wa-adv-cancelled">CANCELLED</span>
-                 <span class="wa-tipAdvText">${escapeHtml(note || "This session has been cancelled.")}</span>
+                 <span class="wa-tipAdvText">${escapeHtml(
+                   note || "This session has been cancelled."
+                 )}</span>
                </span>
              </div>`
           : note
@@ -355,7 +374,11 @@ export default function WingsCalendar() {
              </div>`
           : ""
       }
-      ${meta.desc ? `<div class="wa-tipDesc">${descHtml}</div>` : ""}
+      ${
+        meta.desc
+          ? `<div class="wa-tipDesc">${escapeHtml(descHtml)}</div>`
+          : ""
+      }
     `;
 
     el.classList.add("is-visible");
@@ -449,7 +472,6 @@ export default function WingsCalendar() {
           hour12: true,
           meridiem: "short",
         }}
-        // ✅ FIX: show early-morning events like your 5:30am Freestyle sessions
         slotMinTime={slotMinTime}
         slotMaxTime={slotMaxTime}
         scrollTime={scrollTime}
@@ -466,21 +488,18 @@ export default function WingsCalendar() {
         stickyHeaderDates={false}
         datesSet={(arg) => {
           setIsListView(arg.view.type?.startsWith("list"));
-
-          // ✅ keep advisory bar in sync with current view range
-          // view.currentStart/currentEnd are reliable
           const viewStart = arg.view?.currentStart || arg.start;
           const viewEnd = arg.view?.currentEnd || arg.end;
           if (viewStart && viewEnd) updateActiveAdvisories(viewStart, viewEnd);
         }}
         eventDidMount={(info) => {
-          // ✅ add small badge for NOTE/CANCELLED (safe + lightweight)
           const desc = info.event.extendedProps?.description || "";
           const note = extractNote(desc);
           const cancelled = isCancelled(info.event.title, desc);
 
-          // remove prior injected badge/note (avoid duplicates on rerender)
-          info.el.querySelectorAll(".wa-adv-pill, .wa-adv-noteText").forEach((n) => n.remove());
+          info.el
+            .querySelectorAll(".wa-adv-pill, .wa-adv-noteText")
+            .forEach((n) => n.remove());
 
           if (!cancelled && !note) return;
 
@@ -505,11 +524,8 @@ export default function WingsCalendar() {
             }
           } else {
             const main = info.el.querySelector(".fc-event-main");
-            if (main) {
-              main.prepend(pill);
-            } else {
-              info.el.prepend(pill);
-            }
+            if (main) main.prepend(pill);
+            else info.el.prepend(pill);
           }
         }}
         eventMouseEnter={(info) => {
@@ -535,9 +551,7 @@ export default function WingsCalendar() {
         }}
         eventClick={(info) => {
           info.jsEvent.preventDefault();
-          if (info.event.url) {
-            window.open(info.event.url, "_blank", "noopener,noreferrer");
-          }
+          if (info.event.url) window.open(info.event.url, "_blank", "noopener,noreferrer");
         }}
         eventSourceFailure={(error) => {
           console.error("[WingsCalendar] Google event source failed:", error);
