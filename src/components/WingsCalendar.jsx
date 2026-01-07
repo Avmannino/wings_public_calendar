@@ -84,12 +84,7 @@ function escapeHtml(str = "") {
     .replaceAll("'", "'");
 }
 
-/**
- * ✅ SIMPLE, SAFE: Manual advisories you can edit any time.
- * These show above the calendar when the current view overlaps the advisory range.
- *
- * Date format: YYYY-MM-DD (local)
- */
+
 const MANUAL_ADVISORIES = [
   // Example based on what you said:
   // Cosmic Skate normally 7:30–9:30, but THIS WEEK it's 8:35–9:35.
