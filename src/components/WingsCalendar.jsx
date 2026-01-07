@@ -169,7 +169,6 @@ export default function WingsCalendar() {
   const moveMapRef = useRef(new WeakMap());
   const calendarRef = useRef(null);
 
-  // BREAKPOINT: list view at <= 750px
   const MOBILE_QUERY = "(max-width: 750px)";
 
   const [isPhone, setIsPhone] = useState(() => {
@@ -177,8 +176,6 @@ export default function WingsCalendar() {
     return window.matchMedia(MOBILE_QUERY).matches;
   });
   const [isListView, setIsListView] = useState(false);
-
-  // advisories shown above calendar for the current view range
   const [activeAdvisories, setActiveAdvisories] = useState([]);
 
   useEffect(() => {
@@ -208,7 +205,6 @@ export default function WingsCalendar() {
     };
   }, []);
 
-  // Switch between timeGridWeek and listWeek based on breakpoint
   useEffect(() => {
     const api = calendarRef.current?.getApi?.();
     if (!api) return;
@@ -216,7 +212,6 @@ export default function WingsCalendar() {
     if (api.view?.type !== targetView) api.changeView(targetView);
   }, [isPhone]);
 
-  // Ensure list headers are never sticky on phones
   useEffect(() => {
     if (!isPhone || !isListView) return;
 
@@ -392,7 +387,6 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
-  // updates banner based on current view date range
   function updateActiveAdvisories(viewStart, viewEnd) {
     const filtered = [];
     for (const adv of MANUAL_ADVISORIES) {
@@ -494,12 +488,10 @@ export default function WingsCalendar() {
           const note = extractNote(desc);
           const cancelled = isCancelled(info.event.title, desc);
 
-          // clean any prior injected nodes (re-renders)
           info.el
             .querySelectorAll(".wa-adv-pill, .wa-adv-noteText, .wa-register-wrap, .wa-list-register-wrap")
             .forEach((n) => n.remove());
 
-          // ----- advisory pills + note line -----
           if (cancelled || note) {
             const pill = document.createElement("span");
             pill.className = `wa-adv-pill ${cancelled ? "wa-adv-cancelled" : "wa-adv-note"}`;
@@ -527,11 +519,26 @@ export default function WingsCalendar() {
             }
           }
 
-          // ----- ✅ Register link for Lunchtime Adult Drop-In Hockey -----
           const isLunchtime = getClassForTitle(info.event.title) === "evt-lunchtime-dropin";
           if (!isLunchtime) return;
 
-          // timeGrid: place under the time inside the event box
+          const makeRegisterLink = () => {
+            const link = document.createElement("a");
+            link.className = "wa-register-link";
+            link.href = LUNCHTIME_REGISTER_URL;
+            link.textContent = "Register";
+            link.target = "_blank"; // ✅ open in new tab/window
+            link.rel = "noopener noreferrer"; // ✅ security best-practice
+
+            // prevent any calendar click handlers from running when clicking the link
+            link.addEventListener("click", (e) => {
+              e.stopPropagation();
+            });
+
+            return link;
+          };
+
+          // timeGrid: under time
           if (info.view.type?.startsWith("timeGrid")) {
             const main = info.el.querySelector(".fc-event-main");
             if (!main) return;
@@ -541,23 +548,12 @@ export default function WingsCalendar() {
 
             const wrap = document.createElement("div");
             wrap.className = "wa-register-wrap";
-
-            const link = document.createElement("a");
-            link.className = "wa-register-link";
-            link.href = LUNCHTIME_REGISTER_URL;
-            link.textContent = "Register";
-
-            // prevent any calendar click handlers from running when clicking the link
-            link.addEventListener("click", (e) => {
-              e.stopPropagation();
-            });
-
-            wrap.appendChild(link);
+            wrap.appendChild(makeRegisterLink());
             timeEl.insertAdjacentElement("afterend", wrap);
             return;
           }
 
-          // list: place under the event title in the title cell
+          // list: under title
           if (info.view.type?.startsWith("list")) {
             const titleCell = info.el.querySelector("td.fc-list-event-title");
             if (!titleCell) return;
@@ -565,19 +561,8 @@ export default function WingsCalendar() {
             const anchor = titleCell.querySelector("a");
             const wrap = document.createElement("div");
             wrap.className = "wa-list-register-wrap";
+            wrap.appendChild(makeRegisterLink());
 
-            const link = document.createElement("a");
-            link.className = "wa-register-link";
-            link.href = LUNCHTIME_REGISTER_URL;
-            link.textContent = "Register";
-
-            link.addEventListener("click", (e) => {
-              e.stopPropagation();
-            });
-
-            wrap.appendChild(link);
-
-            // Insert directly under the title link (and above any note line)
             if (anchor) anchor.insertAdjacentElement("afterend", wrap);
             else titleCell.appendChild(wrap);
           }
@@ -603,8 +588,6 @@ export default function WingsCalendar() {
           }
           hideTooltip();
         }}
-        // ✅ NO click-through anywhere on events (Google Calendar links disabled).
-        // The ONLY click that should work is the injected "Register" links (they stop propagation).
         eventClick={(info) => {
           info.jsEvent.preventDefault();
           info.jsEvent.stopPropagation();
