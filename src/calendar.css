@@ -429,6 +429,7 @@ body {
 
 /* Hide LIST button on anything bigger than a phone */
 @media (min-width: 751px) {
+
   .fc .fc-listWeek-button,
   .fc .fc-listDay-button {
     display: none !important;
@@ -625,6 +626,32 @@ body {
   opacity: 0.9;
 }
 
+/* =========================================================
+   ✅ FIX: LIST VIEW (especially mobile) stacks Title + Register vertically
+   Why your prior rule didn't work: on mobile you set the TITLE cell to `display:flex`
+   in a row, so the Register wrapper becomes a 2nd flex item beside the title.
+   ========================================================= */
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
+/* Make the event title anchor take a full line */
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title > a:not(.wa-register-link) {
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Make the register wrapper its own full-width line */
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title .wa-list-register-wrap {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 0 !important;
+}
+
 /* Slight bump on very small phones so it does not get too tiny */
 @media (max-width: 400px) {
   .fc .fc-timegrid-event .fc-event-title {
@@ -682,6 +709,7 @@ body {
 
 /* Optional: tighten list width slightly on small phones so it stays centered nicely */
 @media (max-width: 850px) {
+
   .fc .fc-listWeek-view .fc-list-table table,
   .fc .fc-listDay-view .fc-list-table table {
     max-width: 120% !important;
@@ -956,6 +984,7 @@ body {
 .fc-event a {
   pointer-events: none !important;
 }
+
 .fc-event a.wa-register-link {
   pointer-events: auto !important;
 }
