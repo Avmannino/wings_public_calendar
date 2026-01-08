@@ -49,7 +49,7 @@ body {
 }
 
 /* Disable sticky headers in FullCalendar scrollgrid */
-.fc .fc-scrollgrid-section-sticky>* {
+.fc .fc-scrollgrid-section-sticky > * {
   position: static !important;
   top: auto !important;
   z-index: auto !important;
@@ -62,7 +62,7 @@ body {
   box-sizing: border-box;
 }
 
-.page>h1 {
+.page > h1 {
   font-size: clamp(20px, 2.4vw + 6px, 34px);
   font-weight: 800;
   letter-spacing: 0.25em;
@@ -203,12 +203,69 @@ body {
   text-align: center;
 }
 
+/* =========================================================
+   ✅ LIST VIEW ONLY: place Advisory Bar between nav arrows and the list
+   FIX: shorten the gap between the advisory bar and the list (~30px)
+   ========================================================= */
+.wa-cal:has(.fc-listWeek-view),
+.wa-cal:has(.fc-listDay-view) {
+  position: relative;
+}
+
+/* Default list positioning (safe even if list buttons are hidden on desktop) */
+.wa-cal:has(.fc-listWeek-view) .wa-advisoryBar,
+.wa-cal:has(.fc-listDay-view) .wa-advisoryBar {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  top: 6px !important;          /* unchanged */
+  margin: 0 !important;
+  z-index: 50 !important;
+}
+
+/* Push list DOWN enough so the day headers never sit behind the advisory
+   ↓ Reduced by 30px (was 108px) */
+.wa-cal:has(.fc-listWeek-view) .fc .fc-view-harness,
+.wa-cal:has(.fc-listDay-view) .fc .fc-view-harness {
+  padding-top: 78px !important;
+}
+
+/* Mobile list view
+   ↓ Reduced by 30px (was 148px) */
+@media (max-width: 850px) {
+  .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
+  .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
+    top: 118px !important;       /* unchanged */
+    width: 91vw !important;
+    max-width: 93vw !important;
+  }
+
+  .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
+  .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness {
+    padding-top: 118px !important;
+  }
+}
+
+/* Extra-small phones
+   ↓ Reduced by 30px (was 158px) */
+@media (max-width: 560px) {
+  .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
+  .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
+    top: 132px !important;       /* unchanged */
+  }
+
+  .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
+  .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness {
+    padding-top: 128px !important;
+  }
+}
+
 @media (min-width: 751px) {
-  .page>h1 {
+  .page > h1 {
     position: relative;
   }
 
-  .page>h1::before {
+  .page > h1::before {
     content: "";
     display: block;
     width: 78px;
@@ -300,7 +357,7 @@ body {
 }
 
 /* Ensure content stays above watermark */
-.fc .fc-view-harness>* {
+.fc .fc-view-harness > * {
   position: relative;
   z-index: 1;
 }
@@ -429,7 +486,6 @@ body {
 
 /* Hide LIST button on anything bigger than a phone */
 @media (min-width: 751px) {
-
   .fc .fc-listWeek-button,
   .fc .fc-listDay-button {
     display: none !important;
@@ -628,8 +684,6 @@ body {
 
 /* =========================================================
    ✅ FIX: LIST VIEW (especially mobile) stacks Title + Register vertically
-   Why your prior rule didn't work: on mobile you set the TITLE cell to `display:flex`
-   in a row, so the Register wrapper becomes a 2nd flex item beside the title.
    ========================================================= */
 .fc tr.evt-lunchtime-dropin td.fc-list-event-title {
   display: flex !important;
@@ -709,7 +763,6 @@ body {
 
 /* Optional: tighten list width slightly on small phones so it stays centered nicely */
 @media (max-width: 850px) {
-
   .fc .fc-listWeek-view .fc-list-table table,
   .fc .fc-listDay-view .fc-list-table table {
     max-width: 120% !important;
@@ -746,7 +799,7 @@ body {
 
 /* 562px–850px — center the header + toolbar + list together */
 @media (min-width: 562px) and (max-width: 850px) {
-  .page>h1 {
+  .page > h1 {
     width: min(680px, 100%) !important;
     text-align: center;
     margin-right: auto !important;
@@ -764,7 +817,7 @@ body {
     max-width: 580px !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    margin-top: -45px;
+    margin-top: -25px;
     text-align: center !important;
   }
 
@@ -857,7 +910,7 @@ body {
   max-width: 91vw !important;
 }
 
-.fc .fc-list-day-cushion>th {
+.fc .fc-list-day-cushion > th {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -1122,7 +1175,7 @@ body {
     margin-left: 8px;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
+  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
     display: inline-block !important;
     width: 100% !important;
     color: #fff !important;
@@ -1200,14 +1253,14 @@ body {
 }
 
 @media (max-width: 560px) {
-  .page>h1 {
+  .page > h1 {
     letter-spacing: 0.05em;
     display: none;
   }
 }
 
 @media (min-width: 1200px) {
-  .page>h1 {
+  .page > h1 {
     margin-bottom: -25px;
     letter-spacing: 0.27em;
   }
@@ -1288,14 +1341,14 @@ body {
     margin-right: auto !important;
   }
 
-  .page>h1 {
+  .page > h1 {
     margin-left: 0 !important;
     text-align: center !important;
   }
 }
 
 @media (min-width: 562px) and (max-width: 749px) {
-  .page>h1 {
+  .page > h1 {
     width: 93vw !important;
     max-width: 93vw !important;
     margin-left: auto !important;
