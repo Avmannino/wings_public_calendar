@@ -109,28 +109,6 @@ function escapeHtml(str = "") {
     .replaceAll("'", "'");
 }
 
-const MANUAL_ADVISORIES = [
-  {
-    id: "cosmic-fri-time-change",
-    start: "2026-01-09",
-    end: "2026-01-10",
-    pill: "TIME CHANGE",
-    message:
-      " Friday Cosmic Skate is 8:35pm–10:00pm this week (instead of 7:30pm–9:30pm).",
-  },
-];
-
-// Helpers for advisory range checks
-function parseYMD(ymd) {
-  const [y, m, d] = String(ymd).split("-").map((n) => parseInt(n, 10));
-  if (!y || !m || !d) return null;
-  return new Date(y, m - 1, d);
-}
-
-function rangesOverlap(aStart, aEnd, bStart, bEnd) {
-  return aStart < bEnd && bStart < aEnd;
-}
-
 function extractNote(description = "") {
   const lines = String(description || "")
     .split(/\r?\n/)
@@ -140,20 +118,8 @@ function extractNote(description = "") {
   for (const line of lines) {
     const lower = line.toLowerCase();
     if (lower.startsWith("note:")) return line.slice(5).trim();
-    if (lower.startsWith("advisory:")) return line.slice(9).trim();
   }
   return "";
-}
-
-function isCancelled(title = "", description = "") {
-  const t = String(title).toLowerCase();
-  const d = String(description).toLowerCase();
-  return (
-    t.includes("cancelled") ||
-    t.includes("canceled") ||
-    d.includes("cancelled") ||
-    d.includes("canceled")
-  );
 }
 
 export default function WingsCalendar() {
@@ -176,7 +142,6 @@ export default function WingsCalendar() {
     return window.matchMedia(MOBILE_QUERY).matches;
   });
   const [isListView, setIsListView] = useState(false);
-  const [activeAdvisories, setActiveAdvisories] = useState([]);
 
   useEffect(() => {
     if (!apiKey || !calendarId) {
@@ -319,7 +284,6 @@ export default function WingsCalendar() {
 
     const gDesc = info.event.extendedProps?.description || "";
     const note = extractNote(gDesc);
-    const cancelled = isCancelled(info.event.title, gDesc);
 
     el.innerHTML = `
       <div class="wa-tipTitle">${escapeHtml(info.event.title || "")}</div>
@@ -333,19 +297,9 @@ export default function WingsCalendar() {
       </div>
 
       ${
-        cancelled
+        note
           ? `<div class="wa-tipRow wa-tipAdvisory">
-               <span class="wa-tipLabel">Advisory</span>
-               <span class="wa-tipValue">
-                 <span class="wa-adv-pill wa-adv-cancelled">CANCELLED</span>
-                 <span class="wa-tipAdvText">${escapeHtml(
-                   note || "This session has been cancelled."
-                 )}</span>
-               </span>
-             </div>`
-          : note
-          ? `<div class="wa-tipRow wa-tipAdvisory">
-               <span class="wa-tipLabel">Advisory</span>
+               <span class="wa-tipLabel">Note</span>
                <span class="wa-tipValue">
                  <span class="wa-adv-pill wa-adv-note">NOTE</span>
                  <span class="wa-tipAdvText">${escapeHtml(note)}</span>
@@ -387,18 +341,9 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
-  function updateActiveAdvisories(viewStart, viewEnd) {
-    const filtered = [];
-    for (const adv of MANUAL_ADVISORIES) {
-      const aStart = parseYMD(adv.start);
-      const aEnd = parseYMD(adv.end);
-      if (!aStart || !aEnd) continue;
-      if (rangesOverlap(aStart, aEnd, viewStart, viewEnd)) filtered.push(adv);
-    }
-    setActiveAdvisories(filtered);
-  }
-
-  const rightButtons = isPhone ? "timeGridWeek,timeGridDay,listWeek" : "timeGridWeek,timeGridDay";
+  const rightButtons = isPhone
+    ? "timeGridWeek,timeGridDay,listWeek"
+    : "timeGridWeek,timeGridDay";
   const calendarHeight = isPhone ? "auto" : "100vh";
 
   return (
@@ -409,34 +354,14 @@ export default function WingsCalendar() {
         isPhone && isListView ? "is-phone-list" : "",
       ].join(" ")}
     >
-      {activeAdvisories.length > 0 && (
-        <div className="wa-advisoryBar" role="status" aria-live="polite">
-          <div className="wa-advisoryBarTitle">Schedule Advisories</div>
-          <ul className="wa-advisoryList">
-            {activeAdvisories.map((a) => (
-              <li key={a.id}>
-                <span
-                  className={[
-                    "wa-adv-pill",
-                    a.pill?.toLowerCase().includes("cancel")
-                      ? "wa-adv-cancelled"
-                      : a.pill?.toLowerCase().includes("time")
-                      ? "wa-adv-time-change"
-                      : "wa-adv-note",
-                  ].join(" ")}
-                >
-                  {a.pill || "NOTE"}
-                </span>
-                <span className="wa-adv-itemText">{a.message}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
       <FullCalendar
         ref={calendarRef}
-        plugins={[timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
+        plugins={[
+          timeGridPlugin,
+          listPlugin,
+          interactionPlugin,
+          googleCalendarPlugin,
+        ]}
         initialView={isPhone ? "listWeek" : "timeGridWeek"}
         headerToolbar={{
           left: "prev,next today",
@@ -468,58 +393,24 @@ export default function WingsCalendar() {
         scrollTime={scrollTime}
         eventClassNames={(arg) => {
           const desc = arg.event.extendedProps?.description || "";
-          const cancelled = isCancelled(arg.event.title, desc);
           const note = extractNote(desc);
-          return [
-            getClassForTitle(arg.event.title),
-            cancelled ? "wa-adv-cancelled" : "",
-            !cancelled && note ? "wa-adv-note" : "",
-          ].filter(Boolean);
+          return [getClassForTitle(arg.event.title), note ? "wa-adv-note" : ""].filter(
+            Boolean
+          );
         }}
         stickyHeaderDates={false}
         datesSet={(arg) => {
           setIsListView(arg.view.type?.startsWith("list"));
-          const viewStart = arg.view?.currentStart || arg.start;
-          const viewEnd = arg.view?.currentEnd || arg.end;
-          if (viewStart && viewEnd) updateActiveAdvisories(viewStart, viewEnd);
         }}
         eventDidMount={(info) => {
-          const desc = info.event.extendedProps?.description || "";
-          const note = extractNote(desc);
-          const cancelled = isCancelled(info.event.title, desc);
-
           info.el
-            .querySelectorAll(".wa-adv-pill, .wa-adv-noteText, .wa-register-wrap, .wa-list-register-wrap")
+            .querySelectorAll(
+              ".wa-adv-pill, .wa-adv-noteText, .wa-register-wrap, .wa-list-register-wrap"
+            )
             .forEach((n) => n.remove());
 
-          if (cancelled || note) {
-            const pill = document.createElement("span");
-            pill.className = `wa-adv-pill ${cancelled ? "wa-adv-cancelled" : "wa-adv-note"}`;
-            pill.textContent = cancelled ? "CANCELLED" : "NOTE";
-
-            if (info.view.type?.startsWith("list")) {
-              const a = info.el.querySelector(".fc-list-event-title a");
-              if (a) {
-                pill.style.marginRight = "8px";
-                a.prepend(pill);
-              }
-              if (note) {
-                const titleCell = info.el.querySelector("td.fc-list-event-title");
-                if (titleCell) {
-                  const noteEl = document.createElement("div");
-                  noteEl.className = "wa-adv-noteText";
-                  noteEl.textContent = note;
-                  titleCell.appendChild(noteEl);
-                }
-              }
-            } else {
-              const main = info.el.querySelector(".fc-event-main");
-              if (main) main.prepend(pill);
-              else info.el.prepend(pill);
-            }
-          }
-
-          const isLunchtime = getClassForTitle(info.event.title) === "evt-lunchtime-dropin";
+          const isLunchtime =
+            getClassForTitle(info.event.title) === "evt-lunchtime-dropin";
           if (!isLunchtime) return;
 
           const makeRegisterLink = () => {
@@ -527,10 +418,9 @@ export default function WingsCalendar() {
             link.className = "wa-register-link";
             link.href = LUNCHTIME_REGISTER_URL;
             link.textContent = "Register";
-            link.target = "_blank"; // ✅ open in new tab/window
-            link.rel = "noopener noreferrer"; // ✅ security best-practice
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
 
-            // prevent any calendar click handlers from running when clicking the link
             link.addEventListener("click", (e) => {
               e.stopPropagation();
             });
@@ -538,7 +428,6 @@ export default function WingsCalendar() {
             return link;
           };
 
-          // timeGrid: under time
           if (info.view.type?.startsWith("timeGrid")) {
             const main = info.el.querySelector(".fc-event-main");
             if (!main) return;
@@ -553,7 +442,6 @@ export default function WingsCalendar() {
             return;
           }
 
-          // list: under title
           if (info.view.type?.startsWith("list")) {
             const titleCell = info.el.querySelector("td.fc-list-event-title");
             if (!titleCell) return;

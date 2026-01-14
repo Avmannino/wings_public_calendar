@@ -256,7 +256,7 @@ body {
 
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
   .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness {
-    padding-top: 128px !important;
+    padding-top: 15px !important;
   }
 }
 
@@ -1083,7 +1083,7 @@ body {
     color: #fff !important;
     transition: all 0.2s ease-in-out !important;
     margin-bottom: -12px;
-    margin-top: 45px;
+    margin-top: 50px;
   }
 
   .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button:hover {
