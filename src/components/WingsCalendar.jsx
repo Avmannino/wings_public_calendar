@@ -87,7 +87,10 @@ function getProgramMeta(title = "") {
     };
   }
 
-  if (t.includes("freestyle") || (t.includes("figure") && t.includes("skating"))) {
+  if (
+    t.includes("freestyle") ||
+    (t.includes("figure") && t.includes("skating"))
+  ) {
     return {
       label: "Freestyle",
       pricing: "Admission: $25 (Skaters) | $10 (Coaches)",
@@ -127,7 +130,7 @@ export default function WingsCalendar() {
   const apiKey = (import.meta.env.VITE_GCAL_API_KEY || "").trim();
   const calendarId = (import.meta.env.VITE_GCAL_ID || "").trim();
 
-  const slotMinTime = (import.meta.env.VITE_SLOT_MIN_TIME || "05:00:00").trim();
+  const slotMinTime = (import.meta.env.VITE_SLOT_MIN_TIME || "06:00:00").trim();
   const slotMaxTime = (import.meta.env.VITE_SLOT_MAX_TIME || "23:00:00").trim();
   const scrollTime = (import.meta.env.VITE_SCROLL_TIME || slotMinTime).trim();
 
@@ -176,6 +179,52 @@ export default function WingsCalendar() {
     const targetView = isPhone ? "listWeek" : "timeGridWeek";
     if (api.view?.type !== targetView) api.changeView(targetView);
   }, [isPhone]);
+
+  // ✅ Subtle "today column" highlight (desktop timeGrid views only)
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    const STYLE_ID = "wa-today-column-highlight";
+    if (document.getElementById(STYLE_ID)) return;
+
+    const style = document.createElement("style");
+    style.id = STYLE_ID;
+    style.textContent = `
+      @media (min-width: 751px) {
+        /* TimeGrid "today" column background + soft inset edge */
+        .wa-cal .fc .fc-timegrid-col.fc-day-today {
+          background: rgba(255, 0, 0, 0.21) !important;
+          box-shadow: inset 0 0 0 9999px rgba(223, 0, 56, 0.06) !important;
+        }
+
+        /* Header cell for today */
+        .wa-cal .fc .fc-col-header-cell.fc-day-today {
+          background: rgba(223, 0, 56, 0.10) !important;
+        }
+
+        /* A subtle underline accent under today's header */
+        .wa-cal .fc .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion {
+          position: relative;
+        }
+        .wa-cal .fc .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion::after {
+          content: "";
+          position: absolute;
+          left: 10%;
+          right: 10%;
+          bottom: -6px;
+          height: 2px;
+          border-radius: 999px;
+          background: rgba(223, 0, 56, 0.55);
+          opacity: 0.55;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      style.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (!isPhone || !isListView) return;
