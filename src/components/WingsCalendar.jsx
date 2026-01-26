@@ -130,7 +130,7 @@ export default function WingsCalendar() {
   const apiKey = (import.meta.env.VITE_GCAL_API_KEY || "").trim();
   const calendarId = (import.meta.env.VITE_GCAL_ID || "").trim();
 
-  const slotMinTime = (import.meta.env.VITE_SLOT_MIN_TIME || "06:00:00").trim();
+  const slotMinTime = (import.meta.env.VITE_SLOT_MIN_TIME || "05:00:00").trim();
   const slotMaxTime = (import.meta.env.VITE_SLOT_MAX_TIME || "23:00:00").trim();
   const scrollTime = (import.meta.env.VITE_SCROLL_TIME || slotMinTime).trim();
 
