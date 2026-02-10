@@ -1058,7 +1058,7 @@ body {
     content: "" !important;
     position: absolute !important;
     top: -25px !important;
-    left: 48% !important;
+    left: 50% !important;
     transform: translateX(-50%) !important;
     width: 70px !important;
     height: 80px !important;
