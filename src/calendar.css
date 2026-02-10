@@ -37,8 +37,8 @@ body {
 /* Gradient on body so it paints full viewport */
 body {
   background:
-    radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.26), transparent 60%),
-    radial-gradient(900px 600px at 92% 18%, rgba(37, 100, 235, 0.11), transparent 62%),
+    radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.164), transparent 60%),
+    radial-gradient(900px 600px at 92% 18%, #2516298e, transparent 62%),
     radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
     linear-gradient(180deg, var(--bg-0), var(--bg-1));
   background-repeat: no-repeat;
@@ -506,6 +506,35 @@ body {
     border: 0 !important;
     outline: none !important;
     box-shadow: none !important; /* does not affect your per-event shadows */
+  }
+}
+
+/* =========================================================
+   ✅ MOBILE LIST VIEW BACKGROUND (behind the list) — KEEPS WATERMARK
+   - Paint #0d162f only on the "behind everything" layer (.cal-wrap / .fc-view-harness)
+   - Keep list/table containers transparent so the watermark remains visible
+   - Does NOT affect desktop calendar
+   ========================================================= */
+@media (max-width: 750px) {
+  /* If .cal-wrap exists inside your .wa-cal wrapper, tint it ONLY for phone list */
+  .wa-cal.is-phone-list .cal-wrap {
+    background: #0d162f !important;
+  }
+
+  /* This is the key layer: it sits behind the list content but above the page */
+  .wa-cal.is-phone-list .fc .fc-view-harness {
+    background: #0d162f !important;
+  }
+
+  /* IMPORTANT: keep these transparent so they don't "cover" the watermark */
+  .wa-cal.is-phone-list .fc,
+  .wa-cal.is-phone-list .fc-media-screen,
+  .wa-cal.is-phone-list .fc .fc-scroller-harness,
+  .wa-cal.is-phone-list .fc .fc-scroller,
+  .wa-cal.is-phone-list .fc .fc-list,
+  .wa-cal.is-phone-list .fc .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-list-table table {
+    background: transparent !important;
   }
 }
 
