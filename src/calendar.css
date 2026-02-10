@@ -493,6 +493,23 @@ body {
 }
 
 /* =========================================================
+   ✅ REMOVE OUTER BORDER ONLY ON MOBILE LIST VIEW (your screenshot)
+   ========================================================= */
+@media (max-width: 750px) {
+  .wa-cal.is-phone-list .fc-media-screen,
+  .wa-cal.is-phone-list .fc,
+  .wa-cal.is-phone-list .fc-theme-standard .fc-scrollgrid,
+  .wa-cal.is-phone-list .fc .fc-scrollgrid,
+  .wa-cal.is-phone-list .fc .fc-list,
+  .wa-cal.is-phone-list .fc .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-list-table table {
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important; /* does not affect your per-event shadows */
+  }
+}
+
+/* =========================================================
    MOBILE LIST VIEW TOOLBAR: ONLY PREV/NEXT ARROWS
    ========================================================= */
 .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
