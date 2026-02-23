@@ -1,3 +1,5 @@
+// WingsCalendar.jsx
+
 import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -5,8 +7,7 @@ import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 
-const LUNCHTIME_REGISTER_URL =
-  "https://tms.ezfacility.com/OnlineRegistrations/Register.aspx?CompanyID=8390&GroupID=3986808#SelectRegistrationType";
+const LUNCHTIME_RSVP_URL = "https://www.wingsarena.com/lunchtime-hockey";
 
 function getClassForTitle(title = "") {
   const t = title.toLowerCase();
@@ -87,10 +88,7 @@ function getProgramMeta(title = "") {
     };
   }
 
-  if (
-    t.includes("freestyle") ||
-    (t.includes("figure") && t.includes("skating"))
-  ) {
+  if (t.includes("freestyle") || (t.includes("figure") && t.includes("skating"))) {
     return {
       label: "Freestyle",
       pricing: "Admission: $25 (Skaters) | $10 (Coaches)",
@@ -151,7 +149,7 @@ export default function WingsCalendar() {
       console.warn("[WingsCalendar] Missing Google Calendar config:", {
         apiKeyPresent: !!apiKey,
         calendarIdPresent: !!calendarId,
-        calendarId,
+        calendarIdPresentValue: calendarId,
       });
     }
   }, [apiKey, calendarId]);
@@ -443,15 +441,17 @@ export default function WingsCalendar() {
         eventClassNames={(arg) => {
           const desc = arg.event.extendedProps?.description || "";
           const note = extractNote(desc);
-          return [getClassForTitle(arg.event.title), note ? "wa-adv-note" : ""].filter(
-            Boolean
-          );
+          return [
+            getClassForTitle(arg.event.title),
+            note ? "wa-adv-note" : "",
+          ].filter(Boolean);
         }}
         stickyHeaderDates={false}
         datesSet={(arg) => {
           setIsListView(arg.view.type?.startsWith("list"));
         }}
         eventDidMount={(info) => {
+          // remove any previously-injected elements (prevents duplicates on rerender)
           info.el
             .querySelectorAll(
               ".wa-adv-pill, .wa-adv-noteText, .wa-register-wrap, .wa-list-register-wrap"
@@ -462,11 +462,11 @@ export default function WingsCalendar() {
             getClassForTitle(info.event.title) === "evt-lunchtime-dropin";
           if (!isLunchtime) return;
 
-          const makeRegisterLink = () => {
+          const makeRsvpLink = () => {
             const link = document.createElement("a");
             link.className = "wa-register-link";
-            link.href = LUNCHTIME_REGISTER_URL;
-            link.textContent = "Register";
+            link.href = LUNCHTIME_RSVP_URL;
+            link.textContent = "RSVP";
             link.target = "_blank";
             link.rel = "noopener noreferrer";
 
@@ -477,6 +477,7 @@ export default function WingsCalendar() {
             return link;
           };
 
+          // timeGrid views: place RSVP just under the time
           if (info.view.type?.startsWith("timeGrid")) {
             const main = info.el.querySelector(".fc-event-main");
             if (!main) return;
@@ -486,11 +487,12 @@ export default function WingsCalendar() {
 
             const wrap = document.createElement("div");
             wrap.className = "wa-register-wrap";
-            wrap.appendChild(makeRegisterLink());
+            wrap.appendChild(makeRsvpLink());
             timeEl.insertAdjacentElement("afterend", wrap);
             return;
           }
 
+          // list views: place RSVP under the title
           if (info.view.type?.startsWith("list")) {
             const titleCell = info.el.querySelector("td.fc-list-event-title");
             if (!titleCell) return;
@@ -498,7 +500,7 @@ export default function WingsCalendar() {
             const anchor = titleCell.querySelector("a");
             const wrap = document.createElement("div");
             wrap.className = "wa-list-register-wrap";
-            wrap.appendChild(makeRegisterLink());
+            wrap.appendChild(makeRsvpLink());
 
             if (anchor) anchor.insertAdjacentElement("afterend", wrap);
             else titleCell.appendChild(wrap);
@@ -509,7 +511,10 @@ export default function WingsCalendar() {
           showTooltip(info);
 
           const move = (ev) => {
-            if (tipRef.current && tipRef.current.classList.contains("is-visible")) {
+            if (
+              tipRef.current &&
+              tipRef.current.classList.contains("is-visible")
+            ) {
               positionTooltip(tipRef.current, ev);
             }
           };
