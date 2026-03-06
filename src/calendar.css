@@ -49,7 +49,7 @@ body {
 }
 
 /* Disable sticky headers in FullCalendar scrollgrid */
-.fc .fc-scrollgrid-section-sticky > * {
+.fc .fc-scrollgrid-section-sticky>* {
   position: static !important;
   top: auto !important;
   z-index: auto !important;
@@ -62,7 +62,7 @@ body {
   box-sizing: border-box;
 }
 
-.page > h1 {
+.page>h1 {
   font-size: clamp(20px, 2.4vw + 6px, 34px);
   font-weight: 800;
   letter-spacing: 0.25em;
@@ -218,7 +218,8 @@ body {
   position: absolute !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
-  top: 6px !important;          /* unchanged */
+  top: 6px !important;
+  /* unchanged */
   margin: 0 !important;
   z-index: 50 !important;
 }
@@ -233,9 +234,11 @@ body {
 /* Mobile list view
    ↓ Reduced by 30px (was 148px) */
 @media (max-width: 850px) {
+
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
   .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
-    top: 118px !important;       /* unchanged */
+    top: 118px !important;
+    /* unchanged */
     width: 91vw !important;
     max-width: 93vw !important;
   }
@@ -249,9 +252,11 @@ body {
 /* Extra-small phones
    ↓ Reduced by 30px (was 158px) */
 @media (max-width: 560px) {
+
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
   .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
-    top: 12px !important;       /* unchanged */
+    top: 12px !important;
+    /* unchanged */
   }
 
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
@@ -261,11 +266,11 @@ body {
 }
 
 @media (min-width: 751px) {
-  .page > h1 {
+  .page>h1 {
     position: relative;
   }
 
-  .page > h1::before {
+  .page>h1::before {
     content: "";
     display: block;
     width: 78px;
@@ -357,7 +362,7 @@ body {
 }
 
 /* Ensure content stays above watermark */
-.fc .fc-view-harness > * {
+.fc .fc-view-harness>* {
   position: relative;
   z-index: 1;
 }
@@ -486,6 +491,7 @@ body {
 
 /* Hide LIST button on anything bigger than a phone */
 @media (min-width: 751px) {
+
   .fc .fc-listWeek-button,
   .fc .fc-listDay-button {
     display: none !important;
@@ -496,6 +502,7 @@ body {
    ✅ REMOVE OUTER BORDER ONLY ON MOBILE LIST VIEW (your screenshot)
    ========================================================= */
 @media (max-width: 750px) {
+
   .wa-cal.is-phone-list .fc-media-screen,
   .wa-cal.is-phone-list .fc,
   .wa-cal.is-phone-list .fc-theme-standard .fc-scrollgrid,
@@ -505,7 +512,8 @@ body {
   .wa-cal.is-phone-list .fc .fc-list-table table {
     border: 0 !important;
     outline: none !important;
-    box-shadow: none !important; /* does not affect your per-event shadows */
+    box-shadow: none !important;
+    /* does not affect your per-event shadows */
   }
 }
 
@@ -516,6 +524,7 @@ body {
    - Does NOT affect desktop calendar
    ========================================================= */
 @media (max-width: 750px) {
+
   /* If .cal-wrap exists inside your .wa-cal wrapper, tint it ONLY for phone list */
   .wa-cal.is-phone-list .cal-wrap {
     background: #0d162f !important;
@@ -574,61 +583,69 @@ body {
   display: none !important;
 }
 
+
 /* ====== Events (base) ====== */
 .fc .fc-event {
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   border-width: 1px !important;
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.58);
   overflow: hidden;
   text-align: center;
   box-sizing: border-box !important;
-  width: 100% !important;
-  max-width: 100% !important;
   margin: 0 !important;
 }
 
-/* Only shrink events in timeGrid views */
+/* Center the FullCalendar event HARNESS inside each day column */
+.fc .fc-timegrid-col-events .fc-timegrid-event-harness {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* Actual event box */
 .fc .fc-timegrid-event {
-  width: 90% !important;
-  max-width: 90% !important;
-  margin: 0 auto !important;
+  width: 89% !important;
+  max-width: 89% !important;
+  margin: 0 !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
 }
 
 /* Event Colors (timeGrid) */
 .fc-event.evt-stickpuck {
-  background: linear-gradient(135deg, #093b1c, #138a3fa5) !important;
-  border-color: rgba(34, 197, 94, 0.9) !important;
+  background: #042181ce !important;
+  border-color: rgba(255, 255, 255, 0.658) !important;
 }
 
 .fc-event.evt-publicskate {
-  background: linear-gradient(135deg, #461414, #bd2222ae) !important;
-  border-color: rgba(239, 68, 68, 0.9) !important;
+  background: #b30606da !important;
+  border-color: rgba(250, 206, 206, 0.678) !important;
 }
 
 .fc-event.evt-cosmic {
-  background: linear-gradient(135deg, #281d47, #7c3aed91) !important;
-  border-color: rgba(125, 85, 245, 0.9) !important;
+  background: #6007f8ee !important;
+  border-color: rgba(196, 176, 255, 0.9) !important;
 }
 
 .fc-event.evt-openhockey {
-  background: linear-gradient(135deg, #533f0d, #db8d06a5) !important;
+  background: #f3debaad !important;
   border-color: rgba(251, 191, 36, 0.9) !important;
 }
 
 .fc-event.evt-freestyle {
-  background: linear-gradient(135deg, #123b3b, rgba(42, 168, 168, 0.688)) !important;
-  border-color: rgba(42, 168, 168, 0.9) !important;
+  background: rgba(42, 168, 168, 0.719) !important;
+  border-color: rgba(192, 255, 255, 0.678) !important;
 }
 
 /* Lunchtime Adult Drop-In Hockey (orange gradient) */
 .fc-event.evt-lunchtime-dropin {
-  background: linear-gradient(135deg, #6b2400, rgba(255, 122, 24, 0.78)) !important;
-  border-color: rgba(249, 115, 22, 0.95) !important;
+  background: rgba(218, 93, 5, 0.78) !important;
+  border-color: rgba(255, 217, 189, 0.61) !important;
 }
 
 .fc-event.evt-default {
-  background: linear-gradient(135deg, #533f0d, #db8c04cb) !important;
-  border-color: rgba(251, 191, 36, 0.9) !important;
+  background: #db8c04e1 !important;
+  border-color: rgba(255, 228, 158, 0.637) !important;
 }
 
 /* Center Title Above Time inside event (timeGrid views) */
@@ -639,7 +656,6 @@ body {
   align-items: center !important;
   text-align: center !important;
   height: 100% !important;
-  width: 100% !important;
   padding: 0 !important;
   overflow: hidden !important;
   font-family: Industrie;
@@ -740,7 +756,7 @@ body {
 }
 
 /* Make the event title anchor take a full line */
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title > a:not(.wa-register-link) {
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title>a:not(.wa-register-link) {
   display: block !important;
   width: 100% !important;
 }
@@ -809,6 +825,7 @@ body {
 
 /* Optional: tighten list width slightly on small phones so it stays centered nicely */
 @media (max-width: 850px) {
+
   .fc .fc-listWeek-view .fc-list-table table,
   .fc .fc-listDay-view .fc-list-table table {
     max-width: 120% !important;
@@ -845,7 +862,7 @@ body {
 
 /* 562px–850px — center the header + toolbar + list together */
 @media (min-width: 562px) and (max-width: 850px) {
-  .page > h1 {
+  .page>h1 {
     width: min(680px, 100%) !important;
     text-align: center;
     margin-right: auto !important;
@@ -956,7 +973,7 @@ body {
   max-width: 91vw !important;
 }
 
-.fc .fc-list-day-cushion > th {
+.fc .fc-list-day-cushion>th {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -1221,7 +1238,7 @@ body {
     margin-left: 8px;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
+  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
     display: inline-block !important;
     width: 100% !important;
     color: #fff !important;
@@ -1299,16 +1316,16 @@ body {
 }
 
 @media (max-width: 560px) {
-  .page > h1 {
+  .page>h1 {
     letter-spacing: 0.05em;
     display: none;
   }
 }
 
 @media (min-width: 1200px) {
-  .page > h1 {
+  .page>h1 {
     margin-bottom: -25px;
-    letter-spacing: 0.27em;
+    letter-spacing: 0.25em;
   }
 }
 
@@ -1388,14 +1405,14 @@ body {
     margin-right: auto !important;
   }
 
-  .page > h1 {
+  .page>h1 {
     margin-left: 0 !important;
     text-align: center !important;
   }
 }
 
 @media (min-width: 562px) and (max-width: 749px) {
-  .page > h1 {
+  .page>h1 {
     width: 93vw !important;
     max-width: 93vw !important;
     margin-left: auto !important;
