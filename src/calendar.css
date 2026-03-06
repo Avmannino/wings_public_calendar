@@ -15,7 +15,7 @@
   --bg-1: #00325a;
   --panel: rgba(255, 255, 255, 0.06);
   --panel-2: rgba(255, 255, 255, 0.08);
-  --stroke: rgba(255, 255, 255, 0.10);
+  --stroke: rgba(255, 255, 255, 0.1);
   --stroke-2: rgba(255, 255, 255, 0.14);
   --text: #e5e7eb;
   --muted: rgba(229, 231, 235, 0.72);
@@ -38,7 +38,7 @@ body {
 body {
   background:
     radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.164), transparent 60%),
-    radial-gradient(900px 600px at 92% 18%, #2516298e, transparent 62%),
+    radial-gradient(900px 600px at 92% 18%, #25162900, transparent 62%),
     radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
     linear-gradient(180deg, var(--bg-0), var(--bg-1));
   background-repeat: no-repeat;
@@ -49,7 +49,7 @@ body {
 }
 
 /* Disable sticky headers in FullCalendar scrollgrid */
-.fc .fc-scrollgrid-section-sticky>* {
+.fc .fc-scrollgrid-section-sticky > * {
   position: static !important;
   top: auto !important;
   z-index: auto !important;
@@ -62,7 +62,7 @@ body {
   box-sizing: border-box;
 }
 
-.page>h1 {
+.page > h1 {
   font-size: clamp(20px, 2.4vw + 6px, 34px);
   font-weight: 800;
   letter-spacing: 0.25em;
@@ -147,7 +147,7 @@ body {
   text-align: center;
   white-space: nowrap;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   color: #fff;
   flex: 0 0 auto;
   margin-top: 0px;
@@ -205,7 +205,6 @@ body {
 
 /* =========================================================
    ✅ LIST VIEW ONLY: place Advisory Bar between nav arrows and the list
-   FIX: shorten the gap between the advisory bar and the list (~30px)
    ========================================================= */
 .wa-cal:has(.fc-listWeek-view),
 .wa-cal:has(.fc-listDay-view) {
@@ -219,26 +218,21 @@ body {
   left: 50% !important;
   transform: translateX(-50%) !important;
   top: 6px !important;
-  /* unchanged */
   margin: 0 !important;
   z-index: 50 !important;
 }
 
-/* Push list DOWN enough so the day headers never sit behind the advisory
-   ↓ Reduced by 30px (was 108px) */
+/* Push list DOWN enough so the day headers never sit behind the advisory */
 .wa-cal:has(.fc-listWeek-view) .fc .fc-view-harness,
 .wa-cal:has(.fc-listDay-view) .fc .fc-view-harness {
   padding-top: 78px !important;
 }
 
-/* Mobile list view
-   ↓ Reduced by 30px (was 148px) */
+/* Mobile list view */
 @media (max-width: 850px) {
-
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
   .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
     top: 118px !important;
-    /* unchanged */
     width: 91vw !important;
     max-width: 93vw !important;
   }
@@ -249,14 +243,11 @@ body {
   }
 }
 
-/* Extra-small phones
-   ↓ Reduced by 30px (was 158px) */
+/* Extra-small phones */
 @media (max-width: 560px) {
-
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
   .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
     top: 12px !important;
-    /* unchanged */
   }
 
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
@@ -266,11 +257,11 @@ body {
 }
 
 @media (min-width: 751px) {
-  .page>h1 {
+  .page > h1 {
     position: relative;
   }
 
-  .page>h1::before {
+  .page > h1::before {
     content: "";
     display: block;
     width: 78px;
@@ -362,7 +353,7 @@ body {
 }
 
 /* Ensure content stays above watermark */
-.fc .fc-view-harness>* {
+.fc .fc-view-harness > * {
   position: relative;
   z-index: 1;
 }
@@ -375,12 +366,12 @@ body {
   width: 100%;
 }
 
-/* Prevent inner scrollbars; let FullCalendar fill the viewport height and shrink slots instead */
+/* Prevent inner scrollbars */
 .fc .fc-scroller {
   overflow-y: hidden !important;
 }
 
-/* Desktop: shrink slot height so all visible hours fit tighter into the viewport */
+/* Desktop: shrink slot height */
 @media (min-width: 751px) {
   .wa-cal .fc .fc-timegrid-slot {
     height: 1.3rem !important;
@@ -491,7 +482,6 @@ body {
 
 /* Hide LIST button on anything bigger than a phone */
 @media (min-width: 751px) {
-
   .fc .fc-listWeek-button,
   .fc .fc-listDay-button {
     display: none !important;
@@ -499,10 +489,9 @@ body {
 }
 
 /* =========================================================
-   ✅ REMOVE OUTER BORDER ONLY ON MOBILE LIST VIEW (your screenshot)
+   ✅ REMOVE OUTER BORDER ONLY ON MOBILE LIST VIEW
    ========================================================= */
 @media (max-width: 750px) {
-
   .wa-cal.is-phone-list .fc-media-screen,
   .wa-cal.is-phone-list .fc,
   .wa-cal.is-phone-list .fc-theme-standard .fc-scrollgrid,
@@ -513,29 +502,21 @@ body {
     border: 0 !important;
     outline: none !important;
     box-shadow: none !important;
-    /* does not affect your per-event shadows */
   }
 }
 
 /* =========================================================
-   ✅ MOBILE LIST VIEW BACKGROUND (behind the list) — KEEPS WATERMARK
-   - Paint #0d162f only on the "behind everything" layer (.cal-wrap / .fc-view-harness)
-   - Keep list/table containers transparent so the watermark remains visible
-   - Does NOT affect desktop calendar
+   ✅ MOBILE LIST VIEW BACKGROUND
    ========================================================= */
 @media (max-width: 750px) {
-
-  /* If .cal-wrap exists inside your .wa-cal wrapper, tint it ONLY for phone list */
   .wa-cal.is-phone-list .cal-wrap {
     background: #0d162f !important;
   }
 
-  /* This is the key layer: it sits behind the list content but above the page */
   .wa-cal.is-phone-list .fc .fc-view-harness {
     background: #0d162f !important;
   }
 
-  /* IMPORTANT: keep these transparent so they don't "cover" the watermark */
   .wa-cal.is-phone-list .fc,
   .wa-cal.is-phone-list .fc-media-screen,
   .wa-cal.is-phone-list .fc .fc-scroller-harness,
@@ -582,7 +563,6 @@ body {
 .wa-cal.is-phone-list .fc .fc-listDay-button {
   display: none !important;
 }
-
 
 /* ====== Events (base) ====== */
 .fc .fc-event {
@@ -637,7 +617,7 @@ body {
   border-color: rgba(192, 255, 255, 0.678) !important;
 }
 
-/* Lunchtime Adult Drop-In Hockey (orange gradient) */
+/* Lunchtime Adult Drop-In Hockey */
 .fc-event.evt-lunchtime-dropin {
   background: rgba(218, 93, 5, 0.78) !important;
   border-color: rgba(255, 217, 189, 0.61) !important;
@@ -745,7 +725,7 @@ body {
 }
 
 /* =========================================================
-   ✅ FIX: LIST VIEW (especially mobile) stacks Title + Register vertically
+   ✅ FIX: LIST VIEW stacks Title + Register vertically
    ========================================================= */
 .fc tr.evt-lunchtime-dropin td.fc-list-event-title {
   display: flex !important;
@@ -756,7 +736,7 @@ body {
 }
 
 /* Make the event title anchor take a full line */
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title>a:not(.wa-register-link) {
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title > a:not(.wa-register-link) {
   display: block !important;
   width: 100% !important;
 }
@@ -768,7 +748,7 @@ body {
   margin-top: 0 !important;
 }
 
-/* Slight bump on very small phones so it does not get too tiny */
+/* Slight bump on very small phones */
 @media (max-width: 400px) {
   .fc .fc-timegrid-event .fc-event-title {
     font-size: clamp(13px, 3.2vw, 15px) !important;
@@ -825,7 +805,6 @@ body {
 
 /* Optional: tighten list width slightly on small phones so it stays centered nicely */
 @media (max-width: 850px) {
-
   .fc .fc-listWeek-view .fc-list-table table,
   .fc .fc-listDay-view .fc-list-table table {
     max-width: 120% !important;
@@ -862,7 +841,7 @@ body {
 
 /* 562px–850px — center the header + toolbar + list together */
 @media (min-width: 562px) and (max-width: 850px) {
-  .page>h1 {
+  .page > h1 {
     width: min(680px, 100%) !important;
     text-align: center;
     margin-right: auto !important;
@@ -922,6 +901,15 @@ body {
   background: inherit !important;
 }
 
+/* ✅ Horizontal separators between list events (desktop/table layout) */
+.fc .fc-list-table tr.fc-list-event td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.185) !important;
+}
+
+.fc .fc-list-table tr.fc-list-event:last-of-type td {
+  border-bottom-color: transparent !important;
+}
+
 /* Columns: TIME | GRAPHIC | TITLE (base) */
 .fc td.fc-list-event-time {
   width: 220px !important;
@@ -973,7 +961,7 @@ body {
   max-width: 91vw !important;
 }
 
-.fc .fc-list-day-cushion>th {
+.fc .fc-list-day-cushion > th {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -1177,9 +1165,33 @@ body {
     width: 100% !important;
     margin: 8px 0 !important;
     border-radius: 12px !important;
-    background: var(--panel-2) !important;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
-    overflow: hidden !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    position: relative !important;
+  }
+
+  /* ✅ Horizontal separators between list events (mobile/flex layout) */
+  .wa-cal.is-phone-list .fc tr.fc-list-event::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.349) 12%,
+      rgba(255, 255, 255, 0.712) 50%,
+      rgba(255, 255, 255, 0.301) 88%,
+      rgba(255, 255, 255, 0)
+    );
+    pointer-events: none;
+  }
+
+  .wa-cal.is-phone-list .fc tr.fc-list-event:last-of-type::after {
+    display: none;
   }
 
   .wa-cal.is-phone-list .fc .fc-list-event td {
@@ -1238,7 +1250,7 @@ body {
     margin-left: 8px;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
+  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
     display: inline-block !important;
     width: 100% !important;
     color: #fff !important;
@@ -1316,14 +1328,14 @@ body {
 }
 
 @media (max-width: 560px) {
-  .page>h1 {
+  .page > h1 {
     letter-spacing: 0.05em;
     display: none;
   }
 }
 
 @media (min-width: 1200px) {
-  .page>h1 {
+  .page > h1 {
     margin-bottom: -25px;
     letter-spacing: 0.25em;
   }
@@ -1405,14 +1417,14 @@ body {
     margin-right: auto !important;
   }
 
-  .page>h1 {
+  .page > h1 {
     margin-left: 0 !important;
     text-align: center !important;
   }
 }
 
 @media (min-width: 562px) and (max-width: 749px) {
-  .page>h1 {
+  .page > h1 {
     width: 93vw !important;
     max-width: 93vw !important;
     margin-left: auto !important;
