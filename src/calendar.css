@@ -511,14 +511,29 @@ body {
 
 /* =========================================================
    ✅ MOBILE LIST VIEW BACKGROUND
+   Match the body gradient so the list blends into the page
    ========================================================= */
 @media (max-width: 750px) {
   .wa-cal.is-phone-list .cal-wrap {
-    background: #0d162f !important;
+    background:
+      radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.164), transparent 60%),
+      radial-gradient(900px 600px at 92% 18%, #25162900, transparent 62%),
+      radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1)) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center top !important;
   }
 
   .wa-cal.is-phone-list .fc .fc-view-harness {
-    background: #0d162f !important;
+    background:
+      radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.164), transparent 60%),
+      radial-gradient(900px 600px at 92% 18%, #25162900, transparent 62%),
+      radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1)) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center top !important;
   }
 
   .wa-cal.is-phone-list .fc,
