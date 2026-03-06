@@ -49,7 +49,7 @@ body {
 }
 
 /* Disable sticky headers in FullCalendar scrollgrid */
-.fc .fc-scrollgrid-section-sticky > * {
+.fc .fc-scrollgrid-section-sticky>* {
   position: static !important;
   top: auto !important;
   z-index: auto !important;
@@ -62,7 +62,7 @@ body {
   box-sizing: border-box;
 }
 
-.page > h1 {
+.page>h1 {
   font-size: clamp(20px, 2.4vw + 6px, 34px);
   font-weight: 800;
   letter-spacing: 0.25em;
@@ -230,6 +230,7 @@ body {
 
 /* Mobile list view */
 @media (max-width: 850px) {
+
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
   .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
     top: 118px !important;
@@ -245,6 +246,7 @@ body {
 
 /* Extra-small phones */
 @media (max-width: 560px) {
+
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
   .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
     top: 12px !important;
@@ -257,11 +259,11 @@ body {
 }
 
 @media (min-width: 751px) {
-  .page > h1 {
+  .page>h1 {
     position: relative;
   }
 
-  .page > h1::before {
+  .page>h1::before {
     content: "";
     display: block;
     width: 78px;
@@ -353,7 +355,7 @@ body {
 }
 
 /* Ensure content stays above watermark */
-.fc .fc-view-harness > * {
+.fc .fc-view-harness>* {
   position: relative;
   z-index: 1;
 }
@@ -482,6 +484,7 @@ body {
 
 /* Hide LIST button on anything bigger than a phone */
 @media (min-width: 751px) {
+
   .fc .fc-listWeek-button,
   .fc .fc-listDay-button {
     display: none !important;
@@ -492,6 +495,7 @@ body {
    ✅ REMOVE OUTER BORDER ONLY ON MOBILE LIST VIEW
    ========================================================= */
 @media (max-width: 750px) {
+
   .wa-cal.is-phone-list .fc-media-screen,
   .wa-cal.is-phone-list .fc,
   .wa-cal.is-phone-list .fc-theme-standard .fc-scrollgrid,
@@ -736,7 +740,7 @@ body {
 }
 
 /* Make the event title anchor take a full line */
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title > a:not(.wa-register-link) {
+.fc tr.evt-lunchtime-dropin td.fc-list-event-title>a:not(.wa-register-link) {
   display: block !important;
   width: 100% !important;
 }
@@ -805,6 +809,7 @@ body {
 
 /* Optional: tighten list width slightly on small phones so it stays centered nicely */
 @media (max-width: 850px) {
+
   .fc .fc-listWeek-view .fc-list-table table,
   .fc .fc-listDay-view .fc-list-table table {
     max-width: 120% !important;
@@ -841,7 +846,7 @@ body {
 
 /* 562px–850px — center the header + toolbar + list together */
 @media (min-width: 562px) and (max-width: 850px) {
-  .page > h1 {
+  .page>h1 {
     width: min(680px, 100%) !important;
     text-align: center;
     margin-right: auto !important;
@@ -901,11 +906,21 @@ body {
   background: inherit !important;
 }
 
-/* ✅ Horizontal separators between list events (desktop/table layout) */
 .fc .fc-list-table tr.fc-list-event td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.185) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
 }
 
+/* No separator under the final event before the next day header */
+.fc .fc-list-table tr.fc-list-event:has(+ .fc-list-day) td {
+  border-bottom-color: transparent !important;
+}
+
+/* No separator under the very last event in the list */
+.fc .fc-list-table tr.fc-list-event:last-of-type td {
+  border-bottom-color: transparent !important;
+}
+
+/* No separator under the very last event in the list */
 .fc .fc-list-table tr.fc-list-event:last-of-type td {
   border-bottom-color: transparent !important;
 }
@@ -961,7 +976,7 @@ body {
   max-width: 91vw !important;
 }
 
-.fc .fc-list-day-cushion > th {
+.fc .fc-list-day-cushion>th {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -1171,7 +1186,6 @@ body {
     position: relative !important;
   }
 
-  /* ✅ Horizontal separators between list events (mobile/flex layout) */
   .wa-cal.is-phone-list .fc tr.fc-list-event::after {
     content: "";
     position: absolute;
@@ -1179,17 +1193,21 @@ body {
     right: 0;
     bottom: -4px;
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.349) 12%,
-      rgba(255, 255, 255, 0.712) 50%,
-      rgba(255, 255, 255, 0.301) 88%,
-      rgba(255, 255, 255, 0)
-    );
+    background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.336) 12%,
+        rgba(255, 255, 255, 0.767) 50%,
+        rgba(255, 255, 255, 0.342) 88%,
+        rgba(255, 255, 255, 0));
     pointer-events: none;
   }
 
+  /* No separator under the final event before the next day header */
+  .wa-cal.is-phone-list .fc tr.fc-list-event:has(+ .fc-list-day)::after {
+    display: none;
+  }
+
+  /* No separator under the very last event in the list */
   .wa-cal.is-phone-list .fc tr.fc-list-event:last-of-type::after {
     display: none;
   }
@@ -1250,7 +1268,7 @@ body {
     margin-left: 8px;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-title > a {
+  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
     display: inline-block !important;
     width: 100% !important;
     color: #fff !important;
@@ -1328,14 +1346,14 @@ body {
 }
 
 @media (max-width: 560px) {
-  .page > h1 {
+  .page>h1 {
     letter-spacing: 0.05em;
     display: none;
   }
 }
 
 @media (min-width: 1200px) {
-  .page > h1 {
+  .page>h1 {
     margin-bottom: -25px;
     letter-spacing: 0.25em;
   }
@@ -1417,14 +1435,14 @@ body {
     margin-right: auto !important;
   }
 
-  .page > h1 {
+  .page>h1 {
     margin-left: 0 !important;
     text-align: center !important;
   }
 }
 
 @media (min-width: 562px) and (max-width: 749px) {
-  .page > h1 {
+  .page>h1 {
     width: 93vw !important;
     max-width: 93vw !important;
     margin-left: auto !important;
