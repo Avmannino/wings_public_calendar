@@ -622,13 +622,13 @@ body {
 }
 
 .fc-event.evt-cosmic {
-  background: #6007f8ee !important;
-  border-color: rgba(196, 176, 255, 0.9) !important;
+  background: #7707f8ee !important;
+  border-color: rgba(228, 221, 250, 0.9) !important;
 }
 
 .fc-event.evt-openhockey {
-  background: #f3debaad !important;
-  border-color: rgba(251, 191, 36, 0.9) !important;
+  background: #db961ee8 !important;
+  border-color: rgba(216, 215, 213, 0.9) !important;
 }
 
 .fc-event.evt-freestyle {
