@@ -1193,7 +1193,7 @@ body {
     align-items: center !important;
     justify-content: flex-start !important;
     width: 100% !important;
-    margin: 8px 0 !important;
+    margin: 15px 0 !important;
     border-radius: 12px !important;
     background: transparent !important;
     box-shadow: none !important;
@@ -1206,7 +1206,7 @@ body {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -4px;
+    bottom: -1px;
     height: 1px;
     background: linear-gradient(90deg,
         rgba(255, 255, 255, 0),
@@ -1250,6 +1250,7 @@ body {
     display: flex !important;
     align-items: center !important;
     max-width: 165px;
+    line-height: 1.05 !important;
   }
 
   .wa-cal.is-phone-list .fc td.fc-list-event-time::before {
@@ -1268,9 +1269,10 @@ body {
     content: "|";
     margin-left: 11px;
     margin-right: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     opacity: 0.65;
-    font-size: 28px;
+    font-size: 24px;
+    line-height: 1;
     color: #686868;
   }
 
@@ -1290,7 +1292,7 @@ body {
     font-size: clamp(16px, 3.3vw, 19px) !important;
     font-weight: 100 !important;
     text-decoration: none !important;
-    line-height: 1.2 !important;
+    line-height: 1.05 !important;
     margin-top: 0px;
   }
 
