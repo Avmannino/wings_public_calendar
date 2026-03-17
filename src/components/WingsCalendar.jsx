@@ -1,5 +1,3 @@
-// WingsCalendar.jsx
-
 import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -123,6 +121,32 @@ function extractNote(description = "") {
   return "";
 }
 
+function startOfToday() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+function addDays(date, days) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+function startOfWeekSunday(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() - d.getDay());
+  return d;
+}
+
+function isSameDay(a, b) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
 export default function WingsCalendar() {
   const timeZone = import.meta.env.VITE_TZ || "America/New_York";
   const apiKey = (import.meta.env.VITE_GCAL_API_KEY || "").trim();
@@ -137,6 +161,7 @@ export default function WingsCalendar() {
   const calendarRef = useRef(null);
 
   const MOBILE_QUERY = "(max-width: 750px)";
+  const MOBILE_LIST_VIEW = "listFuture";
 
   const [isPhone, setIsPhone] = useState(() => {
     if (typeof window === "undefined" || !window.matchMedia) return false;
@@ -174,11 +199,10 @@ export default function WingsCalendar() {
   useEffect(() => {
     const api = calendarRef.current?.getApi?.();
     if (!api) return;
-    const targetView = isPhone ? "listWeek" : "timeGridWeek";
+    const targetView = isPhone ? MOBILE_LIST_VIEW : "timeGridWeek";
     if (api.view?.type !== targetView) api.changeView(targetView);
   }, [isPhone]);
 
-  // ✅ Subtle "today column" highlight (desktop timeGrid views only)
   useEffect(() => {
     if (typeof document === "undefined") return;
 
@@ -189,18 +213,15 @@ export default function WingsCalendar() {
     style.id = STYLE_ID;
     style.textContent = `
       @media (min-width: 751px) {
-        /* TimeGrid "today" column background + soft inset edge */
         .wa-cal .fc .fc-timegrid-col.fc-day-today {
           background: rgba(255, 0, 0, 0.21) !important;
           box-shadow: inset 0 0 0 9999px rgba(223, 0, 56, 0.06) !important;
         }
 
-        /* Header cell for today */
         .wa-cal .fc .fc-col-header-cell.fc-day-today {
           background: rgba(223, 0, 56, 0.10) !important;
         }
 
-        /* A subtle underline accent under today's header */
         .wa-cal .fc .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion {
           position: relative;
         }
@@ -388,10 +409,56 @@ export default function WingsCalendar() {
     el.classList.remove("is-visible");
   }
 
+  function goMobileListPrev() {
+    const api = calendarRef.current?.getApi?.();
+    if (!api) return;
+
+    const today = startOfToday();
+    const currentDate = new Date(api.getDate());
+    currentDate.setHours(0, 0, 0, 0);
+
+    const currentWeekStart = startOfWeekSunday(currentDate);
+    const todayWeekStart = startOfWeekSunday(today);
+
+    if (isSameDay(currentWeekStart, todayWeekStart)) {
+      api.gotoDate(today);
+      return;
+    }
+
+    const prevWeekStart = addDays(currentWeekStart, -7);
+
+    if (prevWeekStart < todayWeekStart) {
+      api.gotoDate(today);
+      return;
+    }
+
+    api.gotoDate(prevWeekStart);
+  }
+
+  function goMobileListNext() {
+    const api = calendarRef.current?.getApi?.();
+    if (!api) return;
+
+    const today = startOfToday();
+    const currentDate = new Date(api.getDate());
+    currentDate.setHours(0, 0, 0, 0);
+
+    const currentWeekStart = startOfWeekSunday(currentDate);
+    const todayWeekStart = startOfWeekSunday(today);
+
+    if (isSameDay(currentWeekStart, todayWeekStart)) {
+      api.gotoDate(addDays(todayWeekStart, 7));
+      return;
+    }
+
+    api.gotoDate(addDays(currentWeekStart, 7));
+  }
+
+  const leftButtons = isPhone && isListView ? "mobilePrev,mobileNext" : "prev,next today";
   const rightButtons = isPhone
-    ? "timeGridWeek,timeGridDay,listWeek"
+    ? `timeGridWeek,timeGridDay,${MOBILE_LIST_VIEW}`
     : "timeGridWeek,timeGridDay";
-  const calendarHeight = isPhone ? "auto" : "100vh";
+  const calendarHeight = isPhone ? "100%" : "100vh";
 
   return (
     <div
@@ -409,16 +476,52 @@ export default function WingsCalendar() {
           interactionPlugin,
           googleCalendarPlugin,
         ]}
-        initialView={isPhone ? "listWeek" : "timeGridWeek"}
+        customButtons={{
+          mobilePrev: {
+            text: "<",
+            click: goMobileListPrev,
+          },
+          mobileNext: {
+            text: ">",
+            click: goMobileListNext,
+          },
+        }}
+        initialView={isPhone ? MOBILE_LIST_VIEW : "timeGridWeek"}
         headerToolbar={{
-          left: "prev,next today",
+          left: leftButtons,
           center: "title",
           right: rightButtons,
         }}
+        views={{
+          listFuture: {
+            type: "list",
+            duration: { days: 7 },
+            buttonText: "List",
+            visibleRange(currentDate) {
+              const today = startOfToday();
+
+              const requested = new Date(currentDate);
+              requested.setHours(0, 0, 0, 0);
+
+              const requestedWeekStart = startOfWeekSunday(requested);
+              const todayWeekStart = startOfWeekSunday(today);
+
+              const isCurrentWeek = isSameDay(requestedWeekStart, todayWeekStart);
+
+              const rangeStart = isCurrentWeek ? today : requestedWeekStart;
+              const rangeEnd = addDays(rangeStart, 7);
+
+              return {
+                start: rangeStart,
+                end: rangeEnd,
+              };
+            },
+          },
+        }}
         height={calendarHeight}
-        contentHeight={isPhone ? "auto" : "auto"}
+        contentHeight={isPhone ? "100%" : "auto"}
         allDaySlot={false}
-        expandRows
+        expandRows={!isPhone}
         nowIndicator
         timeZone={timeZone}
         googleCalendarApiKey={apiKey}
@@ -446,12 +549,18 @@ export default function WingsCalendar() {
             note ? "wa-adv-note" : "",
           ].filter(Boolean);
         }}
+        listDayFormat={{
+          weekday: "long",
+        }}
+        listDaySideFormat={{
+          month: "long",
+          day: "numeric",
+        }}
         stickyHeaderDates={false}
         datesSet={(arg) => {
           setIsListView(arg.view.type?.startsWith("list"));
         }}
         eventDidMount={(info) => {
-          // remove any previously-injected elements (prevents duplicates on rerender)
           info.el
             .querySelectorAll(
               ".wa-adv-pill, .wa-adv-noteText, .wa-register-wrap, .wa-list-register-wrap"
@@ -477,7 +586,6 @@ export default function WingsCalendar() {
             return link;
           };
 
-          // timeGrid views: place RSVP just under the time
           if (info.view.type?.startsWith("timeGrid")) {
             const main = info.el.querySelector(".fc-event-main");
             if (!main) return;
@@ -492,7 +600,6 @@ export default function WingsCalendar() {
             return;
           }
 
-          // list views: place RSVP under the title
           if (info.view.type?.startsWith("list")) {
             const titleCell = info.el.querySelector("td.fc-list-event-title");
             if (!titleCell) return;

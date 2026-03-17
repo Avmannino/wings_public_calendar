@@ -207,13 +207,15 @@ body {
    ✅ LIST VIEW ONLY: place Advisory Bar between nav arrows and the list
    ========================================================= */
 .wa-cal:has(.fc-listWeek-view),
-.wa-cal:has(.fc-listDay-view) {
+.wa-cal:has(.fc-listDay-view),
+.wa-cal:has(.fc-listFuture-view) {
   position: relative;
 }
 
 /* Default list positioning (safe even if list buttons are hidden on desktop) */
 .wa-cal:has(.fc-listWeek-view) .wa-advisoryBar,
-.wa-cal:has(.fc-listDay-view) .wa-advisoryBar {
+.wa-cal:has(.fc-listDay-view) .wa-advisoryBar,
+.wa-cal:has(.fc-listFuture-view) .wa-advisoryBar {
   position: absolute !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
@@ -224,7 +226,8 @@ body {
 
 /* Push list DOWN enough so the day headers never sit behind the advisory */
 .wa-cal:has(.fc-listWeek-view) .fc .fc-view-harness,
-.wa-cal:has(.fc-listDay-view) .fc .fc-view-harness {
+.wa-cal:has(.fc-listDay-view) .fc .fc-view-harness,
+.wa-cal:has(.fc-listFuture-view) .fc .fc-view-harness {
   padding-top: 78px !important;
 }
 
@@ -232,14 +235,16 @@ body {
 @media (max-width: 850px) {
 
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
-  .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
+  .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar,
+  .wa-cal.is-phone-list:has(.fc-listFuture-view) .wa-advisoryBar {
     top: 118px !important;
     width: 91vw !important;
     max-width: 93vw !important;
   }
 
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
-  .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness {
+  .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness,
+  .wa-cal.is-phone-list:has(.fc-listFuture-view) .fc .fc-view-harness {
     padding-top: 18px !important;
   }
 }
@@ -248,12 +253,14 @@ body {
 @media (max-width: 560px) {
 
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
-  .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar {
+  .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar,
+  .wa-cal.is-phone-list:has(.fc-listFuture-view) .wa-advisoryBar {
     top: 12px !important;
   }
 
   .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
-  .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness {
+  .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness,
+  .wa-cal.is-phone-list:has(.fc-listFuture-view) .fc .fc-view-harness {
     padding-top: 15px !important;
   }
 }
@@ -346,7 +353,8 @@ body {
 }
 
 .fc-listWeek-view .fc-view-harness::before,
-.fc-listDay-view .fc-view-harness::before {
+.fc-listDay-view .fc-view-harness::before,
+.fc-listFuture-view .fc-view-harness::before {
   position: fixed !important;
   inset: 0 !important;
   background-size: min(1000px, 58%) !important;
@@ -486,7 +494,8 @@ body {
 @media (min-width: 751px) {
 
   .fc .fc-listWeek-button,
-  .fc .fc-listDay-button {
+  .fc .fc-listDay-button,
+  .fc .fc-listFuture-button {
     display: none !important;
   }
 }
@@ -579,7 +588,8 @@ body {
 .wa-cal.is-phone-list .fc .fc-timeGridWeek-button,
 .wa-cal.is-phone-list .fc .fc-timeGridDay-button,
 .wa-cal.is-phone-list .fc .fc-listWeek-button,
-.wa-cal.is-phone-list .fc .fc-listDay-button {
+.wa-cal.is-phone-list .fc .fc-listDay-button,
+.wa-cal.is-phone-list .fc .fc-listFuture-button {
   display: none !important;
 }
 
@@ -785,6 +795,7 @@ body {
 /* Keep view + scrollers spanning full width */
 .fc .fc-listWeek-view.fc-view,
 .fc .fc-listDay-view.fc-view,
+.fc .fc-listFuture-view.fc-view,
 .fc .fc-list-view.fc-view {
   width: 100% !important;
   max-width: 100% !important;
@@ -799,14 +810,20 @@ body {
 .fc .fc-listDay-view .fc-scroller,
 .fc .fc-listDay-view .fc-scroller-liquid,
 .fc .fc-listDay-view .fc-scroller-liquid-absolute,
-.fc .fc-listDay-view .fc-list {
+.fc .fc-listDay-view .fc-list,
+.fc .fc-listFuture-view .fc-scroller-harness,
+.fc .fc-listFuture-view .fc-scroller,
+.fc .fc-listFuture-view .fc-scroller-liquid,
+.fc .fc-listFuture-view .fc-scroller-liquid-absolute,
+.fc .fc-listFuture-view .fc-list {
   width: 100% !important;
   max-width: 100% !important;
 }
 
 /* === LIST WIDTH / CENTERING (works for all viewports) === */
 .fc .fc-listWeek-view .fc-list-table,
-.fc .fc-listDay-view .fc-list-table {
+.fc .fc-listDay-view .fc-list-table,
+.fc .fc-listFuture-view .fc-list-table {
   width: 100% !important;
   margin: 0 auto !important;
   padding: 0 !important;
@@ -815,7 +832,8 @@ body {
 }
 
 .fc .fc-listWeek-view .fc-list-table table,
-.fc .fc-listDay-view .fc-list-table table {
+.fc .fc-listDay-view .fc-list-table table,
+.fc .fc-listFuture-view .fc-list-table table {
   width: 100% !important;
   max-width: 1200px !important;
   margin: 0 auto !important;
@@ -826,7 +844,8 @@ body {
 @media (max-width: 850px) {
 
   .fc .fc-listWeek-view .fc-list-table table,
-  .fc .fc-listDay-view .fc-list-table table {
+  .fc .fc-listDay-view .fc-list-table table,
+  .fc .fc-listFuture-view .fc-list-table table {
     max-width: 120% !important;
     width: 120% !important;
   }
@@ -852,7 +871,8 @@ body {
   }
 
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table {
+  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-listFuture-view .fc-list-table {
     width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -891,7 +911,8 @@ body {
   }
 
   .fc .fc-listWeek-view .fc-list-table table,
-  .fc .fc-listDay-view .fc-list-table table {
+  .fc .fc-listDay-view .fc-list-table table,
+  .fc .fc-listFuture-view .fc-list-table table {
     width: 100% !important;
     max-width: 580px !important;
     margin-left: auto !important;
@@ -1181,7 +1202,8 @@ body {
   }
 
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table {
+  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-listFuture-view .fc-list-table {
     width: 100% !important;
     margin: 0 !important;
     border-collapse: collapse !important;
@@ -1442,10 +1464,36 @@ body {
     margin-top: 5px;
   }
 
+  .wa-cal.is-phone-list .fc .fc-view-harness {
+    height: min(78vh, 760px) !important;
+    min-height: 500px !important;
+    max-height: min(78vh, 760px) !important;
+    overflow: hidden !important;
+    border-radius: 18px !important;
+  }
+
+  .wa-cal.is-phone-list .fc .fc-scroller-harness,
+  .wa-cal.is-phone-list .fc .fc-scroller,
+  .wa-cal.is-phone-list .fc .fc-list,
+  .wa-cal.is-phone-list .fc .fc-list-table {
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .wa-cal.is-phone-list .fc .fc-scroller {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-right: 2px !important;
+  }
+
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
   .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
+  .wa-cal.is-phone-list .fc .fc-listFuture-view .fc-list-table,
   .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table table,
-  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table table {
+  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table table,
+  .wa-cal.is-phone-list .fc .fc-listFuture-view .fc-list-table table {
     width: 83vw !important;
     max-width: 83vw !important;
     margin-left: auto !important;
