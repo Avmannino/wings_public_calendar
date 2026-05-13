@@ -432,14 +432,16 @@ body {
 
 .fc .fc-col-header-cell-cushion {
   color: rgba(255, 255, 255, 0.914);
-  font-weight: 100 !important;
+  font-family: Oswald !important;
+  font-weight: 400 !important;
   font-size: clamp(10px, 0.4vw + 9px, 14px);
 }
 
 .fc .fc-timegrid-axis-cushion,
 .fc .fc-timegrid-slot-label-cushion {
   color: rgba(255, 255, 255, 0.914);
-  font-weight: 100 !important;
+  font-family: Oswald !important;
+  font-weight: 300 !important;
   font-size: clamp(10px, 0.4vw + 9px, 14px);
 }
 
@@ -713,8 +715,9 @@ body {
 
 .fc .fc-timegrid-event .fc-event-time {
   order: 2 !important;
+  font-family: Oswald !important;
   font-size: clamp(9px, 0.3vw + 7px, 12px) !important;
-  font-weight: 100 !important;
+  font-weight: 300 !important;
   margin: 0 !important;
   padding: 0 !important;
   text-transform: uppercase !important;
@@ -1026,7 +1029,7 @@ body {
    ========================================================= */
 .fc .fc-list-day-cushion {
   padding: 14px 18px !important;
-  background-color: #df003896 !important;
+  background-color: rgba(140, 0, 35, 0.88) !important;
   width: 100vw !important;
   max-width: 91vw !important;
 }
@@ -1248,7 +1251,7 @@ body {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -1px;
+    bottom: -4px;
     height: 1px;
     background: linear-gradient(90deg,
         rgba(255, 255, 255, 0),
@@ -1283,12 +1286,13 @@ body {
 
   .wa-cal.is-phone-list .fc td.fc-list-event-time {
     flex: 0 0 auto !important;
+    font-family: Oswald !important;
     font-size: clamp(15px, 3.4vw, 15px) !important;
-    font-weight: 100 !important;
+    font-weight: 300 !important;
     color: #fff !important;
     white-space: nowrap !important;
     position: relative !important;
-    padding-left: 35px !important;
+    padding-left: 16px !important;
     display: flex !important;
     align-items: center !important;
     max-width: 165px;
@@ -1298,12 +1302,13 @@ body {
   .wa-cal.is-phone-list .fc td.fc-list-event-time::before {
     content: "" !important;
     position: absolute !important;
-    left: 8px !important;
-    top: 48% !important;
-    width: 15px !important;
-    height: 15px !important;
-    border-radius: 15% !important;
-    transform: translateY(-50%);
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 5px !important;
+    height: auto !important;
+    border-radius: 2px !important;
+    transform: none !important;
     background: #888 !important;
   }
 
@@ -1336,7 +1341,7 @@ body {
     font-weight: 400 !important;
     text-decoration: none !important;
     line-height: 1.05 !important;
-    margin-top: 0px;
+    margin-top: -3px;
   }
 
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-publicskate td.fc-list-event-time::before {
