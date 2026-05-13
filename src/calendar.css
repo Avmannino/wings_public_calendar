@@ -595,9 +595,9 @@ body {
 
 /* ====== Events (base) ====== */
 .fc .fc-event {
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   border-width: 1px !important;
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.58);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
   overflow: hidden;
   text-align: center;
   box-sizing: border-box !important;
@@ -622,39 +622,39 @@ body {
 
 /* Event Colors (timeGrid) */
 .fc-event.evt-stickpuck {
-  background: #042181ce !important;
-  border-color: rgba(255, 255, 255, 0.658) !important;
+  background: linear-gradient(165deg, #2e4eb8 0%, #0e2060 100%) !important;
+  border-color: rgba(100, 135, 220, 0.5) !important;
 }
 
 .fc-event.evt-publicskate {
-  background: #b30606da !important;
-  border-color: rgba(250, 206, 206, 0.678) !important;
+  background: linear-gradient(165deg, #b82c2c 0%, #621414 100%) !important;
+  border-color: rgba(215, 115, 115, 0.5) !important;
 }
 
 .fc-event.evt-cosmic {
-  background: #7707f8ee !important;
-  border-color: rgba(228, 221, 250, 0.9) !important;
+  background: linear-gradient(165deg, #7018cc 0%, #3c0a84 100%) !important;
+  border-color: rgba(175, 130, 230, 0.5) !important;
 }
 
 .fc-event.evt-openhockey {
-  background: #db961ee8 !important;
-  border-color: rgba(216, 215, 213, 0.9) !important;
+  background: linear-gradient(165deg, #ae7820 0%, #7a5214 100%) !important;
+  border-color: rgba(215, 178, 90, 0.5) !important;
 }
 
 .fc-event.evt-freestyle {
-  background: rgba(42, 168, 168, 0.897) !important;
-  border-color: rgba(220, 238, 238, 0.678) !important;
+  background: linear-gradient(165deg, #2e9090 0%, #0a5e5e 100%) !important;
+  border-color: rgba(85, 190, 190, 0.5) !important;
 }
 
 /* Lunchtime Adult Drop-In Hockey */
 .fc-event.evt-lunchtime-dropin {
-  background: rgba(218, 93, 5, 0.78) !important;
-  border-color: rgba(255, 217, 189, 0.61) !important;
+  background: linear-gradient(165deg, #ae5e18 0%, #6e340a 100%) !important;
+  border-color: rgba(215, 148, 88, 0.5) !important;
 }
 
 .fc-event.evt-default {
-  background: #db8c04e1 !important;
-  border-color: rgba(255, 228, 158, 0.637) !important;
+  background: linear-gradient(165deg, #aa7018 0%, #724e0c 100%) !important;
+  border-color: rgba(215, 175, 88, 0.5) !important;
 }
 
 /* Center Title Above Time inside event (timeGrid views) */
@@ -692,6 +692,8 @@ body {
   margin: 2px !important;
   padding: 0 !important;
   line-height: 1.3 !important;
+  letter-spacing: 0.025em !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
 }
 
 .fc .fc-timegrid-event .fc-event-time {
@@ -702,7 +704,8 @@ body {
   padding: 0 !important;
   text-transform: uppercase !important;
   line-height: 1.4 !important;
-  opacity: 0.95 !important;
+  opacity: 0.88 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35) !important;
 }
 
 /* ✅ Register link under time (timeGrid Lunchtime Adult Drop-In Hockey only) */
