@@ -662,6 +662,11 @@ body {
   border-color: rgba(85, 190, 190, 0.5) !important;
 }
 
+.fc-event.evt-privatelesson {
+  background: linear-gradient(165deg, #1e7a3c 0%, #0a4820 100%) !important;
+  border-color: rgba(80, 190, 110, 0.5) !important;
+}
+
 /* Lunchtime Adult Drop-In Hockey */
 .fc-event.evt-lunchtime-dropin {
   background: linear-gradient(165deg, #ae5e18 0%, #6e340a 100%) !important;
@@ -1141,6 +1146,27 @@ body {
   line-height: 1.6;
 }
 
+.wa-tipLink {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #1f2a44;
+  text-align: center;
+}
+
+.wa-tipLink a {
+  color: #93c5fd;
+  font-weight: 100;
+  font-size: clamp(10px, 0.3vw + 9px, 12px);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.wa-tipLink a:hover {
+  color: #bfdbfe;
+}
+
 /* =========================================================
    Hover/click behavior
    ========================================================== */
@@ -1366,6 +1392,10 @@ body {
 
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-lunchtime-dropin td.fc-list-event-time::before {
     background: #f97316 !important;
+  }
+
+  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-privatelesson td.fc-list-event-time::before {
+    background: #22c55e !important;
   }
 
   .wa-cal.is-phone-list .fc tr.fc-list-event.evt-default td.fc-list-event-time::before {

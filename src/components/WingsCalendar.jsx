@@ -23,6 +23,7 @@ function getClassForTitle(title = "") {
   )
     return "evt-lunchtime-dropin";
   if (t.includes("open") && t.includes("hockey")) return "evt-openhockey";
+  if (t.includes("private") && t.includes("lesson")) return "evt-privatelesson";
   return "evt-default";
 }
 
@@ -93,6 +94,17 @@ function getProgramMeta(title = "") {
       equipment: "",
       desc:
         "Designated ice time for figure skaters only, providing a focused environment for individual practice and private lessons. These sessions are open to all levels—unless otherwise noted—and are ideal for skaters looking to improve jumps, spins, and moves in the field.\n\nSkaters must be familiar with standard ice patterns and etiquette to ensure a safe and productive experience for everyone. If your skater is new to Freestyle and unsure about the proper ice patterns, please ask a coach for a quick overview.",
+    };
+  }
+
+  if (t.includes("private") && t.includes("lesson")) {
+    return {
+      label: "Private Lesson",
+      pricing: "$25 per skater and per coach",
+      equipment: "",
+      desc: "",
+      note: "The above $25 charge applies to each coach and each lesson participant for every private lesson at Wings Arena. These charges are separate from, and not included in the lesson cost. Lesson cost varies depending on the coach. Please check in at the front desk upon arrival.",
+      footer: "For more info, please visit our Private Lessons page.",
     };
   }
 
@@ -395,6 +407,16 @@ export default function WingsCalendar() {
       ${
         meta.desc
           ? `<div class="wa-tipDesc">${escapeHtml(descHtml)}</div>`
+          : ""
+      }
+      ${
+        meta.note
+          ? `<div class="wa-tipDesc">NOTE: ${escapeHtml(meta.note)}</div>`
+          : ""
+      }
+      ${
+        meta.footer
+          ? `<div class="wa-tipDesc">${escapeHtml(meta.footer)}</div>`
           : ""
       }
     `;
