@@ -100,7 +100,7 @@ function getProgramMeta(title = "") {
   if (t.includes("private") && t.includes("lesson")) {
     return {
       label: "Private Lesson",
-      pricing: "$25 per skater and per coach",
+      pricing: "$25 per skater and $10 per coach",
       equipment: "",
       desc: "",
       note: "The above $25 charge applies to each coach and each lesson participant for every private lesson at Wings Arena. These charges are separate from, and not included in the lesson cost. Lesson cost varies depending on the coach. Please check in at the front desk upon arrival.",
