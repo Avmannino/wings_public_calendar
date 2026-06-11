@@ -452,6 +452,24 @@ body {
   row-gap: 10px !important;
 }
 
+@media (min-width: 751px) {
+  .wa-cal:not(.is-phone) .fc .fc-toolbar.fc-header-toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: center !important;
+  }
+
+  .wa-cal:not(.is-phone) .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .wa-cal:not(.is-phone) .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(3) {
+    display: flex !important;
+    justify-content: flex-end !important;
+  }
+}
+
 .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk {
   display: flex !important;
   align-items: center !important;
@@ -466,9 +484,9 @@ body {
   font-size: clamp(12px, 0.4vw + 15px, 21px);
   padding: 0 12px !important;
   text-align: center;
-  margin-right: 50px;
   margin-top: 30px;
   margin-bottom: -20px;
+  margin-left: 35px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -497,6 +515,21 @@ body {
 .fc .fc-button:hover {
   background: rgba(255, 255, 255, 0.205) !important;
   border-color: var(--stroke-2) !important;
+}
+
+.fc .fc-button:focus,
+.fc .fc-button:focus-visible,
+.fc .fc-button:active,
+.fc .fc-button:active:focus,
+.fc .fc-button-primary:focus,
+.fc .fc-button-primary:focus-visible,
+.fc .fc-button-primary:active,
+.fc .fc-button-primary:active:focus,
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled):active:focus {
+  border-color: var(--stroke-2) !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Desktop calendar only (not phone list layout) */
@@ -1168,6 +1201,170 @@ body {
 }
 
 /* =========================================================
+   Filter dropdown
+   ========================================================= */
+.wa-mobile-filter-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 20px;
+  z-index: 99997;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39c.51-.66.04-1.61-.79-1.61H5.04c-.83 0-1.3.95-.79 1.61z'/%3E%3C/svg%3E") center / 58% no-repeat,
+    linear-gradient(135deg, #8c0023 0%, #6a001a 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.wa-mobile-filter-fab:focus,
+.wa-mobile-filter-fab:focus-visible {
+  outline: none !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+}
+
+.wa-mobile-filter-fab:active {
+  outline: none !important;
+  box-shadow: 0 0 0 3px #d50137, 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+}
+
+.wa-mobile-filter-fab.wa-filter-active {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39c.51-.66.04-1.61-.79-1.61H5.04c-.83 0-1.3.95-.79 1.61z'/%3E%3C/svg%3E") center / 58% no-repeat,
+    linear-gradient(135deg, #1a6a40 0%, #0f4a2a 100%);
+}
+
+.wa-filter-dropdown {
+  position: fixed;
+  z-index: 99998;
+  min-width: 210px;
+  background: #0f172a;
+  border: 1px solid #1f2a44;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  padding: 8px 6px;
+}
+
+.wa-filter-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 10px 8px;
+}
+
+.wa-filter-header {
+  font-family: Oswald;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.wa-filter-toggle-all {
+  background: none;
+  border: none;
+  font-family: Oswald;
+  font-weight: 300;
+  font-size: 11px;
+  color: #93c5fd;
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: 0.05em;
+}
+
+.wa-filter-toggle-all:hover {
+  color: #bfdbfe;
+}
+
+.wa-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #e5e7eb;
+  font-family: Oswald;
+  font-weight: 300;
+  font-size: 13px;
+  user-select: none;
+}
+
+.wa-filter-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.wa-filter-item input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  accent-color: #93c5fd;
+  cursor: pointer;
+}
+
+.wa-filter-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.fc .fc-filterToggle-button {
+  margin-left: 6px !important;
+}
+
+.fc .fc-filterToggle-button.wa-filter-active {
+  background: rgba(147, 197, 253, 0.15) !important;
+  border-color: rgba(147, 197, 253, 0.4) !important;
+  color: #93c5fd !important;
+}
+
+/* =========================================================
+   Filter hiding — timeGrid + list view
+   ========================================================= */
+.wa-cal.wa-hide-publicskate .fc-event.evt-publicskate,
+.wa-cal.wa-hide-publicskate .fc tr.fc-list-event.evt-publicskate {
+  display: none !important;
+}
+
+.wa-cal.wa-hide-stickpuck .fc-event.evt-stickpuck,
+.wa-cal.wa-hide-stickpuck .fc tr.fc-list-event.evt-stickpuck {
+  display: none !important;
+}
+
+.wa-cal.wa-hide-cosmic .fc-event.evt-cosmic,
+.wa-cal.wa-hide-cosmic .fc tr.fc-list-event.evt-cosmic {
+  display: none !important;
+}
+
+.wa-cal.wa-hide-openhockey .fc-event.evt-openhockey,
+.wa-cal.wa-hide-openhockey .fc tr.fc-list-event.evt-openhockey {
+  display: none !important;
+}
+
+.wa-cal.wa-hide-freestyle .fc-event.evt-freestyle,
+.wa-cal.wa-hide-freestyle .fc tr.fc-list-event.evt-freestyle {
+  display: none !important;
+}
+
+.wa-cal.wa-hide-lunchtime-dropin .fc-event.evt-lunchtime-dropin,
+.wa-cal.wa-hide-lunchtime-dropin .fc tr.fc-list-event.evt-lunchtime-dropin {
+  display: none !important;
+}
+
+.wa-cal.wa-hide-privatelesson .fc-event.evt-privatelesson,
+.wa-cal.wa-hide-privatelesson .fc tr.fc-list-event.evt-privatelesson {
+  display: none !important;
+}
+
+/* =========================================================
    Hover/click behavior
    ========================================================== */
 .fc-event,
@@ -1589,4 +1786,51 @@ body {
     overflow-wrap: anywhere !important;
     word-break: break-word !important;
   }
+}
+
+/* =========================================================
+   FINAL OVERRIDE: remove purple FullCalendar button ring
+   ========================================================= */
+
+.wa-cal .fc,
+.wa-cal .fc * {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.wa-cal .fc .fc-button,
+.wa-cal .fc .fc-button-primary,
+.wa-cal .fc .fc-button-primary:not(:disabled),
+.wa-cal .fc .fc-button-primary:not(:disabled):active,
+.wa-cal .fc .fc-button-primary:not(:disabled).fc-button-active {
+  border-color: var(--stroke) !important;
+  outline: 0 !important;
+}
+
+.wa-cal .fc .fc-button:focus,
+.wa-cal .fc .fc-button:focus-visible,
+.wa-cal .fc .fc-button:active,
+.wa-cal .fc .fc-button-active,
+.wa-cal .fc .fc-button-primary:focus,
+.wa-cal .fc .fc-button-primary:focus-visible,
+.wa-cal .fc .fc-button-primary:active,
+.wa-cal .fc .fc-button-primary:active:focus,
+.wa-cal .fc .fc-button-primary:active:focus-visible,
+.wa-cal .fc .fc-button-primary.fc-button-active,
+.wa-cal .fc .fc-button-primary.fc-button-active:focus,
+.wa-cal .fc .fc-button-primary:not(:disabled):active,
+.wa-cal .fc .fc-button-primary:not(:disabled):active:focus,
+.wa-cal .fc .fc-button-primary:not(:disabled).fc-button-active,
+.wa-cal .fc .fc-button-primary:not(:disabled).fc-button-active:focus {
+  border-color: var(--stroke-2) !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Current selected view button: Week / Day / List */
+.wa-cal .fc .fc-button-primary:disabled {
+  background: rgba(213, 1, 55, 0.35) !important;
+  border-color: #d50137 !important;
+  color: #fff !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
 }

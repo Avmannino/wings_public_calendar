@@ -7,6 +7,15 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 
 const LUNCHTIME_RSVP_URL = "https://www.wingsarena.com/lunchtime-hockey";
 
+const EVENT_TYPES = [
+  { key: "evt-publicskate",   label: "Public Skate",    color: "#b82c2c" },
+  { key: "evt-stickpuck",     label: "Stick & Puck",    color: "#2e4eb8" },
+  { key: "evt-cosmic",        label: "Cosmic Skate",    color: "#7018cc" },
+  { key: "evt-openhockey",    label: "Open Hockey",     color: "#ae7820" },
+  { key: "evt-freestyle",     label: "Figure Skating",  color: "#2e9090" },
+  { key: "evt-privatelesson", label: "Private Lesson",  color: "#1e7a3c" },
+];
+
 function getClassForTitle(title = "") {
   const t = title.toLowerCase();
   if (t.includes("stick") && t.includes("puck")) return "evt-stickpuck";
@@ -171,6 +180,20 @@ export default function WingsCalendar() {
   const tipRef = useRef(null);
   const moveMapRef = useRef(new WeakMap());
   const calendarRef = useRef(null);
+  const filterDropdownRef = useRef(null);
+  const mobileFabRef = useRef(null);
+
+  const [hiddenTypes, setHiddenTypes] = useState(new Set());
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  function toggleType(key) {
+    setHiddenTypes((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
 
   const MOBILE_QUERY = "(max-width: 750px)";
   const MOBILE_LIST_VIEW = "listFuture";
@@ -281,6 +304,46 @@ export default function WingsCalendar() {
       window.removeEventListener("resize", fixStickyHeaders);
     };
   }, [isPhone, isListView]);
+
+  useEffect(() => {
+    if (!filterOpen) return;
+    const handle = (e) => {
+      if (
+        !e.target.closest(".wa-filter-dropdown") &&
+        !e.target.closest(".fc-filterToggle-button") &&
+        !e.target.closest(".wa-mobile-filter-fab")
+      ) {
+        setFilterOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [filterOpen]);
+
+  useEffect(() => {
+    if (!filterOpen || !filterDropdownRef.current) return;
+    const isFab = isPhone && isListView && mobileFabRef.current;
+    const btn = isFab
+      ? mobileFabRef.current
+      : document.querySelector(".fc-filterToggle-button");
+    if (!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const dropdown = filterDropdownRef.current;
+    const dropdownWidth = dropdown.offsetWidth;
+    const dropdownHeight = dropdown.offsetHeight;
+    const left = Math.max(10, rect.right - dropdownWidth);
+    if (isFab) {
+      dropdown.style.top = `${rect.top - dropdownHeight - 8}px`;
+    } else {
+      dropdown.style.top = `${rect.bottom + 6}px`;
+    }
+    dropdown.style.left = `${left}px`;
+  }, [filterOpen, isPhone, isListView]);
+
+  useEffect(() => {
+    const btn = document.querySelector(".fc-filterToggle-button");
+    if (btn) btn.classList.toggle("wa-filter-active", hiddenTypes.size > 0);
+  }, [hiddenTypes]);
 
   useEffect(() => {
     return () => {
@@ -478,8 +541,8 @@ export default function WingsCalendar() {
 
   const leftButtons = isPhone && isListView ? "mobilePrev,mobileNext" : "prev,next today";
   const rightButtons = isPhone
-    ? `timeGridWeek,timeGridDay,${MOBILE_LIST_VIEW}`
-    : "timeGridWeek,timeGridDay";
+    ? `timeGridWeek,timeGridDay,${MOBILE_LIST_VIEW},filterToggle`
+    : "timeGridWeek,timeGridDay,filterToggle";
   const calendarHeight = isPhone ? "100%" : "100vh";
 
   return (
@@ -488,7 +551,8 @@ export default function WingsCalendar() {
         "wa-cal",
         isPhone ? "is-phone" : "",
         isPhone && isListView ? "is-phone-list" : "",
-      ].join(" ")}
+        ...[...hiddenTypes].map((t) => `wa-hide-${t.replace("evt-", "")}`),
+      ].filter(Boolean).join(" ")}
     >
       <FullCalendar
         ref={calendarRef}
@@ -506,6 +570,10 @@ export default function WingsCalendar() {
           mobileNext: {
             text: ">",
             click: goMobileListNext,
+          },
+          filterToggle: {
+            text: "Filter",
+            click: () => setFilterOpen((prev) => !prev),
           },
         }}
         initialView={isPhone ? MOBILE_LIST_VIEW : "timeGridWeek"}
@@ -667,6 +735,47 @@ export default function WingsCalendar() {
           console.error("[WingsCalendar] Google event source failed:", error);
         }}
       />
+
+      {isPhone && isListView && (
+        <button
+          ref={mobileFabRef}
+          className={`wa-mobile-filter-fab${hiddenTypes.size > 0 ? " wa-filter-active" : ""}`}
+          onClick={(e) => { e.currentTarget.blur(); setFilterOpen((prev) => !prev); }}
+          aria-label="Filter events"
+        >
+        </button>
+      )}
+
+      {filterOpen && (
+        <div ref={filterDropdownRef} className="wa-filter-dropdown">
+          <div className="wa-filter-top-row">
+            <span className="wa-filter-header">Filter by Type</span>
+            <button
+              className="wa-filter-toggle-all"
+              onClick={() => {
+                if (hiddenTypes.size === 0) {
+                  setHiddenTypes(new Set(EVENT_TYPES.map((t) => t.key)));
+                } else {
+                  setHiddenTypes(new Set());
+                }
+              }}
+            >
+              {hiddenTypes.size === 0 ? "Clear All" : "Select All"}
+            </button>
+          </div>
+          {EVENT_TYPES.map(({ key, label, color }) => (
+            <label key={key} className="wa-filter-item">
+              <input
+                type="checkbox"
+                checked={!hiddenTypes.has(key)}
+                onChange={() => toggleType(key)}
+              />
+              <span className="wa-filter-dot" style={{ background: color }} />
+              <span>{label}</span>
+            </label>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
