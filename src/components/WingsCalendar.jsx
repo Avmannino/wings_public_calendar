@@ -7,6 +7,14 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 
 const LUNCHTIME_RSVP_URL = "https://www.wingsarena.com/lunchtime-hockey";
 
+// UTC midnight dates — must match FullCalendar's UTC-based viewRange values
+const CLOSURE_START = new Date(Date.UTC(2026, 5, 29)); // June 29 UTC
+const CLOSURE_END   = new Date(Date.UTC(2026, 6, 5));  // July 5 UTC (exclusive — through July 4)
+
+function formatMonthDay(date) {
+  return date.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" });
+}
+
 const EVENT_TYPES = [
   { key: "evt-publicskate",   label: "Public Skate",    color: "#b82c2c" },
   { key: "evt-stickpuck",     label: "Stick & Puck",    color: "#2e4eb8" },
@@ -168,6 +176,29 @@ function isSameDay(a, b) {
   );
 }
 
+function startOfDay(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function maxDate(a, b) {
+  return a > b ? a : b;
+}
+
+function minDate(a, b) {
+  return a < b ? a : b;
+}
+
+function daysBetween(start, end) {
+  const MS_PER_DAY = 24 * 60 * 60 * 1000;
+  return Math.round((startOfDay(end) - startOfDay(start)) / MS_PER_DAY);
+}
+
+function rangesOverlap(startA, endA, startB, endB) {
+  return startA < endB && endA > startB;
+}
+
 export default function WingsCalendar() {
   const timeZone = import.meta.env.VITE_TZ || "America/New_York";
   const apiKey = (import.meta.env.VITE_GCAL_API_KEY || "").trim();
@@ -185,6 +216,12 @@ export default function WingsCalendar() {
 
   const [hiddenTypes, setHiddenTypes] = useState(new Set());
   const [filterOpen, setFilterOpen] = useState(false);
+  const [viewRange, setViewRange] = useState({ start: null, end: null });
+  const lastDatesSetRef = useRef({
+    isListView: null,
+    startTime: null,
+    endTime: null,
+  });
 
   function toggleType(key) {
     setHiddenTypes((prev) => {
@@ -202,7 +239,13 @@ export default function WingsCalendar() {
     if (typeof window === "undefined" || !window.matchMedia) return false;
     return window.matchMedia(MOBILE_QUERY).matches;
   });
-  const [isListView, setIsListView] = useState(false);
+
+  // Important: on mobile, the initial FullCalendar view is already listFuture.
+  // Start this as true on phones so the mobile-list CSS is active on the first paint.
+  const [isListView, setIsListView] = useState(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return false;
+    return window.matchMedia(MOBILE_QUERY).matches;
+  });
 
   useEffect(() => {
     if (!apiKey || !calendarId) {
@@ -539,11 +582,53 @@ export default function WingsCalendar() {
     api.gotoDate(addDays(currentWeekStart, 7));
   }
 
-  const leftButtons = isPhone && isListView ? "mobilePrev,mobileNext" : "prev,next today";
+  const leftButtons = isPhone ? "mobilePrev,mobileNext" : "prev,next today";
   const rightButtons = isPhone
     ? `timeGridWeek,timeGridDay,${MOBILE_LIST_VIEW},filterToggle`
     : "timeGridWeek,timeGridDay,filterToggle";
-  const calendarHeight = isPhone ? "100%" : "100vh";
+
+  // Mobile list view should flow naturally. A fixed/100% FullCalendar height can
+  // collapse inside embeds/iframes and make the list appear blank.
+  const calendarHeight = isPhone ? "auto" : "100vh";
+  const calendarContentHeight = isPhone ? "auto" : "auto";
+
+  const closureVisible = Boolean(
+    viewRange.start &&
+    viewRange.end &&
+    rangesOverlap(viewRange.start, viewRange.end, CLOSURE_START, CLOSURE_END)
+  );
+
+  const closurePlacement = (() => {
+    if (!closureVisible || !viewRange.start || !viewRange.end) return null;
+
+    if (isListView) {
+      return { rowStyle: undefined, pillStyle: undefined };
+    }
+
+    // FullCalendar gives UTC midnight dates — use UTC arithmetic to avoid
+    // local-timezone shifts turning Sunday UTC into Saturday local time.
+    const toUTC = (d) =>
+      new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+    const utcDaysBetween = (a, b) =>
+      Math.round((toUTC(b) - toUTC(a)) / (24 * 60 * 60 * 1000));
+
+    const closureStartUTC = new Date(Date.UTC(2026, 5, 29)); // June 29
+    const closureEndUTC   = new Date(Date.UTC(2026, 6, 5));  // July 5 exclusive
+
+    const visibleStart = toUTC(viewRange.start);
+    const visibleEnd   = toUTC(viewRange.end);
+    const pillStart    = new Date(Math.max(visibleStart.getTime(), closureStartUTC.getTime()));
+    const pillEnd      = new Date(Math.min(visibleEnd.getTime(),   closureEndUTC.getTime()));
+
+    const totalDays       = Math.max(1, utcDaysBetween(visibleStart, visibleEnd));
+    const startOffsetDays = Math.max(0, utcDaysBetween(visibleStart, pillStart));
+    const spanDays        = Math.max(1, utcDaysBetween(pillStart, pillEnd));
+
+    return {
+      rowStyle:  { "--wa-visible-day-count": totalDays },
+      pillStyle: { gridColumn: `${startOffsetDays + 2} / span ${spanDays}` },
+    };
+  })();
 
   return (
     <div
@@ -554,6 +639,17 @@ export default function WingsCalendar() {
         ...[...hiddenTypes].map((t) => `wa-hide-${t.replace("evt-", "")}`),
       ].filter(Boolean).join(" ")}
     >
+      {closureVisible && isListView && (
+        <div className="wa-closure-pill wa-closure-pill--list">
+          <span className="wa-closure-pill-title">Closed for Facility Improvements</span>
+          <span className="wa-closure-pill-body">
+            Wings Arena will be closed from <strong>{formatMonthDay(CLOSURE_START)}</strong> through{" "}
+            <strong>{formatMonthDay(addDays(CLOSURE_END, -1))}</strong> for scheduled facility improvements.
+            No programs or ice sessions will take place during this closure. Thank you for your patience and understanding.
+          </span>
+        </div>
+      )}
+
       <FullCalendar
         ref={calendarRef}
         plugins={[
@@ -609,7 +705,7 @@ export default function WingsCalendar() {
           },
         }}
         height={calendarHeight}
-        contentHeight={isPhone ? "100%" : "auto"}
+        contentHeight={calendarContentHeight}
         allDaySlot={false}
         expandRows={!isPhone}
         nowIndicator
@@ -648,7 +744,26 @@ export default function WingsCalendar() {
         }}
         stickyHeaderDates={false}
         datesSet={(arg) => {
-          setIsListView(arg.view.type?.startsWith("list"));
+          const nextIsListView = Boolean(arg.view.type?.startsWith("list"));
+          const nextStartTime = arg.start?.getTime?.() ?? null;
+          const nextEndTime = arg.end?.getTime?.() ?? null;
+
+          const last = lastDatesSetRef.current;
+          const hasActuallyChanged =
+            last.isListView !== nextIsListView ||
+            last.startTime !== nextStartTime ||
+            last.endTime !== nextEndTime;
+
+          if (!hasActuallyChanged) return;
+
+          lastDatesSetRef.current = {
+            isListView: nextIsListView,
+            startTime: nextStartTime,
+            endTime: nextEndTime,
+          };
+
+          setIsListView(nextIsListView);
+          setViewRange({ start: arg.start, end: arg.end });
         }}
         eventDidMount={(info) => {
           info.el
@@ -735,6 +850,19 @@ export default function WingsCalendar() {
           console.error("[WingsCalendar] Google event source failed:", error);
         }}
       />
+
+      {closureVisible && !isListView && (
+        <div className="wa-closure-row" style={closurePlacement?.rowStyle}>
+          <div className="wa-closure-pill" style={closurePlacement?.pillStyle}>
+            <span className="wa-closure-pill-title">Closed for Facility Improvements</span>
+            <span className="wa-closure-pill-body">
+              Wings Arena will be closed from <strong>{formatMonthDay(CLOSURE_START)}</strong> through{" "}
+              <strong>{formatMonthDay(addDays(CLOSURE_END, -1))}</strong> for scheduled facility improvements.
+              No programs or ice sessions will take place during this closure. Thank you for your patience and understanding.
+            </span>
+          </div>
+        </div>
+      )}
 
       {isPhone && isListView && (
         <button

@@ -320,6 +320,10 @@ body {
 }
 
 /* Drop shadow around the OUTSIDE of FullCalendar shell (calendar + list) */
+.wa-cal {
+  position: relative;
+}
+
 .wa-cal .fc-media-screen {
   box-shadow: var(--shadow);
 }
@@ -1203,6 +1207,73 @@ body {
 /* =========================================================
    Filter dropdown
    ========================================================= */
+.wa-closure-row {
+  --wa-time-axis-width: 62px;
+  --wa-visible-day-count: 7;
+
+  position: absolute;
+  top: 158px; /* below toolbar + day column headers */
+  left: 0;
+  right: 0;
+  z-index: 6;
+  display: grid;
+  grid-template-columns: var(--wa-time-axis-width) repeat(var(--wa-visible-day-count), minmax(0, 1fr));
+  column-gap: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.wa-closure-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  margin-right: 8px;
+  background: rgba(140, 0, 35, 0.22);
+  border: 1px solid rgba(213, 1, 55, 0.4);
+  border-radius: 10px;
+  padding: 10px 16px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.wa-closure-pill-title {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: clamp(12px, 1.3vw, 14px);
+  color: #fff;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.wa-closure-pill-body {
+  font-size: clamp(11px, 1vw, 13px);
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.5;
+}
+
+.wa-closure-pill-body strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Mobile/list view — full width, offset below toolbar. */
+@media (max-width: 750px) {
+  .wa-closure-row {
+    top: 80px;
+    left: 10px;
+    right: 10px;
+    display: block;
+  }
+
+  .wa-closure-pill {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
 .wa-mobile-filter-fab {
   position: fixed;
   bottom: 130px;
