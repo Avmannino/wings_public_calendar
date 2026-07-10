@@ -15,6 +15,8 @@ function formatMonthDay(date) {
   return date.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" });
 }
 
+const ICAL_WORKER_URL = "https://worker.amannino92.workers.dev";
+
 const EVENT_TYPES = [
   { key: "evt-publicskate",   label: "Public Skate",    color: "#b82c2c" },
   { key: "evt-stickpuck",     label: "Stick & Puck",    color: "#2e4eb8" },
@@ -199,6 +201,60 @@ function rangesOverlap(startA, endA, startB, endB) {
   return startA < endB && endA > startB;
 }
 
+function buildICS(events, calName) {
+  const esc = (s) =>
+    String(s || "")
+      .replace(/\\/g, "\\\\")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,")
+      .replace(/\n/g, "\\n");
+
+  const dtFmt = (str) =>
+    new Date(str).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+
+  const fold = (line) => {
+    const out = [];
+    while (line.length > 74) {
+      out.push(line.slice(0, 74));
+      line = " " + line.slice(74);
+    }
+    out.push(line);
+    return out.join("\r\n");
+  };
+
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    `PRODID:-//Wings Arena//${esc(calName)}//EN`,
+    `X-WR-CALNAME:Wings Arena – ${esc(calName)}`,
+    "X-WR-TIMEZONE:America/New_York",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+  ];
+
+  for (const ev of events) {
+    const start = ev.start?.dateTime || ev.start?.date;
+    const end = ev.end?.dateTime || ev.end?.date;
+    if (!start) continue;
+    lines.push("BEGIN:VEVENT");
+    lines.push(`UID:${ev.id || Math.random().toString(36).slice(2)}@wingsarena.com`);
+    if (ev.start?.dateTime) {
+      lines.push(`DTSTART:${dtFmt(start)}`);
+      lines.push(`DTEND:${dtFmt(end || start)}`);
+    } else {
+      lines.push(`DTSTART;VALUE=DATE:${start.replace(/-/g, "")}`);
+      lines.push(`DTEND;VALUE=DATE:${(end || start).replace(/-/g, "")}`);
+    }
+    lines.push(fold(`SUMMARY:${esc(ev.summary || "Wings Arena Event")}`));
+    if (ev.description) lines.push(fold(`DESCRIPTION:${esc(ev.description)}`));
+    lines.push(`LOCATION:Wings Arena`);
+    lines.push("END:VEVENT");
+  }
+
+  lines.push("END:VCALENDAR");
+  return lines.join("\r\n");
+}
+
 export default function WingsCalendar() {
   const timeZone = import.meta.env.VITE_TZ || "America/New_York";
   const apiKey = (import.meta.env.VITE_GCAL_API_KEY || "").trim();
@@ -213,10 +269,15 @@ export default function WingsCalendar() {
   const calendarRef = useRef(null);
   const filterDropdownRef = useRef(null);
   const mobileFabRef = useRef(null);
+  const addCalDropdownRef = useRef(null);
+  const addCalMobileFabRef = useRef(null);
 
   const [hiddenTypes, setHiddenTypes] = useState(new Set());
   const [filterOpen, setFilterOpen] = useState(false);
   const [viewRange, setViewRange] = useState({ start: null, end: null });
+  const [addCalOpen, setAddCalOpen] = useState(false);
+  const [downloadType, setDownloadType] = useState("all");
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const lastDatesSetRef = useRef({
     isListView: null,
     startTime: null,
@@ -387,6 +448,90 @@ export default function WingsCalendar() {
     const btn = document.querySelector(".fc-filterToggle-button");
     if (btn) btn.classList.toggle("wa-filter-active", hiddenTypes.size > 0);
   }, [hiddenTypes]);
+
+  // Close add-cal dropdown on outside click
+  useEffect(() => {
+    if (!addCalOpen) return;
+    const handle = (e) => {
+      if (
+        !e.target.closest(".wa-addcal-dropdown") &&
+        !e.target.closest(".fc-addCal-button") &&
+        !e.target.closest(".wa-addcal-fab")
+      ) {
+        setAddCalOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [addCalOpen]);
+
+  // Position add-cal dropdown
+  useEffect(() => {
+    if (!addCalOpen || !addCalDropdownRef.current) return;
+    const isFab = isPhone && isListView && addCalMobileFabRef.current;
+    const btn = isFab
+      ? addCalMobileFabRef.current
+      : document.querySelector(".fc-addCal-button");
+    if (!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const dropdown = addCalDropdownRef.current;
+    const dropdownWidth = dropdown.offsetWidth;
+    const dropdownHeight = dropdown.offsetHeight;
+    const left = Math.max(10, rect.right - dropdownWidth);
+    if (isFab) {
+      dropdown.style.top = `${rect.top - dropdownHeight - 8}px`;
+    } else {
+      dropdown.style.top = `${rect.bottom + 6}px`;
+    }
+    dropdown.style.left = `${left}px`;
+  }, [addCalOpen, isPhone, isListView]);
+
+  async function handleDownloadICS() {
+    setDownloadLoading(true);
+    try {
+      const now = new Date();
+      const future = new Date();
+      future.setMonth(future.getMonth() + 6);
+      const endpoint =
+        `https://www.googleapis.com/calendar/v3/calendars/` +
+        `${encodeURIComponent(calendarId)}/events` +
+        `?key=${apiKey}` +
+        `&timeMin=${now.toISOString()}` +
+        `&timeMax=${future.toISOString()}` +
+        `&singleEvents=true&orderBy=startTime&maxResults=500`;
+
+      const res = await fetch(endpoint);
+      const json = await res.json();
+      const items = json.items || [];
+
+      const filtered =
+        downloadType === "all"
+          ? items
+          : items.filter(
+              (ev) => getClassForTitle(ev.summary || "") === downloadType
+            );
+
+      const label =
+        downloadType === "all"
+          ? "Full Schedule"
+          : EVENT_TYPES.find((t) => t.key === downloadType)?.label || "Sessions";
+
+      const ics = buildICS(filtered, label);
+      const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `wings-arena-${label.toLowerCase().replace(/\s+/g, "-")}.ics`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("[WingsCalendar] ICS download failed:", err);
+    } finally {
+      setDownloadLoading(false);
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -585,7 +730,7 @@ export default function WingsCalendar() {
   const leftButtons = isPhone ? "mobilePrev,mobileNext" : "prev,next today";
   const rightButtons = isPhone
     ? `timeGridWeek,timeGridDay,${MOBILE_LIST_VIEW},filterToggle`
-    : "timeGridWeek,timeGridDay,filterToggle";
+    : "timeGridWeek,timeGridDay,filterToggle,addCal";
 
   // Mobile list view should flow naturally. A fixed/100% FullCalendar height can
   // collapse inside embeds/iframes and make the list appear blank.
@@ -670,6 +815,10 @@ export default function WingsCalendar() {
           filterToggle: {
             text: "Filter",
             click: () => setFilterOpen((prev) => !prev),
+          },
+          addCal: {
+            text: "+ Cal",
+            click: () => setAddCalOpen((prev) => !prev),
           },
         }}
         initialView={isPhone ? MOBILE_LIST_VIEW : "timeGridWeek"}
@@ -872,6 +1021,74 @@ export default function WingsCalendar() {
           aria-label="Filter events"
         >
         </button>
+      )}
+
+      <button
+        ref={addCalMobileFabRef}
+        className="wa-addcal-fab"
+        onClick={(e) => { e.currentTarget.blur(); setAddCalOpen((prev) => !prev); }}
+        aria-label="Add to Calendar"
+      >
+      </button>
+
+      {addCalOpen && (
+        <div
+          className="wa-addcal-backdrop"
+          onClick={() => setAddCalOpen(false)}
+        />
+      )}
+
+      {addCalOpen && (
+        <div ref={addCalDropdownRef} className="wa-addcal-dropdown">
+          <div className="wa-addcal-section">
+            <p className="wa-addcal-section-title">Session Type</p>
+            <select
+              className="wa-addcal-select"
+              value={downloadType}
+              onChange={(e) => setDownloadType(e.target.value)}
+            >
+              <option value="all">All Sessions</option>
+              {EVENT_TYPES.map(({ key, label }) => (
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+          </div>
+          <div className="wa-addcal-divider" />
+          <div className="wa-addcal-section">
+            <p className="wa-addcal-section-title">Add to Calendar (Live Updates)</p>
+            {(() => {
+              const workerFeedUrl = `${ICAL_WORKER_URL}?type=${downloadType}&calId=${encodeURIComponent(calendarId)}`;
+              const webcalUrl =
+                downloadType === "all"
+                  ? `webcal://calendar.google.com/calendar/ical/${encodeURIComponent(calendarId)}/public/basic.ics`
+                  : workerFeedUrl.replace("https://", "webcal://");
+              const googleUrl =
+                downloadType === "all"
+                  ? `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(calendarId)}`
+                  : `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcalUrl)}`;
+              return (
+                <>
+                  <a
+                    className="wa-addcal-link"
+                    href={googleUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="wa-addcal-link-icon wa-addcal-link-icon--google"></span>
+                    Add to Google Calendar
+                  </a>
+                  <a
+                    className="wa-addcal-link"
+                    href={webcalUrl}
+                  >
+                    <span className="wa-addcal-link-icon wa-addcal-link-icon--ical"></span>
+                    Subscribe in Apple / Outlook
+                  </a>
+                </>
+              );
+            })()}
+          </div>
+        </div>
       )}
 
       {filterOpen && (

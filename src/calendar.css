@@ -1905,3 +1905,296 @@ body {
   opacity: 1 !important;
   box-shadow: none !important;
 }
+
+/* =========================================================
+   ADD TO CALENDAR — desktop toolbar button
+   ========================================================= */
+
+.wa-cal .fc .fc-addCal-button {
+  background: rgba(213, 1, 55, 0.15) !important;
+  border-color: rgba(213, 1, 55, 0.5) !important;
+  color: #fff !important;
+  font-family: Oswald, sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.04em !important;
+  padding: 4px 12px !important;
+  border-radius: 6px !important;
+  margin-left: 6px !important;
+  transition: background 0.15s, border-color 0.15s !important;
+}
+
+.wa-cal .fc .fc-addCal-button:hover {
+  background: rgba(213, 1, 55, 0.28) !important;
+  border-color: #d50137 !important;
+}
+
+.wa-cal .fc .fc-addCal-button:focus,
+.wa-cal .fc .fc-addCal-button:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: rgba(213, 1, 55, 0.5) !important;
+}
+
+/* Prevent toolbar overflow on mid-size screens (tablets, folding phones unfolded) */
+.wa-cal .fc .fc-toolbar {
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.wa-cal .fc .fc-toolbar-chunk {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 4px !important;
+  align-items: center !important;
+}
+
+/* On screens too narrow to show the addCal toolbar button, hide it and show the FAB instead */
+@media (max-width: 900px) {
+  .wa-cal:not(.is-phone) .fc .fc-addCal-button {
+    display: none !important;
+  }
+
+  .wa-addcal-fab {
+    display: block !important;
+  }
+}
+
+/* On phones the filter FAB is also present — stack the two FABs */
+.wa-cal.is-phone .wa-addcal-fab {
+  display: block !important;
+}
+
+/* =========================================================
+   ADD TO CALENDAR — mobile FAB
+   ========================================================= */
+
+.wa-addcal-fab {
+  display: none;
+  position: fixed;
+  bottom: 200px;
+  right: 20px;
+  z-index: 99996;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h7v-2H5V9h14v3h2V5c0-1.1-.9-2-2-2zm0 4H5V5h14v2z'/%3E%3Cpath d='M18 14v3h-3v2h3v3h2v-3h3v-2h-3v-3z'/%3E%3C/svg%3E")
+    center / 62% no-repeat,
+    linear-gradient(135deg, #8c0023 0%, #6a001a 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.wa-addcal-fab:focus,
+.wa-addcal-fab:focus-visible {
+  outline: none !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+}
+
+.wa-addcal-fab:active {
+  outline: none !important;
+  box-shadow: 0 0 0 3px #d50137, 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* =========================================================
+   ADD TO CALENDAR — dropdown panel
+   ========================================================= */
+
+.wa-addcal-dropdown {
+  position: fixed;
+  z-index: 99998;
+  min-width: 260px;
+  background: #0f172a;
+  border: 1px solid #1f2a44;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  padding: 14px;
+}
+
+.wa-addcal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wa-addcal-section-title {
+  font-family: Oswald, sans-serif;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+.wa-addcal-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  color: #fff;
+  font-family: Oswald, sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.wa-addcal-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.wa-addcal-link-icon {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.wa-addcal-link-icon--google {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'/%3E%3C/svg%3E");
+}
+
+.wa-addcal-link-icon--ical {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z'/%3E%3C/svg%3E");
+}
+
+.wa-addcal-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 12px 0;
+}
+
+.wa-addcal-select {
+  width: 100%;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #fff;
+  font-family: Oswald, sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 18px;
+  padding-right: 32px;
+}
+
+.wa-addcal-select option {
+  background: #0f172a;
+}
+
+.wa-addcal-select:focus {
+  outline: none;
+  border-color: rgba(213, 1, 55, 0.5);
+}
+
+.wa-addcal-download-btn {
+  width: 100%;
+  padding: 9px 0;
+  background: linear-gradient(135deg, #8c0023 0%, #6a001a 100%);
+  border: 1px solid rgba(213, 1, 55, 0.5);
+  border-radius: 8px;
+  color: #fff;
+  font-family: Oswald, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wa-addcal-download-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #a5002a 0%, #8c0023 100%);
+}
+
+.wa-addcal-download-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* =========================================================
+   ADD TO CALENDAR — mobile bottom sheet
+   ========================================================= */
+
+/* Backdrop behind the sheet */
+.wa-addcal-backdrop {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* Dim backdrop */
+  .wa-addcal-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 99997;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  /* Override JS-positioned dropdown → bottom sheet */
+  .wa-addcal-dropdown {
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    min-width: unset !important;
+    width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 20px 16px calc(env(safe-area-inset-bottom, 0px) + 20px) !important;
+    box-sizing: border-box !important;
+    z-index: 99998 !important;
+  }
+
+  /* Drag handle visual cue */
+  .wa-addcal-dropdown::before {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  /* Larger touch targets for links */
+  .wa-addcal-link {
+    padding: 13px 14px !important;
+    font-size: 15px !important;
+    min-height: 52px !important;
+  }
+
+  .wa-addcal-link-icon {
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  /* Bigger select and section title */
+  .wa-addcal-section-title {
+    font-size: 11px !important;
+  }
+
+  .wa-addcal-select {
+    font-size: 15px !important;
+    padding: 11px 32px 11px 12px !important;
+    min-height: 48px !important;
+  }
+}
