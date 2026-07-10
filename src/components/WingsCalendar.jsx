@@ -817,7 +817,7 @@ export default function WingsCalendar() {
             click: () => setFilterOpen((prev) => !prev),
           },
           addCal: {
-            text: "+ Cal",
+            text: "+ Add to Calendar",
             click: () => setAddCalOpen((prev) => !prev),
           },
         }}
