@@ -32,32 +32,55 @@
   --radius-lg: 26px;
 }
 
-/* Ensure background always covers full viewport width/height */
+/* Content-driven outer document for Wix auto-height */
 html,
 body {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+
   margin: 0;
   padding: 0;
-  width: 100%;
-  min-height: 100vh;
+  background: var(--bg-1);
   overflow-x: hidden;
 }
 
-/* Gradient on body so it paints full viewport */
+/* Gradient on body so it paints full page */
 body {
   background:
-    radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.164), transparent 60%),
-    radial-gradient(900px 600px at 92% 18%, #25162900, transparent 62%),
-    radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
-    linear-gradient(180deg, var(--bg-0), var(--bg-1));
+    radial-gradient(
+      900px 600px at 12% 10%,
+      rgba(189, 38, 38, 0.164),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 92% 18%,
+      #25162900,
+      transparent 62%
+    ),
+    radial-gradient(
+      900px 600px at 50% 110%,
+      rgba(22, 163, 74, 0.16),
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      var(--bg-0),
+      var(--bg-1)
+    );
+
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center top;
+
   color: var(--text);
+
   font-family: Industrie;
 }
 
 /* Disable sticky headers in FullCalendar scrollgrid */
-.fc .fc-scrollgrid-section-sticky>* {
+.fc .fc-scrollgrid-section-sticky > * {
   position: static !important;
   top: auto !important;
   z-index: auto !important;
@@ -65,34 +88,64 @@ body {
 
 /* Page acts as inner container */
 .page {
-  min-height: 100vh;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+
   padding: 15px;
+
   box-sizing: border-box;
 }
 
-.page>h1 {
-  font-size: clamp(20px, 2.4vw + 6px, 34px);
+.page > h1 {
+  font-size: clamp(
+    20px,
+    2.4vw + 6px,
+    34px
+  );
+
   font-weight: 800;
   letter-spacing: 0.25em;
+
   text-align: center;
+
   margin-top: 55px;
   margin-bottom: -30px;
   margin-left: 45px;
 }
 
 /* =========================================================
-   ✅ Schedule Advisories banner + per-event pills
+   Schedule Advisories banner + per-event pills
    ========================================================= */
+
 .wa-advisoryBar {
   width: min(780px, 100%);
+
   margin: 50px auto -20px;
+
   border-radius: 16px;
+
   overflow: hidden;
+
   box-shadow: var(--shadow);
-  border: 1px solid var(--stroke);
-  background: rgba(32, 43, 73, 0.65);
+
+  border:
+    1px solid
+    var(--stroke);
+
+  background:
+    rgba(
+      32,
+      43,
+      73,
+      0.65
+    );
+
   backdrop-filter: blur(14px);
+
   padding: 10px 12px;
+
   box-sizing: border-box;
 }
 
@@ -100,6 +153,7 @@ body {
   .wa-advisoryBar {
     width: 91vw;
     max-width: 93vw;
+
     margin-top: 6px;
     margin-bottom: 10px;
   }
@@ -107,83 +161,194 @@ body {
 
 .wa-advisoryBarTitle {
   font-weight: 100;
+
   text-transform: uppercase;
+
   letter-spacing: 0.16em;
+
   font-size: 12px;
+
   text-align: center;
-  color: rgba(255, 255, 255, 0.92);
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
   margin-bottom: 8px;
 }
 
 .wa-advisoryList {
   list-style: none;
+
   padding: 0;
   margin: 0;
+
   display: flex;
   flex-direction: column;
+
   gap: 8px;
+
   text-align: center;
+
   justify-content: center;
 }
 
 .wa-advisoryList li {
   display: flex;
+
   gap: 10px;
+
   align-items: flex-start;
+
   text-align: center;
+
   margin-left: 50px;
 }
 
 .wa-adv-itemText {
   font-weight: 100;
-  font-size: clamp(11px, 0.35vw + 10px, 14px);
+
+  font-size:
+    clamp(
+      11px,
+      0.35vw + 10px,
+      14px
+    );
+
   line-height: 1.35;
-  color: rgba(255, 255, 255, 0.92);
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
   text-align: center;
 }
 
 .wa-adv-pill {
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
+
   border-radius: 999px;
+
   padding: 2px 8px;
+
   font-size: 10px;
   font-weight: 600;
+
   letter-spacing: 0.08em;
+
   text-transform: uppercase;
   text-align: center;
+
   white-space: nowrap;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.1);
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.25
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
   color: #fff;
+
   flex: 0 0 auto;
+
   margin-top: 0px;
 }
 
 .wa-adv-time-change {
   background: #d5013f;
-  border-color: rgba(124, 58, 237, 0.55);
+
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.55
+    );
 }
 
 .wa-adv-cancelled {
-  background: rgba(223, 0, 56, 0.18);
-  border-color: rgba(223, 0, 56, 0.55);
+  background:
+    rgba(
+      223,
+      0,
+      56,
+      0.18
+    );
+
+  border-color:
+    rgba(
+      223,
+      0,
+      56,
+      0.55
+    );
 }
 
 .wa-adv-note {
-  background: rgba(59, 130, 246, 0.16);
-  border-color: rgba(59, 130, 246, 0.45);
+  background:
+    rgba(
+      59,
+      130,
+      246,
+      0.16
+    );
+
+  border-color:
+    rgba(
+      59,
+      130,
+      246,
+      0.45
+    );
 }
 
 /* In list view, show a subtle note line under the title */
 .wa-adv-noteText {
   display: block;
+
   margin-top: 4px;
+
   font-weight: 100;
-  font-size: clamp(11px, 0.35vw + 10px, 13px);
-  color: rgba(255, 255, 255, 0.86);
+
+  font-size:
+    clamp(
+      11px,
+      0.35vw + 10px,
+      13px
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.86
+    );
+
   line-height: 1.25;
+
   text-align: center;
 }
 
@@ -193,210 +358,428 @@ body {
   opacity: 0.65;
 }
 
-.fc tr.wa-adv-cancelled td.fc-list-event-title a,
-.fc .fc-event.wa-adv-cancelled .fc-event-title {
-  text-decoration: line-through;
+.fc
+  tr.wa-adv-cancelled
+  td.fc-list-event-title
+  a,
+.fc
+  .fc-event.wa-adv-cancelled
+  .fc-event-title {
+  text-decoration:
+    line-through;
 }
 
 /* Tooltip advisory row spacing */
 .wa-tipAdvisory .wa-tipValue {
   display: inline-flex;
+
   align-items: center;
+
   gap: 8px;
 }
 
 .wa-tipAdvText {
   display: inline-block;
+
   line-height: 1.25;
+
   text-align: center;
 }
 
 /* =========================================================
-   ✅ LIST VIEW ONLY: place Advisory Bar between nav arrows and the list
+   LIST VIEW ONLY:
+   place Advisory Bar between nav arrows and the list
    ========================================================= */
-.wa-cal:has(.fc-listWeek-view),
-.wa-cal:has(.fc-listDay-view),
-.wa-cal:has(.fc-listFuture-view) {
+
+.wa-cal:has(
+    .fc-listWeek-view
+  ),
+.wa-cal:has(
+    .fc-listDay-view
+  ),
+.wa-cal:has(
+    .fc-listFuture-view
+  ) {
   position: relative;
 }
 
-/* Default list positioning (safe even if list buttons are hidden on desktop) */
-.wa-cal:has(.fc-listWeek-view) .wa-advisoryBar,
-.wa-cal:has(.fc-listDay-view) .wa-advisoryBar,
-.wa-cal:has(.fc-listFuture-view) .wa-advisoryBar {
+.wa-cal:has(
+    .fc-listWeek-view
+  )
+  .wa-advisoryBar,
+.wa-cal:has(
+    .fc-listDay-view
+  )
+  .wa-advisoryBar,
+.wa-cal:has(
+    .fc-listFuture-view
+  )
+  .wa-advisoryBar {
   position: absolute !important;
+
   left: 50% !important;
-  transform: translateX(-50%) !important;
+
+  transform:
+    translateX(-50%)
+    !important;
+
   top: 6px !important;
+
   margin: 0 !important;
+
   z-index: 50 !important;
 }
 
-/* Push list DOWN enough so the day headers never sit behind the advisory */
-.wa-cal:has(.fc-listWeek-view) .fc .fc-view-harness,
-.wa-cal:has(.fc-listDay-view) .fc .fc-view-harness,
-.wa-cal:has(.fc-listFuture-view) .fc .fc-view-harness {
-  padding-top: 78px !important;
+/* Push list DOWN enough so day headers never sit behind advisory */
+.wa-cal:has(
+    .fc-listWeek-view
+  )
+  .fc
+  .fc-view-harness,
+.wa-cal:has(
+    .fc-listDay-view
+  )
+  .fc
+  .fc-view-harness,
+.wa-cal:has(
+    .fc-listFuture-view
+  )
+  .fc
+  .fc-view-harness {
+  padding-top:
+    78px !important;
 }
 
 /* Mobile list view */
 @media (max-width: 850px) {
-
-  .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
-  .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar,
-  .wa-cal.is-phone-list:has(.fc-listFuture-view) .wa-advisoryBar {
+  .wa-cal.is-phone-list:has(
+      .fc-listWeek-view
+    )
+    .wa-advisoryBar,
+  .wa-cal.is-phone-list:has(
+      .fc-listDay-view
+    )
+    .wa-advisoryBar,
+  .wa-cal.is-phone-list:has(
+      .fc-listFuture-view
+    )
+    .wa-advisoryBar {
     top: 118px !important;
+
     width: 91vw !important;
     max-width: 93vw !important;
   }
 
-  .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
-  .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness,
-  .wa-cal.is-phone-list:has(.fc-listFuture-view) .fc .fc-view-harness {
-    padding-top: 18px !important;
+  .wa-cal.is-phone-list:has(
+      .fc-listWeek-view
+    )
+    .fc
+    .fc-view-harness,
+  .wa-cal.is-phone-list:has(
+      .fc-listDay-view
+    )
+    .fc
+    .fc-view-harness,
+  .wa-cal.is-phone-list:has(
+      .fc-listFuture-view
+    )
+    .fc
+    .fc-view-harness {
+    padding-top:
+      18px !important;
   }
 }
 
 /* Extra-small phones */
 @media (max-width: 560px) {
-
-  .wa-cal.is-phone-list:has(.fc-listWeek-view) .wa-advisoryBar,
-  .wa-cal.is-phone-list:has(.fc-listDay-view) .wa-advisoryBar,
-  .wa-cal.is-phone-list:has(.fc-listFuture-view) .wa-advisoryBar {
+  .wa-cal.is-phone-list:has(
+      .fc-listWeek-view
+    )
+    .wa-advisoryBar,
+  .wa-cal.is-phone-list:has(
+      .fc-listDay-view
+    )
+    .wa-advisoryBar,
+  .wa-cal.is-phone-list:has(
+      .fc-listFuture-view
+    )
+    .wa-advisoryBar {
     top: 12px !important;
   }
 
-  .wa-cal.is-phone-list:has(.fc-listWeek-view) .fc .fc-view-harness,
-  .wa-cal.is-phone-list:has(.fc-listDay-view) .fc .fc-view-harness,
-  .wa-cal.is-phone-list:has(.fc-listFuture-view) .fc .fc-view-harness {
-    padding-top: 15px !important;
+  .wa-cal.is-phone-list:has(
+      .fc-listWeek-view
+    )
+    .fc
+    .fc-view-harness,
+  .wa-cal.is-phone-list:has(
+      .fc-listDay-view
+    )
+    .fc
+    .fc-view-harness,
+  .wa-cal.is-phone-list:has(
+      .fc-listFuture-view
+    )
+    .fc
+    .fc-view-harness {
+    padding-top:
+      15px !important;
   }
 }
 
 @media (min-width: 751px) {
-  .page>h1 {
+  .page > h1 {
     position: relative;
   }
 
-  .page>h1::before {
+  .page > h1::before {
     content: "";
+
     display: block;
+
     width: 78px;
     height: 78px;
-    margin: -70px auto 0px;
-    background-image: url("/wings-logo2.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+
+    margin:
+      -70px auto 0px;
+
+    background-image:
+      url(
+        "/wings-logo2.png"
+      );
+
+    background-repeat:
+      no-repeat;
+
+    background-position:
+      center;
+
+    background-size:
+      contain;
   }
 }
 
 /* ====== Calendar wrapper ====== */
+
 .cal-wrap {
-  width: min(980px, 100%);
+  width: min(
+    980px,
+    100%
+  );
+
   max-width: 100%;
-  margin: 0 auto;
-  border-radius: var(--radius-lg);
+
+  margin:
+    0 auto;
+
+  border-radius:
+    var(--radius-lg);
+
   overflow: visible;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--stroke);
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(14px);
-  padding: 0 18px;
+
+  box-shadow:
+    var(--shadow);
+
+  border:
+    1px solid
+    var(--stroke);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.65
+    );
+
+  backdrop-filter:
+    blur(14px);
+
+  padding:
+    0 18px;
+
   position: relative;
+
   z-index: 0;
-  box-sizing: border-box;
+
+  box-sizing:
+    border-box;
 }
 
-/* On <=750px, full-width card that fills viewport height under header */
+/* Mobile card is content-driven for Wix auto-height */
 @media (max-width: 750px) {
   .cal-wrap {
-    padding: 0 8px;
-    border-radius: 18px;
+    padding:
+      0 8px;
+
+    border-radius:
+      18px;
+
     width: 100%;
     max-width: 100%;
-    min-height: calc(100vh - 32px);
+
+    min-height: 0;
+    height: auto;
   }
 }
 
-/* Drop shadow around the OUTSIDE of FullCalendar shell (calendar + list) */
 .wa-cal {
   position: relative;
 }
 
-.wa-cal .fc-media-screen {
-  box-shadow: var(--shadow);
+.wa-cal
+  .fc-media-screen {
+  box-shadow:
+    var(--shadow);
 }
 
 /* ====== Logo watermark behind the calendar ====== */
-.fc .fc-view-harness {
+
+.fc
+  .fc-view-harness {
   position: relative;
-  overflow: visible !important;
-  width: 100% !important;
+
+  overflow:
+    visible !important;
+
+  width:
+    100% !important;
 }
 
 /* Watermark */
-.fc .fc-view-harness::before {
+.fc
+  .fc-view-harness::before {
   content: "";
+
   position: fixed;
+
   inset: 0;
+
   pointer-events: none;
+
   z-index: 0;
-  background-image: url("/wings-logo.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: min(1520px, 60%);
+
+  background-image:
+    url(
+      "/wings-logo.png"
+    );
+
+  background-repeat:
+    no-repeat;
+
+  background-position:
+    center center;
+
+  background-size:
+    min(
+      1520px,
+      60%
+    );
+
   opacity: 0.06;
-  filter: saturate(1.05) contrast(1.05);
-  transition: all 0.35s ease;
+
+  filter:
+    saturate(1.05)
+    contrast(1.05);
+
+  transition:
+    all 0.35s ease;
 }
 
-/* Per-view watermark tuning */
-.fc-timeGridWeek-view .fc-view-harness::before {
-  background-size: min(1500px, 78%) !important;
-  opacity: 0.14 !important;
-  background-position: center 50% !important;
+.fc-timeGridWeek-view
+  .fc-view-harness::before {
+  background-size:
+    min(
+      1500px,
+      78%
+    )
+    !important;
+
+  opacity:
+    0.14 !important;
+
+  background-position:
+    center 50%
+    !important;
 }
 
-.fc-timeGridDay-view .fc-view-harness::before {
-  background-size: min(950px, 50%) !important;
-  opacity: 0.22 !important;
-  background-position: center 25% !important;
+.fc-timeGridDay-view
+  .fc-view-harness::before {
+  background-size:
+    min(
+      950px,
+      50%
+    )
+    !important;
+
+  opacity:
+    0.22 !important;
+
+  background-position:
+    center 25%
+    !important;
 }
 
-.fc-listWeek-view .fc-view-harness::before,
-.fc-listDay-view .fc-view-harness::before,
-.fc-listFuture-view .fc-view-harness::before {
-  position: fixed !important;
-  inset: 0 !important;
-  background-size: min(1000px, 58%) !important;
-  opacity: 0.08 !important;
-  background-position: center 50% !important;
+.fc-listWeek-view
+  .fc-view-harness::before,
+.fc-listDay-view
+  .fc-view-harness::before,
+.fc-listFuture-view
+  .fc-view-harness::before {
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  background-size:
+    min(
+      1000px,
+      58%
+    )
+    !important;
+
+  opacity:
+    0.08 !important;
+
+  background-position:
+    center 50%
+    !important;
 }
 
 /* Ensure content stays above watermark */
-.fc .fc-view-harness>* {
+.fc
+  .fc-view-harness
+  > * {
   position: relative;
+
   z-index: 1;
 }
 
 /* =========================================================
    FullCalendar base
    ========================================================= */
+
 .fc {
-  background: transparent;
+  background:
+    transparent;
+
   width: 100%;
 }
 
 /* Prevent inner scrollbars */
 .fc .fc-scroller {
-  overflow-y: hidden !important;
+  overflow-y:
+    hidden !important;
 }
 
 /* Desktop: shrink slot height */
 @media (min-width: 751px) {
-  .wa-cal .fc .fc-timegrid-slot {
-    height: 1.3rem !important;
+  .wa-cal
+    .fc
+    .fc-timegrid-slot {
+    height:
+      1.3rem !important;
   }
 }
 
@@ -409,116 +792,302 @@ body {
 .fc .fc-timegrid-slot,
 .fc-theme-standard td,
 .fc-theme-standard th {
-  background: transparent !important;
+  background:
+    transparent !important;
 }
 
 /* ====== Typography ====== */
+
 .fc * {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
 }
 
 /* ====== Grid borders ====== */
+
 .fc .fc-scrollgrid,
 .fc .fc-timegrid-slot,
 .fc .fc-col-header-cell {
-  border-color: rgba(255, 255, 255, 0.25) !important;
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.25
+    )
+    !important;
 }
 
-.fc .fc-col-header-cell {
-  background-color: rgba(1, 0, 70, 0.55);
+.fc
+  .fc-col-header-cell {
+  background-color:
+    rgba(
+      1,
+      0,
+      70,
+      0.55
+    );
 }
 
 .fc .fc-timegrid-axis,
 .fc .fc-timegrid-axis-frame {
-  background-color: rgba(0, 0, 0, 0.22);
+  background-color:
+    rgba(
+      0,
+      0,
+      0,
+      0.22
+    );
 }
 
-.fc .fc-col-header-cell-cushion {
-  color: rgba(255, 255, 255, 0.914);
-  font-family: Oswald !important;
-  font-weight: 400 !important;
-  font-size: clamp(10px, 0.4vw + 9px, 14px);
+.fc
+  .fc-col-header-cell-cushion {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.914
+    );
+
+  font-family:
+    Oswald !important;
+
+  font-weight:
+    400 !important;
+
+  font-size:
+    clamp(
+      10px,
+      0.4vw + 9px,
+      14px
+    );
 }
 
-.fc .fc-timegrid-axis-cushion,
-.fc .fc-timegrid-slot-label-cushion {
-  color: rgba(255, 255, 255, 0.914);
-  font-family: Oswald !important;
-  font-weight: 300 !important;
-  font-size: clamp(10px, 0.4vw + 9px, 14px);
+.fc
+  .fc-timegrid-axis-cushion,
+.fc
+  .fc-timegrid-slot-label-cushion {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.914
+    );
+
+  font-family:
+    Oswald !important;
+
+  font-weight:
+    300 !important;
+
+  font-size:
+    clamp(
+      10px,
+      0.4vw + 9px,
+      14px
+    );
 }
 
 /* ====== Toolbar ====== */
-.fc .fc-toolbar.fc-header-toolbar {
-  padding: 14px 18px 12px !important;
-  column-gap: 18px !important;
-  row-gap: 10px !important;
+
+.fc
+  .fc-toolbar.fc-header-toolbar {
+  padding:
+    14px 18px 12px
+    !important;
+
+  column-gap:
+    18px !important;
+
+  row-gap:
+    10px !important;
 }
 
 @media (min-width: 751px) {
-  .wa-cal:not(.is-phone) .fc .fc-toolbar.fc-header-toolbar {
-    display: grid !important;
-    grid-template-columns: 1fr auto 1fr !important;
-    align-items: center !important;
+  .wa-cal:not(
+      .is-phone
+    )
+    .fc
+    .fc-toolbar.fc-header-toolbar {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      1fr auto 1fr
+      !important;
+
+    align-items:
+      center !important;
   }
 
-  .wa-cal:not(.is-phone) .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
-    display: flex !important;
-    justify-content: center !important;
+  .wa-cal:not(
+      .is-phone
+    )
+    .fc
+    .fc-toolbar.fc-header-toolbar
+    .fc-toolbar-chunk:nth-child(2) {
+    display:
+      flex !important;
+
+    justify-content:
+      center !important;
   }
 
-  .wa-cal:not(.is-phone) .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(3) {
-    display: flex !important;
-    justify-content: flex-end !important;
+  .wa-cal:not(
+      .is-phone
+    )
+    .fc
+    .fc-toolbar.fc-header-toolbar
+    .fc-toolbar-chunk:nth-child(3) {
+    display:
+      flex !important;
+
+    justify-content:
+      flex-end !important;
   }
 }
 
-.fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
+.fc
+  .fc-toolbar.fc-header-toolbar
+  .fc-toolbar-chunk {
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  gap:
+    12px !important;
 }
 
 /* Prevent week range title from wrapping */
-.fc .fc-toolbar-title {
+.fc
+  .fc-toolbar-title {
   color: #fff;
-  font-family: Oswald;
-  font-weight: 400;
-  font-size: clamp(12px, 0.4vw + 15px, 21px);
-  padding: 0 12px !important;
-  text-align: center;
-  margin-top: 30px;
-  margin-bottom: -20px;
-  margin-left: 35px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+  font-family:
+    Oswald;
+
+  font-weight:
+    400;
+
+  font-size:
+    clamp(
+      12px,
+      0.4vw + 15px,
+      21px
+    );
+
+  padding:
+    0 12px !important;
+
+  text-align:
+    center;
+
+  margin-top:
+    30px;
+
+  margin-bottom:
+    -20px;
+
+  margin-left:
+    35px;
+
+  white-space:
+    nowrap;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
 }
 
 /* ====== Buttons ====== */
-.fc .fc-button-group {
-  display: inline-flex !important;
-  gap: 14px !important;
-  margin-left: 10px !important;
-  margin-right: 10px !important;
-  margin-bottom: -55px !important;
-  border-radius: 10px !important;
+
+.fc
+  .fc-button-group {
+  display:
+    inline-flex
+    !important;
+
+  gap:
+    14px !important;
+
+  margin-left:
+    10px !important;
+
+  margin-right:
+    10px !important;
+
+  margin-bottom:
+    -55px !important;
+
+  border-radius:
+    10px !important;
 }
 
 .fc .fc-button {
-  border: 1px solid var(--stroke) !important;
-  background: rgba(255, 255, 255, 0.06) !important;
-  color: rgba(229, 231, 235, 0.92) !important;
-  border-radius: 10px !important;
-  padding: 8px 22px !important;
-  font-weight: 100 !important;
-  font-size: clamp(10px, 0.25vw + 9px, 13px) !important;
+  border:
+    1px solid
+    var(--stroke)
+    !important;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.06
+    )
+    !important;
+
+  color:
+    rgba(
+      229,
+      231,
+      235,
+      0.92
+    )
+    !important;
+
+  border-radius:
+    10px !important;
+
+  padding:
+    8px 22px
+    !important;
+
+  font-weight:
+    100 !important;
+
+  font-size:
+    clamp(
+      10px,
+      0.25vw + 9px,
+      13px
+    )
+    !important;
 }
 
 .fc .fc-button:hover {
-  background: rgba(255, 255, 255, 0.205) !important;
-  border-color: var(--stroke-2) !important;
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.205
+    )
+    !important;
+
+  border-color:
+    var(--stroke-2)
+    !important;
 }
 
 .fc .fc-button:focus,
@@ -529,325 +1098,863 @@ body {
 .fc .fc-button-primary:focus-visible,
 .fc .fc-button-primary:active,
 .fc .fc-button-primary:active:focus,
-.fc .fc-button-primary:not(:disabled):active,
-.fc .fc-button-primary:not(:disabled):active:focus {
-  border-color: var(--stroke-2) !important;
-  outline: none !important;
-  box-shadow: none !important;
+.fc
+  .fc-button-primary:not(
+    :disabled
+  ):active,
+.fc
+  .fc-button-primary:not(
+    :disabled
+  ):active:focus {
+  border-color:
+    var(--stroke-2)
+    !important;
+
+  outline:
+    none !important;
+
+  box-shadow:
+    none !important;
 }
 
-/* Desktop calendar only (not phone list layout) */
 @media (min-width: 751px) {
-  .wa-cal:not(.is-phone-list) .fc .fc-today-button {
-    margin-bottom: -55px !important;
+  .wa-cal:not(
+      .is-phone-list
+    )
+    .fc
+    .fc-today-button {
+    margin-bottom:
+      -55px !important;
   }
 }
 
-/* Hide LIST button on anything bigger than a phone */
 @media (min-width: 751px) {
-
   .fc .fc-listWeek-button,
   .fc .fc-listDay-button,
   .fc .fc-listFuture-button {
-    display: none !important;
+    display:
+      none !important;
   }
 }
 
 /* =========================================================
-   ✅ REMOVE OUTER BORDER ONLY ON MOBILE LIST VIEW
+   REMOVE OUTER BORDER ONLY ON MOBILE LIST VIEW
    ========================================================= */
+
 @media (max-width: 750px) {
+  .wa-cal.is-phone-list
+    .fc-media-screen,
+  .wa-cal.is-phone-list
+    .fc,
+  .wa-cal.is-phone-list
+    .fc-theme-standard
+    .fc-scrollgrid,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-scrollgrid,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-table
+    table {
+    border:
+      0 !important;
 
-  .wa-cal.is-phone-list .fc-media-screen,
-  .wa-cal.is-phone-list .fc,
-  .wa-cal.is-phone-list .fc-theme-standard .fc-scrollgrid,
-  .wa-cal.is-phone-list .fc .fc-scrollgrid,
-  .wa-cal.is-phone-list .fc .fc-list,
-  .wa-cal.is-phone-list .fc .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-list-table table {
-    border: 0 !important;
-    outline: none !important;
-    box-shadow: none !important;
+    outline:
+      none !important;
+
+    box-shadow:
+      none !important;
   }
 }
 
 /* =========================================================
-   ✅ MOBILE LIST VIEW BACKGROUND
-   Match the body gradient so the list blends into the page
+   MOBILE LIST VIEW BACKGROUND
    ========================================================= */
+
 @media (max-width: 750px) {
-  .wa-cal.is-phone-list .cal-wrap {
+  .wa-cal.is-phone-list
+    .cal-wrap {
     background:
-      radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.164), transparent 60%),
-      radial-gradient(900px 600px at 92% 18%, #25162900, transparent 62%),
-      radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
-      linear-gradient(180deg, var(--bg-0), var(--bg-1)) !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
-    background-position: center top !important;
+      radial-gradient(
+        900px 600px at 12% 10%,
+        rgba(
+          189,
+          38,
+          38,
+          0.164
+        ),
+        transparent 60%
+      ),
+      radial-gradient(
+        900px 600px at 92% 18%,
+        #25162900,
+        transparent 62%
+      ),
+      radial-gradient(
+        900px 600px at 50% 110%,
+        rgba(
+          22,
+          163,
+          74,
+          0.16
+        ),
+        transparent 55%
+      ),
+      linear-gradient(
+        180deg,
+        var(--bg-0),
+        var(--bg-1)
+      )
+      !important;
+
+    background-repeat:
+      no-repeat
+      !important;
+
+    background-size:
+      cover !important;
+
+    background-position:
+      center top
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-view-harness {
+  .wa-cal.is-phone-list
+    .fc
+    .fc-view-harness {
     background:
-      radial-gradient(900px 600px at 12% 10%, rgba(189, 38, 38, 0.164), transparent 60%),
-      radial-gradient(900px 600px at 92% 18%, #25162900, transparent 62%),
-      radial-gradient(900px 600px at 50% 110%, rgba(22, 163, 74, 0.16), transparent 55%),
-      linear-gradient(180deg, var(--bg-0), var(--bg-1)) !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
-    background-position: center top !important;
+      radial-gradient(
+        900px 600px at 12% 10%,
+        rgba(
+          189,
+          38,
+          38,
+          0.164
+        ),
+        transparent 60%
+      ),
+      radial-gradient(
+        900px 600px at 92% 18%,
+        #25162900,
+        transparent 62%
+      ),
+      radial-gradient(
+        900px 600px at 50% 110%,
+        rgba(
+          22,
+          163,
+          74,
+          0.16
+        ),
+        transparent 55%
+      ),
+      linear-gradient(
+        180deg,
+        var(--bg-0),
+        var(--bg-1)
+      )
+      !important;
+
+    background-repeat:
+      no-repeat
+      !important;
+
+    background-size:
+      cover !important;
+
+    background-position:
+      center top
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc,
-  .wa-cal.is-phone-list .fc-media-screen,
-  .wa-cal.is-phone-list .fc .fc-scroller-harness,
-  .wa-cal.is-phone-list .fc .fc-scroller,
-  .wa-cal.is-phone-list .fc .fc-list,
-  .wa-cal.is-phone-list .fc .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-list-table table {
-    background: transparent !important;
+  .wa-cal.is-phone-list
+    .fc,
+  .wa-cal.is-phone-list
+    .fc-media-screen,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-scroller-harness,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-scroller,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-table
+    table {
+    background:
+      transparent
+      !important;
   }
 }
 
 /* =========================================================
-   MOBILE LIST VIEW TOOLBAR: ONLY PREV/NEXT ARROWS
+   MOBILE LIST VIEW TOOLBAR
    ========================================================= */
-.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
-  justify-content: center !important;
-  align-items: center !important;
-  padding: 10px 12px 0px !important;
-  column-gap: 0 !important;
-  row-gap: 0 !important;
-  width: 100% !important;
+
+.wa-cal.is-phone-list
+  .fc
+  .fc-toolbar.fc-header-toolbar {
+  justify-content:
+    center !important;
+
+  align-items:
+    center !important;
+
+  padding:
+    10px 12px 0px
+    !important;
+
+  column-gap:
+    0 !important;
+
+  row-gap:
+    0 !important;
+
+  width:
+    100% !important;
 }
 
-.wa-cal.is-phone-list .fc .fc-button-group {
-  gap: 12px !important;
-  margin: 0 !important;
+.wa-cal.is-phone-list
+  .fc
+  .fc-button-group {
+  gap:
+    12px !important;
+
+  margin:
+    0 !important;
 }
 
-/* Hide center (title) + right (view buttons) chunks entirely */
-.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(2),
-.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(3) {
-  display: none !important;
+.wa-cal.is-phone-list
+  .fc
+  .fc-toolbar.fc-header-toolbar
+  .fc-toolbar-chunk:nth-child(2),
+.wa-cal.is-phone-list
+  .fc
+  .fc-toolbar.fc-header-toolbar
+  .fc-toolbar-chunk:nth-child(3) {
+  display:
+    none !important;
 }
 
-/* Hide the "today" button (left chunk) */
-.wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-today-button {
-  display: none !important;
+.wa-cal.is-phone-list
+  .fc
+  .fc-toolbar.fc-header-toolbar
+  .fc-today-button {
+  display:
+    none !important;
 }
 
-/* Safety-net: hide view buttons if they sneak in */
-.wa-cal.is-phone-list .fc .fc-timeGridWeek-button,
-.wa-cal.is-phone-list .fc .fc-timeGridDay-button,
-.wa-cal.is-phone-list .fc .fc-listWeek-button,
-.wa-cal.is-phone-list .fc .fc-listDay-button,
-.wa-cal.is-phone-list .fc .fc-listFuture-button {
-  display: none !important;
+.wa-cal.is-phone-list
+  .fc
+  .fc-timeGridWeek-button,
+.wa-cal.is-phone-list
+  .fc
+  .fc-timeGridDay-button,
+.wa-cal.is-phone-list
+  .fc
+  .fc-listWeek-button,
+.wa-cal.is-phone-list
+  .fc
+  .fc-listDay-button,
+.wa-cal.is-phone-list
+  .fc
+  .fc-listFuture-button {
+  display:
+    none !important;
 }
 
-/* ====== Events (base) ====== */
+/* ====== Events ====== */
+
 .fc .fc-event {
-  border-radius: 10px !important;
-  border-width: 1px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
-  overflow: hidden;
-  text-align: center;
-  box-sizing: border-box !important;
-  margin: 0 !important;
+  border-radius:
+    10px !important;
+
+  border-width:
+    1px !important;
+
+  box-shadow:
+    0 4px 16px
+      rgba(
+        0,
+        0,
+        0,
+        0.55
+      ),
+    inset
+      0 1px 0
+      rgba(
+        255,
+        255,
+        255,
+        0.18
+      )
+      !important;
+
+  overflow:
+    hidden;
+
+  text-align:
+    center;
+
+  box-sizing:
+    border-box
+    !important;
+
+  margin:
+    0 !important;
 }
 
-/* Center the FullCalendar event HARNESS inside each day column */
-.fc .fc-timegrid-col-events .fc-timegrid-event-harness {
-  display: flex !important;
-  justify-content: center !important;
+.fc
+  .fc-timegrid-col-events
+  .fc-timegrid-event-harness {
+  display:
+    flex !important;
+
+  justify-content:
+    center !important;
 }
 
-/* Actual event box */
-.fc .fc-timegrid-event {
-  width: 89% !important;
-  max-width: 89% !important;
-  margin: 0 !important;
-  left: auto !important;
-  right: auto !important;
-  transform: none !important;
+.fc
+  .fc-timegrid-event {
+  width:
+    89% !important;
+
+  max-width:
+    89% !important;
+
+  margin:
+    0 !important;
+
+  left:
+    auto !important;
+
+  right:
+    auto !important;
+
+  transform:
+    none !important;
 }
 
-/* Event Colors (timeGrid) */
 .fc-event.evt-stickpuck {
-  background: linear-gradient(165deg, #2e4eb8 0%, #0e2060 100%) !important;
-  border-color: rgba(100, 135, 220, 0.5) !important;
+  background:
+    linear-gradient(
+      165deg,
+      #2e4eb8 0%,
+      #0e2060 100%
+    )
+    !important;
+
+  border-color:
+    rgba(
+      100,
+      135,
+      220,
+      0.5
+    )
+    !important;
 }
 
 .fc-event.evt-publicskate {
-  background: linear-gradient(165deg, #b82c2c 0%, #621414 100%) !important;
-  border-color: rgba(215, 115, 115, 0.5) !important;
+  background:
+    linear-gradient(
+      165deg,
+      #b82c2c 0%,
+      #621414 100%
+    )
+    !important;
+
+  border-color:
+    rgba(
+      215,
+      115,
+      115,
+      0.5
+    )
+    !important;
 }
 
 .fc-event.evt-cosmic {
-  background: linear-gradient(165deg, #7018cc 0%, #3c0a84 100%) !important;
-  border-color: rgba(175, 130, 230, 0.5) !important;
+  background:
+    linear-gradient(
+      165deg,
+      #7018cc 0%,
+      #3c0a84 100%
+    )
+    !important;
+
+  border-color:
+    rgba(
+      175,
+      130,
+      230,
+      0.5
+    )
+    !important;
 }
 
 .fc-event.evt-openhockey {
-  background: linear-gradient(165deg, #ae7820 0%, #7a5214 100%) !important;
-  border-color: rgba(215, 178, 90, 0.5) !important;
+  background:
+    linear-gradient(
+      165deg,
+      #ae7820 0%,
+      #7a5214 100%
+    )
+    !important;
+
+  border-color:
+    rgba(
+      215,
+      178,
+      90,
+      0.5
+    )
+    !important;
 }
 
 .fc-event.evt-freestyle {
-  background: linear-gradient(165deg, #2e9090 0%, #0a5e5e 100%) !important;
-  border-color: rgba(85, 190, 190, 0.5) !important;
+  background:
+    linear-gradient(
+      165deg,
+      #2e9090 0%,
+      #0a5e5e 100%
+    )
+    !important;
+
+  border-color:
+    rgba(
+      85,
+      190,
+      190,
+      0.5
+    )
+    !important;
 }
 
 .fc-event.evt-privatelesson {
-  background: linear-gradient(165deg, #1e7a3c 0%, #0a4820 100%) !important;
-  border-color: rgba(80, 190, 110, 0.5) !important;
+  background:
+    linear-gradient(
+      165deg,
+      #1e7a3c 0%,
+      #0a4820 100%
+    )
+    !important;
+
+  border-color:
+    rgba(
+      80,
+      190,
+      110,
+      0.5
+    )
+    !important;
 }
 
-/* Lunchtime Adult Drop-In Hockey */
 .fc-event.evt-lunchtime-dropin {
-  background: linear-gradient(165deg, #ae5e18 0%, #6e340a 100%) !important;
-  border-color: rgba(215, 148, 88, 0.5) !important;
+  background:
+    linear-gradient(
+      165deg,
+      #ae5e18 0%,
+      #6e340a 100%
+    )
+    !important;
+
+  border-color:
+    rgba(
+      215,
+      148,
+      88,
+      0.5
+    )
+    !important;
 }
 
 .fc-event.evt-default {
-  background: linear-gradient(165deg, #aa7018 0%, #724e0c 100%) !important;
-  border-color: rgba(215, 175, 88, 0.5) !important;
+  background:
+    linear-gradient(
+      165deg,
+      #aa7018 0%,
+      #724e0c 100%
+    )
+    !important;
+
+  border-color:
+    rgba(
+      215,
+      175,
+      88,
+      0.5
+    )
+    !important;
 }
 
-/* Center Title Above Time inside event (timeGrid views) */
 .fc a.fc-timegrid-event,
 .fc .fc-timegrid-event {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  text-align: center !important;
-  height: 100% !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  font-family: Industrie;
-  font-weight: 100 !important;
+  display:
+    flex !important;
+
+  justify-content:
+    center !important;
+
+  align-items:
+    center !important;
+
+  text-align:
+    center !important;
+
+  height:
+    100% !important;
+
+  padding:
+    0 !important;
+
+  overflow:
+    hidden !important;
+
+  font-family:
+    Industrie;
+
+  font-weight:
+    100 !important;
 }
 
-.fc .fc-timegrid-event .fc-event-main {
-  display: inline-flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  text-align: center !important;
-  height: auto !important;
-  width: 100% !important;
-  line-height: 1 !important;
-  gap: 0 !important;
-  transform: translateY(-0%);
+.fc
+  .fc-timegrid-event
+  .fc-event-main {
+  display:
+    inline-flex
+    !important;
+
+  flex-direction:
+    column !important;
+
+  justify-content:
+    center !important;
+
+  align-items:
+    center !important;
+
+  text-align:
+    center !important;
+
+  height:
+    auto !important;
+
+  width:
+    100% !important;
+
+  line-height:
+    1 !important;
+
+  gap:
+    0 !important;
+
+  transform:
+    translateY(-0%);
 }
 
-/* Responsive Title/Time inside timeGrid events – smaller overall */
-.fc .fc-timegrid-event .fc-event-title {
-  order: 1 !important;
-  font-family: Oswald !important;
-  font-size: clamp(10px, 0.35vw + 9px, 13px) !important;
-  font-weight: 400 !important;
-  margin: 2px !important;
-  padding: 0 !important;
-  line-height: 1.3 !important;
-  letter-spacing: 0.025em !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+.fc
+  .fc-timegrid-event
+  .fc-event-title {
+  order:
+    1 !important;
+
+  font-family:
+    Oswald !important;
+
+  font-size:
+    clamp(
+      10px,
+      0.35vw + 9px,
+      13px
+    )
+    !important;
+
+  font-weight:
+    400 !important;
+
+  margin:
+    2px !important;
+
+  padding:
+    0 !important;
+
+  line-height:
+    1.3 !important;
+
+  letter-spacing:
+    0.025em
+    !important;
+
+  text-shadow:
+    0 1px 2px
+    rgba(
+      0,
+      0,
+      0,
+      0.4
+    )
+    !important;
 }
 
-.fc .fc-timegrid-event .fc-event-time {
-  order: 2 !important;
-  font-family: Oswald !important;
-  font-size: clamp(9px, 0.3vw + 7px, 12px) !important;
-  font-weight: 300 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  text-transform: uppercase !important;
-  line-height: 1.4 !important;
-  opacity: 0.88 !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35) !important;
+.fc
+  .fc-timegrid-event
+  .fc-event-time {
+  order:
+    2 !important;
+
+  font-family:
+    Oswald !important;
+
+  font-size:
+    clamp(
+      9px,
+      0.3vw + 7px,
+      12px
+    )
+    !important;
+
+  font-weight:
+    300 !important;
+
+  margin:
+    0 !important;
+
+  padding:
+    0 !important;
+
+  text-transform:
+    uppercase
+    !important;
+
+  line-height:
+    1.4 !important;
+
+  opacity:
+    0.88 !important;
+
+  text-shadow:
+    0 1px 2px
+    rgba(
+      0,
+      0,
+      0,
+      0.35
+    )
+    !important;
 }
 
-/* ✅ Register link under time (timeGrid Lunchtime Adult Drop-In Hockey only) */
-.fc-event.evt-lunchtime-dropin .wa-register-wrap {
-  order: 3 !important;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 3px;
+.fc-event.evt-lunchtime-dropin
+  .wa-register-wrap {
+  order:
+    3 !important;
+
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  width:
+    100%;
+
+  margin-top:
+    3px;
 }
 
-.fc-event.evt-lunchtime-dropin .wa-register-link {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  font-size: clamp(10px, 0.3vw + 9px, 12px) !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  color: rgba(255, 255, 255, 0.95) !important;
+.fc-event.evt-lunchtime-dropin
+  .wa-register-link {
+  pointer-events:
+    auto !important;
+
+  cursor:
+    pointer !important;
+
+  font-size:
+    clamp(
+      10px,
+      0.3vw + 9px,
+      12px
+    )
+    !important;
+
+  font-weight:
+    600 !important;
+
+  letter-spacing:
+    0.06em;
+
+  text-transform:
+    uppercase;
+
+  text-decoration:
+    underline;
+
+  text-underline-offset:
+    3px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    )
+    !important;
 }
 
-.fc-event.evt-lunchtime-dropin .wa-register-link:hover {
-  opacity: 0.9;
+.fc-event.evt-lunchtime-dropin
+  .wa-register-link:hover {
+  opacity:
+    0.9;
 }
 
-/* ✅ Register link under title (LIST view Lunchtime Adult Drop-In Hockey only) */
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title .wa-list-register-wrap {
-  margin-top: 6px;
+.fc
+  tr.evt-lunchtime-dropin
+  td.fc-list-event-title
+  .wa-list-register-wrap {
+  margin-top:
+    6px;
 }
 
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title .wa-register-link {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  display: inline-flex;
-  align-items: center;
-  font-size: clamp(12px, 0.35vw + 11px, 14px) !important;
-  font-weight: 650 !important;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: underline !important;
-  text-underline-offset: 3px;
-  color: rgba(255, 255, 255, 0.95) !important;
+.fc
+  tr.evt-lunchtime-dropin
+  td.fc-list-event-title
+  .wa-register-link {
+  pointer-events:
+    auto !important;
+
+  cursor:
+    pointer !important;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  font-size:
+    clamp(
+      12px,
+      0.35vw + 11px,
+      14px
+    )
+    !important;
+
+  font-weight:
+    650 !important;
+
+  letter-spacing:
+    0.06em;
+
+  text-transform:
+    uppercase;
+
+  text-decoration:
+    underline !important;
+
+  text-underline-offset:
+    3px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    )
+    !important;
 }
 
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title .wa-register-link:hover {
-  opacity: 0.9;
+.fc
+  tr.evt-lunchtime-dropin
+  td.fc-list-event-title
+  .wa-register-link:hover {
+  opacity:
+    0.9;
 }
 
-/* =========================================================
-   ✅ FIX: LIST VIEW stacks Title + Register vertically
-   ========================================================= */
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
-  gap: 6px !important;
+.fc
+  tr.evt-lunchtime-dropin
+  td.fc-list-event-title {
+  display:
+    flex !important;
+
+  flex-direction:
+    column !important;
+
+  align-items:
+    flex-start
+    !important;
+
+  justify-content:
+    center !important;
+
+  gap:
+    6px !important;
 }
 
-/* Make the event title anchor take a full line */
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title>a:not(.wa-register-link) {
-  display: block !important;
-  width: 100% !important;
+.fc
+  tr.evt-lunchtime-dropin
+  td.fc-list-event-title
+  > a:not(
+    .wa-register-link
+  ) {
+  display:
+    block !important;
+
+  width:
+    100% !important;
 }
 
-/* Make the register wrapper its own full-width line */
-.fc tr.evt-lunchtime-dropin td.fc-list-event-title .wa-list-register-wrap {
-  display: block !important;
-  width: 100% !important;
-  margin-top: 0 !important;
+.fc
+  tr.evt-lunchtime-dropin
+  td.fc-list-event-title
+  .wa-list-register-wrap {
+  display:
+    block !important;
+
+  width:
+    100% !important;
+
+  margin-top:
+    0 !important;
 }
 
-/* Slight bump on very small phones */
 @media (max-width: 400px) {
-  .fc .fc-timegrid-event .fc-event-title {
-    font-size: clamp(13px, 3.2vw, 15px) !important;
+  .fc
+    .fc-timegrid-event
+    .fc-event-title {
+    font-size:
+      clamp(
+        13px,
+        3.2vw,
+        15px
+      )
+      !important;
   }
 
-  .fc .fc-timegrid-event .fc-event-time {
-    font-size: clamp(12px, 2.8vw, 17px) !important;
+  .fc
+    .fc-timegrid-event
+    .fc-event-time {
+    font-size:
+      clamp(
+        12px,
+        2.8vw,
+        17px
+      )
+      !important;
   }
 }
 
@@ -855,1114 +1962,2801 @@ body {
    LIST VIEW LAYOUT
    ========================================================= */
 
-/* Keep view + scrollers spanning full width */
-.fc .fc-listWeek-view.fc-view,
-.fc .fc-listDay-view.fc-view,
-.fc .fc-listFuture-view.fc-view,
-.fc .fc-list-view.fc-view {
-  width: 100% !important;
-  max-width: 100% !important;
+.fc
+  .fc-listWeek-view.fc-view,
+.fc
+  .fc-listDay-view.fc-view,
+.fc
+  .fc-listFuture-view.fc-view,
+.fc
+  .fc-list-view.fc-view {
+  width:
+    100% !important;
+
+  max-width:
+    100% !important;
 }
 
-.fc .fc-listWeek-view .fc-scroller-harness,
-.fc .fc-listWeek-view .fc-scroller,
-.fc .fc-listWeek-view .fc-scroller-liquid,
-.fc .fc-listWeek-view .fc-scroller-liquid-absolute,
-.fc .fc-listWeek-view .fc-list,
-.fc .fc-listDay-view .fc-scroller-harness,
-.fc .fc-listDay-view .fc-scroller,
-.fc .fc-listDay-view .fc-scroller-liquid,
-.fc .fc-listDay-view .fc-scroller-liquid-absolute,
-.fc .fc-listDay-view .fc-list,
-.fc .fc-listFuture-view .fc-scroller-harness,
-.fc .fc-listFuture-view .fc-scroller,
-.fc .fc-listFuture-view .fc-scroller-liquid,
-.fc .fc-listFuture-view .fc-scroller-liquid-absolute,
-.fc .fc-listFuture-view .fc-list {
-  width: 100% !important;
-  max-width: 100% !important;
+.fc
+  .fc-listWeek-view
+  .fc-scroller-harness,
+.fc
+  .fc-listWeek-view
+  .fc-scroller,
+.fc
+  .fc-listWeek-view
+  .fc-scroller-liquid,
+.fc
+  .fc-listWeek-view
+  .fc-scroller-liquid-absolute,
+.fc
+  .fc-listWeek-view
+  .fc-list,
+.fc
+  .fc-listDay-view
+  .fc-scroller-harness,
+.fc
+  .fc-listDay-view
+  .fc-scroller,
+.fc
+  .fc-listDay-view
+  .fc-scroller-liquid,
+.fc
+  .fc-listDay-view
+  .fc-scroller-liquid-absolute,
+.fc
+  .fc-listDay-view
+  .fc-list,
+.fc
+  .fc-listFuture-view
+  .fc-scroller-harness,
+.fc
+  .fc-listFuture-view
+  .fc-scroller,
+.fc
+  .fc-listFuture-view
+  .fc-scroller-liquid,
+.fc
+  .fc-listFuture-view
+  .fc-scroller-liquid-absolute,
+.fc
+  .fc-listFuture-view
+  .fc-list {
+  width:
+    100% !important;
+
+  max-width:
+    100% !important;
 }
 
-/* === LIST WIDTH / CENTERING (works for all viewports) === */
-.fc .fc-listWeek-view .fc-list-table,
-.fc .fc-listDay-view .fc-list-table,
-.fc .fc-listFuture-view .fc-list-table {
-  width: 100% !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
-  border-collapse: collapse !important;
-  table-layout: fixed !important;
+.fc
+  .fc-listWeek-view
+  .fc-list-table,
+.fc
+  .fc-listDay-view
+  .fc-list-table,
+.fc
+  .fc-listFuture-view
+  .fc-list-table {
+  width:
+    100% !important;
+
+  margin:
+    0 auto !important;
+
+  padding:
+    0 !important;
+
+  border-collapse:
+    collapse !important;
+
+  table-layout:
+    fixed !important;
 }
 
-.fc .fc-listWeek-view .fc-list-table table,
-.fc .fc-listDay-view .fc-list-table table,
-.fc .fc-listFuture-view .fc-list-table table {
-  width: 100% !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
-  table-layout: fixed !important;
+.fc
+  .fc-listWeek-view
+  .fc-list-table
+  table,
+.fc
+  .fc-listDay-view
+  .fc-list-table
+  table,
+.fc
+  .fc-listFuture-view
+  .fc-list-table
+  table {
+  width:
+    100% !important;
+
+  max-width:
+    1200px !important;
+
+  margin:
+    0 auto !important;
+
+  table-layout:
+    fixed !important;
 }
 
-/* Optional: tighten list width slightly on small phones so it stays centered nicely */
 @media (max-width: 850px) {
+  .fc
+    .fc-listWeek-view
+    .fc-list-table
+    table,
+  .fc
+    .fc-listDay-view
+    .fc-list-table
+    table,
+  .fc
+    .fc-listFuture-view
+    .fc-list-table
+    table {
+    max-width:
+      120% !important;
 
-  .fc .fc-listWeek-view .fc-list-table table,
-  .fc .fc-listDay-view .fc-list-table table,
-  .fc .fc-listFuture-view .fc-list-table table {
-    max-width: 120% !important;
-    width: 120% !important;
+    width:
+      120% !important;
   }
 }
 
-@media (min-width: 475px) and (max-width: 850px) {
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
-    max-width: 850px !important;
-    margin-left: 0px !important;
-    margin-top: 0px;
+@media (
+  min-width: 475px
+) and (
+  max-width: 850px
+) {
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar {
+    max-width:
+      850px !important;
+
+    margin-left:
+      0px !important;
+
+    margin-top:
+      0px;
   }
 
   .fc-media-screen {
-    position: relative !important;
-    left: 1% !important;
-    border-radius: 19px;
+    position:
+      relative
+      !important;
+
+    left:
+      1% !important;
+
+    border-radius:
+      19px;
   }
 
-  .wa-cal.is-phone-list .fc .fc-view-harness {
-    max-width: 580px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-view-harness {
+    max-width:
+      580px !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listFuture-view .fc-list-table {
-    width: 100% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listWeek-view
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listDay-view
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listFuture-view
+    .fc-list-table {
+    width:
+      100% !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
   }
 }
 
-/* 562px–850px — center the header + toolbar + list together */
-@media (min-width: 562px) and (max-width: 850px) {
-  .page>h1 {
-    width: min(680px, 100%) !important;
-    text-align: center;
-    margin-right: auto !important;
+@media (
+  min-width: 562px
+) and (
+  max-width: 850px
+) {
+  .page > h1 {
+    width:
+      min(
+        680px,
+        100%
+      )
+      !important;
+
+    text-align:
+      center;
+
+    margin-right:
+      auto !important;
   }
 
   .fc-media-screen {
-    position: relative !important;
-    left: 0% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    position:
+      relative
+      !important;
+
+    left:
+      0% !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
-    width: min(580px, 100%) !important;
-    max-width: 580px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    margin-top: -25px;
-    text-align: center !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar {
+    width:
+      min(
+        580px,
+        100%
+      )
+      !important;
+
+    max-width:
+      580px !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
+
+    margin-top:
+      -25px;
+
+    text-align:
+      center !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-view-harness {
-    width: min(580px, 100%) !important;
-    max-width: 580px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-view-harness {
+    width:
+      min(
+        580px,
+        100%
+      )
+      !important;
+
+    max-width:
+      580px !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
   }
 
-  .fc .fc-listWeek-view .fc-list-table table,
-  .fc .fc-listDay-view .fc-list-table table,
-  .fc .fc-listFuture-view .fc-list-table table {
-    width: 100% !important;
-    max-width: 580px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  .fc
+    .fc-listWeek-view
+    .fc-list-table
+    table,
+  .fc
+    .fc-listDay-view
+    .fc-list-table
+    table,
+  .fc
+    .fc-listFuture-view
+    .fc-list-table
+    table {
+    width:
+      100% !important;
+
+    max-width:
+      580px !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
   }
 }
 
-@media (min-width: 492px) and (max-width: 560px) {
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
-    max-width: 850px !important;
-    margin-left: 0px !important;
-    margin-top: 0px;
-    text-align: center !important;
+@media (
+  min-width: 492px
+) and (
+  max-width: 560px
+) {
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar {
+    max-width:
+      850px !important;
+
+    margin-left:
+      0px !important;
+
+    margin-top:
+      0px;
+
+    text-align:
+      center !important;
   }
 
   .fc-media-screen {
-    position: relative !important;
-    left: 6.7% !important;
+    position:
+      relative
+      !important;
+
+    left:
+      6.7% !important;
   }
 }
 
 /* Row padding + alignment */
-.fc .fc-list-event td {
-  padding: 12px 16px !important;
-  vertical-align: middle !important;
-  border-color: rgba(255, 255, 255, 0.22) !important;
-  background: inherit !important;
+.fc
+  .fc-list-event
+  td {
+  padding:
+    12px 16px
+    !important;
+
+  vertical-align:
+    middle !important;
+
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.22
+    )
+    !important;
+
+  background:
+    inherit !important;
 }
 
-.fc .fc-list-table tr.fc-list-event td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+.fc
+  .fc-list-table
+  tr.fc-list-event
+  td {
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    )
+    !important;
 }
 
-/* No separator under the final event before the next day header */
-.fc .fc-list-table tr.fc-list-event:has(+ .fc-list-day) td {
-  border-bottom-color: transparent !important;
+.fc
+  .fc-list-table
+  tr.fc-list-event:has(
+    + .fc-list-day
+  )
+  td {
+  border-bottom-color:
+    transparent
+    !important;
 }
 
-/* No separator under the very last event in the list */
-.fc .fc-list-table tr.fc-list-event:last-of-type td {
-  border-bottom-color: transparent !important;
+.fc
+  .fc-list-table
+  tr.fc-list-event:last-of-type
+  td {
+  border-bottom-color:
+    transparent
+    !important;
 }
 
-/* No separator under the very last event in the list */
-.fc .fc-list-table tr.fc-list-event:last-of-type td {
-  border-bottom-color: transparent !important;
+.fc
+  td.fc-list-event-time {
+  width:
+    220px !important;
+
+  white-space:
+    nowrap !important;
+
+  text-align:
+    center !important;
+
+  font-weight:
+    100 !important;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    )
+    !important;
+
+  font-size:
+    clamp(
+      14px,
+      0.6vw + 13px,
+      21px
+    )
+    !important;
 }
 
-/* Columns: TIME | GRAPHIC | TITLE (base) */
-.fc td.fc-list-event-time {
-  width: 220px !important;
-  white-space: nowrap !important;
-  text-align: center !important;
-  font-weight: 100 !important;
-  color: rgba(255, 255, 255, 0.92) !important;
-  font-size: clamp(14px, 0.6vw + 13px, 21px) !important;
+.fc
+  td.fc-list-event-graphic {
+  width:
+    64px !important;
+
+  text-align:
+    center !important;
+
+  padding-left:
+    0 !important;
+
+  padding-right:
+    0 !important;
 }
 
-.fc td.fc-list-event-graphic {
-  width: 64px !important;
-  text-align: center !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+.fc
+  td.fc-list-event-title {
+  width:
+    auto !important;
+
+  text-align:
+    left !important;
+
+  font-family:
+    Oswald !important;
+
+  font-weight:
+    400 !important;
+
+  font-size:
+    clamp(
+      13px,
+      0.45vw + 11px,
+      16px
+    )
+    !important;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    )
+    !important;
+
+  padding-right:
+    -2px !important;
 }
 
-/* Responsive list event title – smaller max */
-.fc td.fc-list-event-title {
-  width: auto !important;
-  text-align: left !important;
-  font-family: Oswald !important;
-  font-weight: 400 !important;
-  font-size: clamp(13px, 0.45vw + 11px, 16px) !important;
-  color: rgba(255, 255, 255, 0.95) !important;
-  padding-right: -2px !important;
+.fc
+  .fc-list-event-dot {
+  margin:
+    0 auto !important;
+
+  border-width:
+    6px !important;
+
+  border-radius:
+    999px !important;
+
+  transform:
+    translateY(1px);
+
+  margin-top:
+    -15px !important;
 }
 
-/* Dot */
-.fc .fc-list-event-dot {
-  margin: 0 auto !important;
-  border-width: 6px !important;
-  border-radius: 999px !important;
-  transform: translateY(1px);
-  margin-top: -15px !important;
-}
-
-/* orange dot for Lunchtime Adult Drop-In Hockey (desktop list dot) */
-.fc tr.evt-lunchtime-dropin .fc-list-event-dot {
-  border-color: rgba(249, 115, 22, 0.95) !important;
+.fc
+  tr.evt-lunchtime-dropin
+  .fc-list-event-dot {
+  border-color:
+    rgba(
+      249,
+      115,
+      22,
+      0.95
+    )
+    !important;
 }
 
 /* =========================================================
-   LIST HEADER ROW: STACK weekday + date vertically
+   LIST HEADER ROW
    ========================================================= */
-.fc .fc-list-day-cushion {
-  padding: 14px 18px !important;
-  background-color: rgba(140, 0, 35, 0.88) !important;
-  width: 100vw !important;
-  max-width: 91vw !important;
+
+.fc
+  .fc-list-day-cushion {
+  padding:
+    14px 18px
+    !important;
+
+  background-color:
+    rgba(
+      140,
+      0,
+      35,
+      0.88
+    )
+    !important;
+
+  width:
+    100vw !important;
+
+  max-width:
+    91vw !important;
 }
 
-.fc .fc-list-day-cushion>th {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  text-align: center !important;
-  gap: 4px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
+.fc
+  .fc-list-day-cushion
+  > th {
+  display:
+    flex !important;
+
+  flex-direction:
+    column !important;
+
+  justify-content:
+    center !important;
+
+  align-items:
+    center !important;
+
+  text-align:
+    center !important;
+
+  gap:
+    4px !important;
+
+  width:
+    100% !important;
+
+  box-sizing:
+    border-box
+    !important;
 }
 
-.fc .fc-list-day-text,
-.fc .fc-list-day-side-text {
-  display: block !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  text-align: center !important;
-  white-space: nowrap !important;
+.fc
+  .fc-list-day-text,
+.fc
+  .fc-list-day-side-text {
+  display:
+    block !important;
+
+  width:
+    100% !important;
+
+  margin:
+    0 !important;
+
+  padding:
+    0 !important;
+
+  text-align:
+    center !important;
+
+  white-space:
+    nowrap !important;
 }
 
-.fc .fc-list-day-text {
-  color: #fff !important;
-  font-family: Oswald !important;
-  font-weight: 500 !important;
-  font-size: clamp(16px, 0.5vw + 18px, 29px) !important;
-  letter-spacing: 0.12em;
-  text-decoration: none !important;
+.fc
+  .fc-list-day-text {
+  color:
+    #fff !important;
+
+  font-family:
+    Oswald !important;
+
+  font-weight:
+    500 !important;
+
+  font-size:
+    clamp(
+      16px,
+      0.5vw + 18px,
+      29px
+    )
+    !important;
+
+  letter-spacing:
+    0.12em;
+
+  text-decoration:
+    none !important;
 }
 
-.fc .fc-list-day-side-text {
-  color: rgba(255, 255, 255, 0.92) !important;
-  font-weight: 850 !important;
-  font-size: clamp(15px, 0.4vw + 19px, 22px) !important;
-  text-decoration: none !important;
+.fc
+  .fc-list-day-side-text {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    )
+    !important;
+
+  font-weight:
+    850 !important;
+
+  font-size:
+    clamp(
+      15px,
+      0.4vw + 19px,
+      22px
+    )
+    !important;
+
+  text-decoration:
+    none !important;
 }
 
 /* =========================================================
-   Tooltip (Smooth Fade)
+   Tooltip
    ========================================================= */
+
 .wa-tooltip {
-  position: fixed !important;
+  position:
+    fixed !important;
+
   left: 0;
   top: 0;
-  z-index: 999999 !important;
-  width: min(360px, calc(100vw - 24px));
-  padding: 12px 12px 10px;
-  background: #0f172a;
-  border: 1px solid #1f2a44;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-  color: #e5e7eb;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-9999px, -9999px);
-  transition: opacity 150ms ease;
-  will-change: opacity;
+
+  z-index:
+    999999 !important;
+
+  width:
+    min(
+      360px,
+      calc(
+        100vw - 24px
+      )
+    );
+
+  padding:
+    12px 12px 10px;
+
+  background:
+    #0f172a;
+
+  border:
+    1px solid
+    #1f2a44;
+
+  border-radius:
+    12px;
+
+  box-shadow:
+    0 20px 40px
+    rgba(
+      0,
+      0,
+      0,
+      0.6
+    );
+
+  color:
+    #e5e7eb;
+
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+
+  transform:
+    translate(
+      -9999px,
+      -9999px
+    );
+
+  transition:
+    opacity
+    150ms ease;
+
+  will-change:
+    opacity;
 }
 
 .wa-tooltip.is-visible {
-  opacity: 1;
+  opacity:
+    1;
 }
 
 .wa-tipTitle {
-  font-weight: 100;
-  font-size: clamp(11px, 0.35vw + 10px, 14px);
-  line-height: 1.25;
-  color: #f8fafc;
-  margin-bottom: 8px;
+  font-weight:
+    100;
+
+  font-size:
+    clamp(
+      11px,
+      0.35vw + 10px,
+      14px
+    );
+
+  line-height:
+    1.25;
+
+  color:
+    #f8fafc;
+
+  margin-bottom:
+    8px;
 }
 
 .wa-tipRow {
-  display: grid;
-  grid-template-columns: 70px 1fr;
-  gap: 10px;
-  align-items: baseline;
-  padding: 4px 0;
+  display:
+    grid;
+
+  grid-template-columns:
+    70px 1fr;
+
+  gap:
+    10px;
+
+  align-items:
+    baseline;
+
+  padding:
+    4px 0;
 }
 
 .wa-tipLabel {
-  color: #93c5fd;
-  font-weight: 100;
-  font-size: clamp(10px, 0.3vw + 9px, 12px);
-  letter-spacing: 0.05em;
+  color:
+    #93c5fd;
+
+  font-weight:
+    100;
+
+  font-size:
+    clamp(
+      10px,
+      0.3vw + 9px,
+      12px
+    );
+
+  letter-spacing:
+    0.05em;
 }
 
 .wa-tipValue {
-  color: #e5e7eb;
-  font-weight: 100;
-  font-size: clamp(10px, 0.3vw + 9px, 13px);
-  line-height: 1.25;
+  color:
+    #e5e7eb;
+
+  font-weight:
+    100;
+
+  font-size:
+    clamp(
+      10px,
+      0.3vw + 9px,
+      13px
+    );
+
+  line-height:
+    1.25;
 }
 
 .wa-tipTime {
-  text-transform: uppercase;
+  text-transform:
+    uppercase;
 }
 
 .wa-tipDesc {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #1f2a44;
-  color: #cbd5e1;
-  font-weight: 100;
-  font-size: clamp(10px, 0.3vw + 9px, 13px);
-  line-height: 1.6;
+  margin-top:
+    8px;
+
+  padding-top:
+    8px;
+
+  border-top:
+    1px solid
+    #1f2a44;
+
+  color:
+    #cbd5e1;
+
+  font-weight:
+    100;
+
+  font-size:
+    clamp(
+      10px,
+      0.3vw + 9px,
+      13px
+    );
+
+  line-height:
+    1.6;
 }
 
 .wa-tipLink {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #1f2a44;
-  text-align: center;
+  margin-top:
+    10px;
+
+  padding-top:
+    10px;
+
+  border-top:
+    1px solid
+    #1f2a44;
+
+  text-align:
+    center;
 }
 
 .wa-tipLink a {
-  color: #93c5fd;
-  font-weight: 100;
-  font-size: clamp(10px, 0.3vw + 9px, 12px);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  pointer-events: auto !important;
-  cursor: pointer !important;
+  color:
+    #93c5fd;
+
+  font-weight:
+    100;
+
+  font-size:
+    clamp(
+      10px,
+      0.3vw + 9px,
+      12px
+    );
+
+  text-decoration:
+    underline;
+
+  text-underline-offset:
+    3px;
+
+  pointer-events:
+    auto !important;
+
+  cursor:
+    pointer !important;
 }
 
 .wa-tipLink a:hover {
-  color: #bfdbfe;
+  color:
+    #bfdbfe;
 }
 
 /* =========================================================
    Filter dropdown
    ========================================================= */
-.wa-closure-row {
-  --wa-time-axis-width: 62px;
-  --wa-visible-day-count: 7;
 
-  position: absolute;
-  top: 158px; /* below toolbar + day column headers */
-  left: 0;
-  right: 0;
-  z-index: 6;
-  display: grid;
-  grid-template-columns: var(--wa-time-axis-width) repeat(var(--wa-visible-day-count), minmax(0, 1fr));
-  column-gap: 0;
-  pointer-events: none;
-  box-sizing: border-box;
+.wa-closure-row {
+  --wa-time-axis-width:
+    62px;
+
+  --wa-visible-day-count:
+    7;
+
+  position:
+    absolute;
+
+  top:
+    158px;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  z-index:
+    6;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    var(
+      --wa-time-axis-width
+    )
+    repeat(
+      var(
+        --wa-visible-day-count
+      ),
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  column-gap:
+    0;
+
+  pointer-events:
+    none;
+
+  box-sizing:
+    border-box;
 }
 
 .wa-closure-pill {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 0;
-  margin-right: 8px;
-  background: rgba(140, 0, 35, 0.22);
-  border: 1px solid rgba(213, 1, 55, 0.4);
-  border-radius: 10px;
-  padding: 10px 16px;
-  text-align: center;
-  backdrop-filter: blur(4px);
-  pointer-events: none;
-  box-sizing: border-box;
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    5px;
+
+  min-width:
+    0;
+
+  margin-right:
+    8px;
+
+  background:
+    rgba(
+      140,
+      0,
+      35,
+      0.22
+    );
+
+  border:
+    1px solid
+    rgba(
+      213,
+      1,
+      55,
+      0.4
+    );
+
+  border-radius:
+    10px;
+
+  padding:
+    10px 16px;
+
+  text-align:
+    center;
+
+  backdrop-filter:
+    blur(4px);
+
+  pointer-events:
+    none;
+
+  box-sizing:
+    border-box;
 }
 
 .wa-closure-pill-title {
-  font-family: "Oswald", sans-serif;
-  font-weight: 600;
-  font-size: clamp(12px, 1.3vw, 14px);
-  color: #fff;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-family:
+    "Oswald",
+    sans-serif;
+
+  font-weight:
+    600;
+
+  font-size:
+    clamp(
+      12px,
+      1.3vw,
+      14px
+    );
+
+  color:
+    #fff;
+
+  letter-spacing:
+    0.05em;
+
+  text-transform:
+    uppercase;
 }
 
 .wa-closure-pill-body {
-  font-size: clamp(11px, 1vw, 13px);
-  color: rgba(255, 255, 255, 0.72);
-  line-height: 1.5;
+  font-size:
+    clamp(
+      11px,
+      1vw,
+      13px
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+
+  line-height:
+    1.5;
 }
 
-.wa-closure-pill-body strong {
-  color: #fff;
-  font-weight: 600;
+.wa-closure-pill-body
+  strong {
+  color:
+    #fff;
+
+  font-weight:
+    600;
 }
 
-/* Mobile/list view — full width, offset below toolbar. */
 @media (max-width: 750px) {
   .wa-closure-row {
-    top: 80px;
-    left: 10px;
-    right: 10px;
-    display: block;
+    top:
+      80px;
+
+    left:
+      10px;
+
+    right:
+      10px;
+
+    display:
+      block;
   }
 
   .wa-closure-pill {
-    width: 100%;
-    margin-right: 0;
+    width:
+      100%;
+
+    margin-right:
+      0;
   }
 }
 
 .wa-mobile-filter-fab {
-  position: fixed;
-  bottom: 130px;
-  right: 20px;
-  z-index: 99997;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
+  position:
+    fixed;
+
+  bottom:
+    130px;
+
+  right:
+    20px;
+
+  z-index:
+    99997;
+
+  width:
+    54px;
+
+  height:
+    54px;
+
+  border-radius:
+    50%;
+
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39c.51-.66.04-1.61-.79-1.61H5.04c-.83 0-1.3.95-.79 1.61z'/%3E%3C/svg%3E") center / 58% no-repeat,
-    linear-gradient(135deg, #8c0023 0%, #6a001a 100%);
-  border: 1.5px solid rgba(255, 255, 255, 0.22);
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
+    url(
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39c.51-.66.04-1.61-.79-1.61H5.04c-.83 0-1.3.95-.79 1.61z'/%3E%3C/svg%3E"
+    )
+    center / 58%
+    no-repeat,
+    linear-gradient(
+      135deg,
+      #8c0023 0%,
+      #6a001a 100%
+    );
+
+  border:
+    1.5px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.22
+    );
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 4px 14px
+    rgba(
+      0,
+      0,
+      0,
+      0.5
+    );
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  outline:
+    none;
+
+  -webkit-appearance:
+    none;
+
+  appearance:
+    none;
 }
 
 .wa-mobile-filter-fab:focus,
 .wa-mobile-filter-fab:focus-visible {
-  outline: none !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+  outline:
+    none !important;
+
+  box-shadow:
+    0 4px 14px
+    rgba(
+      0,
+      0,
+      0,
+      0.5
+    )
+    !important;
 }
 
 .wa-mobile-filter-fab:active {
-  outline: none !important;
-  box-shadow: 0 0 0 3px #d50137, 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+  outline:
+    none !important;
+
+  box-shadow:
+    0 0 0 3px
+      #d50137,
+    0 4px 14px
+      rgba(
+        0,
+        0,
+        0,
+        0.5
+      )
+      !important;
 }
 
 .wa-mobile-filter-fab.wa-filter-active {
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39c.51-.66.04-1.61-.79-1.61H5.04c-.83 0-1.3.95-.79 1.61z'/%3E%3C/svg%3E") center / 58% no-repeat,
-    linear-gradient(135deg, #1a6a40 0%, #0f4a2a 100%);
+    url(
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39c.51-.66.04-1.61-.79-1.61H5.04c-.83 0-1.3.95-.79 1.61z'/%3E%3C/svg%3E"
+    )
+    center / 58%
+    no-repeat,
+    linear-gradient(
+      135deg,
+      #1a6a40 0%,
+      #0f4a2a 100%
+    );
 }
 
 .wa-filter-dropdown {
-  position: fixed;
-  z-index: 99998;
-  min-width: 210px;
-  background: #0f172a;
-  border: 1px solid #1f2a44;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-  padding: 8px 6px;
+  position:
+    fixed;
+
+  z-index:
+    99998;
+
+  min-width:
+    210px;
+
+  background:
+    #0f172a;
+
+  border:
+    1px solid
+    #1f2a44;
+
+  border-radius:
+    12px;
+
+  box-shadow:
+    0 20px 40px
+    rgba(
+      0,
+      0,
+      0,
+      0.6
+    );
+
+  padding:
+    8px 6px;
 }
 
 .wa-filter-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px 10px 8px;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    4px 10px 8px;
 }
 
 .wa-filter-header {
-  font-family: Oswald;
-  font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  font-family:
+    Oswald;
+
+  font-weight:
+    400;
+
+  font-size:
+    11px;
+
+  letter-spacing:
+    0.1em;
+
+  text-transform:
+    uppercase;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.45
+    );
 }
 
 .wa-filter-toggle-all {
-  background: none;
-  border: none;
-  font-family: Oswald;
-  font-weight: 300;
-  font-size: 11px;
-  color: #93c5fd;
-  cursor: pointer;
-  padding: 0;
-  letter-spacing: 0.05em;
+  background:
+    none;
+
+  border:
+    none;
+
+  font-family:
+    Oswald;
+
+  font-weight:
+    300;
+
+  font-size:
+    11px;
+
+  color:
+    #93c5fd;
+
+  cursor:
+    pointer;
+
+  padding:
+    0;
+
+  letter-spacing:
+    0.05em;
 }
 
 .wa-filter-toggle-all:hover {
-  color: #bfdbfe;
+  color:
+    #bfdbfe;
 }
 
 .wa-filter-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #e5e7eb;
-  font-family: Oswald;
-  font-weight: 300;
-  font-size: 13px;
-  user-select: none;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  padding:
+    7px 10px;
+
+  border-radius:
+    8px;
+
+  cursor:
+    pointer;
+
+  color:
+    #e5e7eb;
+
+  font-family:
+    Oswald;
+
+  font-weight:
+    300;
+
+  font-size:
+    13px;
+
+  user-select:
+    none;
 }
 
 .wa-filter-item:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
 }
 
-.wa-filter-item input[type="checkbox"] {
-  width: 14px;
-  height: 14px;
-  flex: 0 0 auto;
-  accent-color: #93c5fd;
-  cursor: pointer;
+.wa-filter-item
+  input[type="checkbox"] {
+  width:
+    14px;
+
+  height:
+    14px;
+
+  flex:
+    0 0 auto;
+
+  accent-color:
+    #93c5fd;
+
+  cursor:
+    pointer;
 }
 
 .wa-filter-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex: 0 0 auto;
+  width:
+    10px;
+
+  height:
+    10px;
+
+  border-radius:
+    50%;
+
+  flex:
+    0 0 auto;
 }
 
-.fc .fc-filterToggle-button {
-  margin-left: 6px !important;
+.fc
+  .fc-filterToggle-button {
+  margin-left:
+    6px !important;
 }
 
-.fc .fc-filterToggle-button.wa-filter-active {
-  background: rgba(147, 197, 253, 0.15) !important;
-  border-color: rgba(147, 197, 253, 0.4) !important;
-  color: #93c5fd !important;
+.fc
+  .fc-filterToggle-button.wa-filter-active {
+  background:
+    rgba(
+      147,
+      197,
+      253,
+      0.15
+    )
+    !important;
+
+  border-color:
+    rgba(
+      147,
+      197,
+      253,
+      0.4
+    )
+    !important;
+
+  color:
+    #93c5fd
+    !important;
 }
 
 /* =========================================================
-   Filter hiding — timeGrid + list view
+   Filter hiding
    ========================================================= */
-.wa-cal.wa-hide-publicskate .fc-event.evt-publicskate,
-.wa-cal.wa-hide-publicskate .fc tr.fc-list-event.evt-publicskate {
-  display: none !important;
+
+.wa-cal.wa-hide-publicskate
+  .fc-event.evt-publicskate,
+.wa-cal.wa-hide-publicskate
+  .fc
+  tr.fc-list-event.evt-publicskate {
+  display:
+    none !important;
 }
 
-.wa-cal.wa-hide-stickpuck .fc-event.evt-stickpuck,
-.wa-cal.wa-hide-stickpuck .fc tr.fc-list-event.evt-stickpuck {
-  display: none !important;
+.wa-cal.wa-hide-stickpuck
+  .fc-event.evt-stickpuck,
+.wa-cal.wa-hide-stickpuck
+  .fc
+  tr.fc-list-event.evt-stickpuck {
+  display:
+    none !important;
 }
 
-.wa-cal.wa-hide-cosmic .fc-event.evt-cosmic,
-.wa-cal.wa-hide-cosmic .fc tr.fc-list-event.evt-cosmic {
-  display: none !important;
+.wa-cal.wa-hide-cosmic
+  .fc-event.evt-cosmic,
+.wa-cal.wa-hide-cosmic
+  .fc
+  tr.fc-list-event.evt-cosmic {
+  display:
+    none !important;
 }
 
-.wa-cal.wa-hide-openhockey .fc-event.evt-openhockey,
-.wa-cal.wa-hide-openhockey .fc tr.fc-list-event.evt-openhockey {
-  display: none !important;
+.wa-cal.wa-hide-openhockey
+  .fc-event.evt-openhockey,
+.wa-cal.wa-hide-openhockey
+  .fc
+  tr.fc-list-event.evt-openhockey {
+  display:
+    none !important;
 }
 
-.wa-cal.wa-hide-freestyle .fc-event.evt-freestyle,
-.wa-cal.wa-hide-freestyle .fc tr.fc-list-event.evt-freestyle {
-  display: none !important;
+.wa-cal.wa-hide-freestyle
+  .fc-event.evt-freestyle,
+.wa-cal.wa-hide-freestyle
+  .fc
+  tr.fc-list-event.evt-freestyle {
+  display:
+    none !important;
 }
 
-.wa-cal.wa-hide-lunchtime-dropin .fc-event.evt-lunchtime-dropin,
-.wa-cal.wa-hide-lunchtime-dropin .fc tr.fc-list-event.evt-lunchtime-dropin {
-  display: none !important;
+.wa-cal.wa-hide-lunchtime-dropin
+  .fc-event.evt-lunchtime-dropin,
+.wa-cal.wa-hide-lunchtime-dropin
+  .fc
+  tr.fc-list-event.evt-lunchtime-dropin {
+  display:
+    none !important;
 }
 
-.wa-cal.wa-hide-privatelesson .fc-event.evt-privatelesson,
-.wa-cal.wa-hide-privatelesson .fc tr.fc-list-event.evt-privatelesson {
-  display: none !important;
+.wa-cal.wa-hide-privatelesson
+  .fc-event.evt-privatelesson,
+.wa-cal.wa-hide-privatelesson
+  .fc
+  tr.fc-list-event.evt-privatelesson {
+  display:
+    none !important;
 }
 
 /* =========================================================
-   Hover/click behavior
-   ========================================================== */
+   Hover / click behavior
+   ========================================================= */
+
 .fc-event,
 .fc .fc-event,
 .fc-list-event,
 .fc .fc-list-event {
-  cursor: default !important;
+  cursor:
+    default !important;
 }
 
-/* Disable list-view title links (no click-through), but keep Register clickable */
-.fc .fc-list-event-title a:not(.wa-register-link) {
-  pointer-events: none !important;
-  cursor: default !important;
-  text-decoration: none !important;
+.fc
+  .fc-list-event-title
+  a:not(
+    .wa-register-link
+  ) {
+  pointer-events:
+    none !important;
+
+  cursor:
+    default !important;
+
+  text-decoration:
+    none !important;
 }
 
-/* Disable event inner anchors, but allow the Register link */
 .fc-event a {
-  pointer-events: none !important;
+  pointer-events:
+    none !important;
 }
 
-.fc-event a.wa-register-link {
-  pointer-events: auto !important;
+.fc-event
+  a.wa-register-link {
+  pointer-events:
+    auto !important;
 }
 
 /* =========================================================
-   Phone-first LIST responsiveness (320px → 750px)
-   ========================================================== */
+   Phone-first LIST responsiveness
+   ========================================================= */
+
 @media (max-width: 850px) {
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar {
-    position: relative !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding-top: 48px !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar {
+    position:
+      relative
+      !important;
+
+    flex-direction:
+      column !important;
+
+    align-items:
+      center !important;
+
+    justify-content:
+      center !important;
+
+    padding-top:
+      48px !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::after {
-    content: "" !important;
-    position: absolute !important;
-    top: -25px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 70px !important;
-    height: 80px !important;
-    background-image: url("/wings-logo2.png") !important;
-    background-repeat: no-repeat !important;
-    background-size: contain !important;
-    background-position: center !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar::after {
+    content:
+      "" !important;
+
+    position:
+      absolute
+      !important;
+
+    top:
+      -25px !important;
+
+    left:
+      50% !important;
+
+    transform:
+      translateX(-50%)
+      !important;
+
+    width:
+      70px !important;
+
+    height:
+      80px !important;
+
+    background-image:
+      url(
+        "/wings-logo2.png"
+      )
+      !important;
+
+    background-repeat:
+      no-repeat
+      !important;
+
+    background-size:
+      contain !important;
+
+    background-position:
+      center !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button {
-    width: 75px !important;
-    height: 28px !important;
-    border-radius: 12px !important;
-    font-size: clamp(13px, 2.3vw + 7px, 16px) !important;
-    font-weight: 100 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0 !important;
-    background: #cb002286 !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    color: #fff !important;
-    transition: all 0.2s ease-in-out !important;
-    margin-bottom: -19px;
-    margin-top: 40px !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar
+    .fc-button {
+    width:
+      75px !important;
+
+    height:
+      28px !important;
+
+    border-radius:
+      12px !important;
+
+    font-size:
+      clamp(
+        13px,
+        2.3vw + 7px,
+        16px
+      )
+      !important;
+
+    font-weight:
+      100 !important;
+
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
+
+    justify-content:
+      center !important;
+
+    padding:
+      0 !important;
+
+    background:
+      #cb002286
+      !important;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        0.3
+      )
+      !important;
+
+    color:
+      #fff !important;
+
+    transition:
+      all
+      0.2s
+      ease-in-out
+      !important;
+
+    margin-bottom:
+      -19px;
+
+    margin-top:
+      40px !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button:hover {
-    background: rgba(255, 255, 255, 0.25) !important;
-    transform: scale(1.05);
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar
+    .fc-button:hover {
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        0.25
+      )
+      !important;
+
+    transform:
+      scale(1.05);
   }
 
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-button-group {
-    gap: 18px !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar
+    .fc-button-group {
+    gap:
+      18px !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar .fc-today-button {
-    display: none !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar
+    .fc-today-button {
+    display:
+      none !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listFuture-view .fc-list-table {
-    width: 100% !important;
-    margin: 0 !important;
-    border-collapse: collapse !important;
-    table-layout: auto !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listWeek-view
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listDay-view
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listFuture-view
+    .fc-list-table {
+    width:
+      100% !important;
+
+    margin:
+      0 !important;
+
+    border-collapse:
+      collapse !important;
+
+    table-layout:
+      auto !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    width: 100% !important;
-    margin: 15px 0 !important;
-    border-radius: 12px !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-    position: relative !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event {
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
+
+    justify-content:
+      flex-start
+      !important;
+
+    width:
+      100% !important;
+
+    margin:
+      15px 0
+      !important;
+
+    border-radius:
+      12px !important;
+
+    background:
+      transparent
+      !important;
+
+    box-shadow:
+      none !important;
+
+    overflow:
+      visible !important;
+
+    position:
+      relative
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -4px;
-    height: 1px;
-    background: linear-gradient(90deg,
-        rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 0.336) 12%,
-        rgba(255, 255, 255, 0.767) 50%,
-        rgba(255, 255, 255, 0.342) 88%,
-        rgba(255, 255, 255, 0));
-    pointer-events: none;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event::after {
+    content:
+      "";
+
+    position:
+      absolute;
+
+    left:
+      0;
+
+    right:
+      0;
+
+    bottom:
+      -4px;
+
+    height:
+      1px;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(
+          255,
+          255,
+          255,
+          0
+        ),
+        rgba(
+          255,
+          255,
+          255,
+          0.336
+        )
+          12%,
+        rgba(
+          255,
+          255,
+          255,
+          0.767
+        )
+          50%,
+        rgba(
+          255,
+          255,
+          255,
+          0.342
+        )
+          88%,
+        rgba(
+          255,
+          255,
+          255,
+          0
+        )
+      );
+
+    pointer-events:
+      none;
   }
 
-  /* No separator under the final event before the next day header */
-  .wa-cal.is-phone-list .fc tr.fc-list-event:has(+ .fc-list-day)::after {
-    display: none;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event:has(
+      + .fc-list-day
+    )::after {
+    display:
+      none;
   }
 
-  /* No separator under the very last event in the list */
-  .wa-cal.is-phone-list .fc tr.fc-list-event:last-of-type::after {
-    display: none;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event:last-of-type::after {
+    display:
+      none;
   }
 
-  .wa-cal.is-phone-list .fc .fc-list-event td {
-    border: none !important;
-    padding: 12px 14px !important;
-    background: transparent !important;
-    display: flex !important;
-    align-items: center !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-event
+    td {
+    border:
+      none !important;
+
+    padding:
+      12px 14px
+      !important;
+
+    background:
+      transparent
+      !important;
+
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-graphic {
-    display: none !important;
+  .wa-cal.is-phone-list
+    .fc
+    td.fc-list-event-graphic {
+    display:
+      none !important;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-time {
-    flex: 0 0 auto !important;
-    font-family: Oswald !important;
-    font-size: clamp(15px, 3.4vw, 15px) !important;
-    font-weight: 300 !important;
-    color: #fff !important;
-    white-space: nowrap !important;
-    position: relative !important;
-    padding-left: 21px !important;
-    display: flex !important;
-    align-items: center !important;
-    max-width: 165px;
-    line-height: 1.05 !important;
+  .wa-cal.is-phone-list
+    .fc
+    td.fc-list-event-time {
+    flex:
+      0 0 auto
+      !important;
+
+    font-family:
+      Oswald !important;
+
+    font-size:
+      clamp(
+        15px,
+        3.4vw,
+        15px
+      )
+      !important;
+
+    font-weight:
+      300 !important;
+
+    color:
+      #fff !important;
+
+    white-space:
+      nowrap !important;
+
+    position:
+      relative
+      !important;
+
+    padding-left:
+      21px !important;
+
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
+
+    max-width:
+      165px;
+
+    line-height:
+      1.05 !important;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-time::before {
-    content: "" !important;
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    width: 5px !important;
-    height: auto !important;
-    border-radius: 2px !important;
-    transform: none !important;
-    background: #888 !important;
+  .wa-cal.is-phone-list
+    .fc
+    td.fc-list-event-time::before {
+    content:
+      "" !important;
+
+    position:
+      absolute
+      !important;
+
+    left:
+      0 !important;
+
+    top:
+      0 !important;
+
+    bottom:
+      0 !important;
+
+    width:
+      5px !important;
+
+    height:
+      auto !important;
+
+    border-radius:
+      2px !important;
+
+    transform:
+      none !important;
+
+    background:
+      #888 !important;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-time::after {
-    content: "|";
-    margin-left: 30px;
-    margin-right: 16px;
-    margin-bottom: 2px;
-    opacity: 0.65;
-    font-size: 24px;
-    line-height: 1;
-    color: #686868;
+  .wa-cal.is-phone-list
+    .fc
+    td.fc-list-event-time::after {
+    content:
+      "|";
+
+    margin-left:
+      30px;
+
+    margin-right:
+      16px;
+
+    margin-bottom:
+      2px;
+
+    opacity:
+      0.65;
+
+    font-size:
+      24px;
+
+    line-height:
+      1;
+
+    color:
+      #686868;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-title {
-    flex: 1 !important;
-    text-align: left !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    margin-left: 8px;
+  .wa-cal.is-phone-list
+    .fc
+    td.fc-list-event-title {
+    flex:
+      1 !important;
+
+    text-align:
+      left !important;
+
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
+
+    gap:
+      10px !important;
+
+    margin-left:
+      8px;
   }
 
-  .wa-cal.is-phone-list .fc td.fc-list-event-title>a {
-    display: inline-block !important;
-    width: 100% !important;
-    color: #fff !important;
-    font-family: Oswald !important;
-    font-size: clamp(16px, 3.3vw, 19px) !important;
-    font-weight: 400 !important;
-    text-decoration: none !important;
-    line-height: 1.05 !important;
-    margin-top: -3px;
+  .wa-cal.is-phone-list
+    .fc
+    td.fc-list-event-title
+    > a {
+    display:
+      inline-block
+      !important;
+
+    width:
+      100% !important;
+
+    color:
+      #fff !important;
+
+    font-family:
+      Oswald !important;
+
+    font-size:
+      clamp(
+        16px,
+        3.3vw,
+        19px
+      )
+      !important;
+
+    font-weight:
+      400 !important;
+
+    text-decoration:
+      none !important;
+
+    line-height:
+      1.05 !important;
+
+    margin-top:
+      -3px;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-publicskate td.fc-list-event-time::before {
-    background: #df0038 !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-publicskate
+    td.fc-list-event-time::before {
+    background:
+      #df0038
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-stickpuck td.fc-list-event-time::before {
-    background: #109b43 !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-stickpuck
+    td.fc-list-event-time::before {
+    background:
+      #109b43
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-cosmic td.fc-list-event-time::before {
-    background: #7c3aed !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-cosmic
+    td.fc-list-event-time::before {
+    background:
+      #7c3aed
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-openhockey td.fc-list-event-time::before {
-    background: #fbbf24 !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-openhockey
+    td.fc-list-event-time::before {
+    background:
+      #fbbf24
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-freestyle td.fc-list-event-time::before {
-    background: #1ce4e4 !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-freestyle
+    td.fc-list-event-time::before {
+    background:
+      #1ce4e4
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-lunchtime-dropin td.fc-list-event-time::before {
-    background: #f97316 !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-lunchtime-dropin
+    td.fc-list-event-time::before {
+    background:
+      #f97316
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-privatelesson td.fc-list-event-time::before {
-    background: #22c55e !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-privatelesson
+    td.fc-list-event-time::before {
+    background:
+      #22c55e
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc tr.fc-list-event.evt-default td.fc-list-event-time::before {
-    background: #fbbf24 !important;
+  .wa-cal.is-phone-list
+    .fc
+    tr.fc-list-event.evt-default
+    td.fc-list-event-time::before {
+    background:
+      #fbbf24
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-list-day-cushion {
-    padding: 10px 12px !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-day-cushion {
+    padding:
+      10px 12px
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-list-day-text {
-    font-size: clamp(16px, 3.3vw + 4px, 19px) !important;
-    letter-spacing: 0.08em;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-day-text {
+    font-size:
+      clamp(
+        16px,
+        3.3vw + 4px,
+        19px
+      )
+      !important;
+
+    letter-spacing:
+      0.08em;
   }
 
-  .wa-cal.is-phone-list .fc .fc-list-day-side-text {
-    font-size: clamp(13px, 2.3vw + 4px, 15px) !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-day-side-text {
+    font-size:
+      clamp(
+        13px,
+        2.3vw + 4px,
+        15px
+      )
+      !important;
   }
 
-  .fc .fc-view-harness::before {
-    background-position: 50% 74%;
-    background-size: min(1520px, 120%);
-    opacity: 0.07;
+  .fc
+    .fc-view-harness::before {
+    background-position:
+      50% 74%;
+
+    background-size:
+      min(
+        1520px,
+        120%
+      );
+
+    opacity:
+      0.07;
   }
 }
 
-/* Only show the injected "THIS WEEK'S LINEUP" title when the real H1 is hidden */
+/* Only show injected title when real H1 is hidden */
 @media (max-width: 560px) {
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar::before {
-    content: "THIS WEEK'S LINEUP" !important;
-    position: absolute !important;
-    top: -10px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    color: #fff !important;
-    font-size: clamp(17px, 3vw + 10px, 23px) !important;
-    font-weight: 100 !important;
-    letter-spacing: 0.21em;
-    text-align: center !important;
-    white-space: nowrap !important;
-    margin-top: 60px;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar::before {
+    content:
+      "THIS WEEK'S LINEUP"
+      !important;
+
+    position:
+      absolute
+      !important;
+
+    top:
+      -10px !important;
+
+    left:
+      50% !important;
+
+    transform:
+      translateX(-50%)
+      !important;
+
+    color:
+      #fff !important;
+
+    font-size:
+      clamp(
+        17px,
+        3vw + 10px,
+        23px
+      )
+      !important;
+
+    font-weight:
+      100 !important;
+
+    letter-spacing:
+      0.21em;
+
+    text-align:
+      center !important;
+
+    white-space:
+      nowrap !important;
+
+    margin-top:
+      60px;
   }
 }
 
 @media (max-width: 560px) {
-  .page>h1 {
-    letter-spacing: 0.05em;
-    display: none;
+  .page > h1 {
+    letter-spacing:
+      0.05em;
+
+    display:
+      none;
   }
 }
 
 @media (min-width: 1200px) {
-  .page>h1 {
-    margin-bottom: -25px;
-    letter-spacing: 0.25em;
+  .page > h1 {
+    margin-bottom:
+      -25px;
+
+    letter-spacing:
+      0.25em;
   }
 }
 
 /* =========================================================
-   90% VIEWPORT WIDTH RAIL FOR LIST VIEW (grows with screen)
+   MOBILE LIST RAIL
    ========================================================= */
+
 @media (max-width: 750px) {
   .wa-cal.is-phone-list {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 10px !important;
+    display:
+      flex !important;
+
+    flex-direction:
+      column !important;
+
+    align-items:
+      center !important;
+
+    justify-content:
+      flex-start
+      !important;
+
+    gap:
+      10px !important;
   }
 
-  .wa-cal.is-phone-list .fc-media-screen {
-    order: 1 !important;
+  .wa-cal.is-phone-list
+    .fc-media-screen {
+    order:
+      1 !important;
   }
 
-  .wa-cal.is-phone-list .wa-advisoryBar {
-    order: 2 !important;
-    margin-top: 12px !important;
-    margin-bottom: 10px !important;
+  .wa-cal.is-phone-list
+    .wa-advisoryBar {
+    order:
+      2 !important;
+
+    margin-top:
+      12px !important;
+
+    margin-bottom:
+      10px !important;
   }
 
   .wa-advisoryList li {
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: flex-start !important;
-    justify-content: center !important;
-    gap: 10px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    flex-wrap: wrap !important;
+    width:
+      100% !important;
+
+    display:
+      flex !important;
+
+    flex-direction:
+      row !important;
+
+    align-items:
+      flex-start
+      !important;
+
+    justify-content:
+      center !important;
+
+    gap:
+      10px !important;
+
+    margin-left:
+      0 !important;
+
+    margin-right:
+      0 !important;
+
+    flex-wrap:
+      wrap !important;
   }
 
   .wa-adv-pill {
-    margin-top: 0px !important;
-    margin-left: 0 !important;
-    flex: 0 0 auto !important;
+    margin-top:
+      0px !important;
+
+    margin-left:
+      0 !important;
+
+    flex:
+      0 0 auto
+      !important;
   }
 
   .wa-adv-itemText {
-    text-align: left !important;
-    max-width: min(680px, 100%) !important;
-    min-width: 0 !important;
-    flex: 1 1 260px !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
+    text-align:
+      left !important;
+
+    max-width:
+      min(
+        680px,
+        100%
+      )
+      !important;
+
+    min-width:
+      0 !important;
+
+    flex:
+      1 1 260px
+      !important;
+
+    white-space:
+      normal !important;
+
+    overflow-wrap:
+      anywhere !important;
+
+    word-break:
+      break-word
+      !important;
   }
 
-  .wa-cal.is-phone-list .fc-media-screen {
-    left: auto !important;
-    transform: none !important;
+  .wa-cal.is-phone-list
+    .fc-media-screen {
+    left:
+      auto !important;
+
+    transform:
+      none !important;
   }
 
-  .wa-cal.is-phone-list .fc,
-  .wa-cal.is-phone-list .fc-media-screen,
-  .wa-cal.is-phone-list .fc .fc-toolbar.fc-header-toolbar,
-  .wa-cal.is-phone-list .fc .fc-view-harness {
-    width: 91vw !important;
-    max-width: 93vw !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    margin-top: 5px;
+  .wa-cal.is-phone-list
+    .fc,
+  .wa-cal.is-phone-list
+    .fc-media-screen,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-toolbar.fc-header-toolbar,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-view-harness {
+    width:
+      91vw !important;
+
+    max-width:
+      93vw !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
+
+    margin-top:
+      5px;
   }
 
-  .wa-cal.is-phone-list .fc .fc-view-harness {
-    height: min(78vh, 760px) !important;
-    min-height: 500px !important;
-    max-height: min(78vh, 760px) !important;
-    overflow: hidden !important;
-    border-radius: 18px !important;
+  /* =====================================================
+     WIX AUTO-HEIGHT FIX
+     Allow FullCalendar mobile list to expand naturally.
+     ===================================================== */
+
+  .wa-cal.is-phone-list
+    .fc
+    .fc-view-harness {
+    min-height:
+      0 !important;
+
+    height:
+      auto !important;
+
+    max-height:
+      none !important;
+
+    overflow:
+      visible !important;
+
+    border-radius:
+      18px !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-scroller-harness,
-  .wa-cal.is-phone-list .fc .fc-scroller,
-  .wa-cal.is-phone-list .fc .fc-list,
-  .wa-cal.is-phone-list .fc .fc-list-table {
-    height: 100% !important;
-    max-height: 100% !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-scroller-harness,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-scroller,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-list-table {
+    min-height:
+      0 !important;
+
+    height:
+      auto !important;
+
+    max-height:
+      none !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-scroller {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    overscroll-behavior: contain !important;
-    -webkit-overflow-scrolling: touch !important;
-    padding-right: 2px !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-scroller-harness {
+    overflow:
+      visible !important;
   }
 
-  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listFuture-view .fc-list-table,
-  .wa-cal.is-phone-list .fc .fc-listWeek-view .fc-list-table table,
-  .wa-cal.is-phone-list .fc .fc-listDay-view .fc-list-table table,
-  .wa-cal.is-phone-list .fc .fc-listFuture-view .fc-list-table table {
-    width: 83vw !important;
-    max-width: 83vw !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-scroller {
+    overflow:
+      visible !important;
+
+    overscroll-behavior:
+      auto !important;
+
+    -webkit-overflow-scrolling:
+      auto !important;
+
+    padding-right:
+      2px !important;
   }
 
-  .page>h1 {
-    margin-left: 0 !important;
-    text-align: center !important;
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listWeek-view
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listDay-view
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listFuture-view
+    .fc-list-table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listWeek-view
+    .fc-list-table
+    table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listDay-view
+    .fc-list-table
+    table,
+  .wa-cal.is-phone-list
+    .fc
+    .fc-listFuture-view
+    .fc-list-table
+    table {
+    width:
+      83vw !important;
+
+    max-width:
+      83vw !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
+  }
+
+  .page > h1 {
+    margin-left:
+      0 !important;
+
+    text-align:
+      center !important;
   }
 }
 
-@media (min-width: 562px) and (max-width: 749px) {
-  .page>h1 {
-    width: 93vw !important;
-    max-width: 93vw !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    margin-bottom: -78px;
+@media (
+  min-width: 562px
+) and (
+  max-width: 749px
+) {
+  .page > h1 {
+    width:
+      93vw !important;
+
+    max-width:
+      93vw !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      auto !important;
+
+    margin-bottom:
+      -78px;
   }
 }
 
 @media (max-width: 420px) {
-  .wa-cal.is-phone-list .wa-advisoryList li {
-    flex-wrap: nowrap !important;
-    align-items: flex-start !important;
+  .wa-cal.is-phone-list
+    .wa-advisoryList
+    li {
+    flex-wrap:
+      nowrap !important;
+
+    align-items:
+      flex-start
+      !important;
   }
 
-  .wa-cal.is-phone-list .wa-adv-pill {
-    flex: 0 0 auto !important;
+  .wa-cal.is-phone-list
+    .wa-adv-pill {
+    flex:
+      0 0 auto
+      !important;
   }
 
-  .wa-cal.is-phone-list .wa-adv-itemText {
-    min-width: 0 !important;
-    flex: 1 1 auto !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
+  .wa-cal.is-phone-list
+    .wa-adv-itemText {
+    min-width:
+      0 !important;
+
+    flex:
+      1 1 auto
+      !important;
+
+    white-space:
+      normal !important;
+
+    overflow-wrap:
+      anywhere !important;
+
+    word-break:
+      break-word
+      !important;
   }
 }
 
 /* =========================================================
-   FINAL OVERRIDE: remove purple FullCalendar button ring
+   FINAL OVERRIDE:
+   remove purple FullCalendar button ring
    ========================================================= */
 
 .wa-cal .fc,
 .wa-cal .fc * {
-  -webkit-tap-highlight-color: transparent !important;
+  -webkit-tap-highlight-color:
+    transparent
+    !important;
 }
 
-.wa-cal .fc .fc-button,
-.wa-cal .fc .fc-button-primary,
-.wa-cal .fc .fc-button-primary:not(:disabled),
-.wa-cal .fc .fc-button-primary:not(:disabled):active,
-.wa-cal .fc .fc-button-primary:not(:disabled).fc-button-active {
-  border-color: var(--stroke) !important;
-  outline: 0 !important;
+.wa-cal
+  .fc
+  .fc-button,
+.wa-cal
+  .fc
+  .fc-button-primary,
+.wa-cal
+  .fc
+  .fc-button-primary:not(
+    :disabled
+  ),
+.wa-cal
+  .fc
+  .fc-button-primary:not(
+    :disabled
+  ):active,
+.wa-cal
+  .fc
+  .fc-button-primary:not(
+    :disabled
+  ).fc-button-active {
+  border-color:
+    var(--stroke)
+    !important;
+
+  outline:
+    0 !important;
 }
 
-.wa-cal .fc .fc-button:focus,
-.wa-cal .fc .fc-button:focus-visible,
-.wa-cal .fc .fc-button:active,
-.wa-cal .fc .fc-button-active,
-.wa-cal .fc .fc-button-primary:focus,
-.wa-cal .fc .fc-button-primary:focus-visible,
-.wa-cal .fc .fc-button-primary:active,
-.wa-cal .fc .fc-button-primary:active:focus,
-.wa-cal .fc .fc-button-primary:active:focus-visible,
-.wa-cal .fc .fc-button-primary.fc-button-active,
-.wa-cal .fc .fc-button-primary.fc-button-active:focus,
-.wa-cal .fc .fc-button-primary:not(:disabled):active,
-.wa-cal .fc .fc-button-primary:not(:disabled):active:focus,
-.wa-cal .fc .fc-button-primary:not(:disabled).fc-button-active,
-.wa-cal .fc .fc-button-primary:not(:disabled).fc-button-active:focus {
-  border-color: var(--stroke-2) !important;
-  outline: 0 !important;
-  box-shadow: none !important;
+.wa-cal
+  .fc
+  .fc-button:focus,
+.wa-cal
+  .fc
+  .fc-button:focus-visible,
+.wa-cal
+  .fc
+  .fc-button:active,
+.wa-cal
+  .fc
+  .fc-button-active,
+.wa-cal
+  .fc
+  .fc-button-primary:focus,
+.wa-cal
+  .fc
+  .fc-button-primary:focus-visible,
+.wa-cal
+  .fc
+  .fc-button-primary:active,
+.wa-cal
+  .fc
+  .fc-button-primary:active:focus,
+.wa-cal
+  .fc
+  .fc-button-primary:active:focus-visible,
+.wa-cal
+  .fc
+  .fc-button-primary.fc-button-active,
+.wa-cal
+  .fc
+  .fc-button-primary.fc-button-active:focus,
+.wa-cal
+  .fc
+  .fc-button-primary:not(
+    :disabled
+  ):active,
+.wa-cal
+  .fc
+  .fc-button-primary:not(
+    :disabled
+  ):active:focus,
+.wa-cal
+  .fc
+  .fc-button-primary:not(
+    :disabled
+  ).fc-button-active,
+.wa-cal
+  .fc
+  .fc-button-primary:not(
+    :disabled
+  ).fc-button-active:focus {
+  border-color:
+    var(--stroke-2)
+    !important;
+
+  outline:
+    0 !important;
+
+  box-shadow:
+    none !important;
 }
 
-/* Current selected view button: Week / Day / List */
-.wa-cal .fc .fc-button-primary:disabled {
-  background: rgba(213, 1, 55, 0.35) !important;
-  border-color: #d50137 !important;
-  color: #fff !important;
-  opacity: 1 !important;
-  box-shadow: none !important;
+.wa-cal
+  .fc
+  .fc-button-primary:disabled {
+  background:
+    rgba(
+      213,
+      1,
+      55,
+      0.35
+    )
+    !important;
+
+  border-color:
+    #d50137
+    !important;
+
+  color:
+    #fff !important;
+
+  opacity:
+    1 !important;
+
+  box-shadow:
+    none !important;
 }
 
 /* =========================================================
    ADD TO CALENDAR — desktop toolbar button
    ========================================================= */
 
-.wa-cal .fc .fc-addCal-button {
-  background: rgba(213, 1, 55, 0.15) !important;
-  border-color: rgba(213, 1, 55, 0.5) !important;
-  color: #fff !important;
-  font-family: Oswald, sans-serif !important;
-  font-weight: 400 !important;
-  font-size: 13px !important;
-  letter-spacing: 0.04em !important;
-  padding: 4px 12px !important;
-  border-radius: 6px !important;
-  margin-left: 6px !important;
-  transition: background 0.15s, border-color 0.15s !important;
+.wa-cal
+  .fc
+  .fc-addCal-button {
+  background:
+    rgba(
+      213,
+      1,
+      55,
+      0.15
+    )
+    !important;
+
+  border-color:
+    rgba(
+      213,
+      1,
+      55,
+      0.5
+    )
+    !important;
+
+  color:
+    #fff !important;
+
+  font-family:
+    Oswald,
+    sans-serif
+    !important;
+
+  font-weight:
+    400 !important;
+
+  font-size:
+    13px !important;
+
+  letter-spacing:
+    0.04em
+    !important;
+
+  padding:
+    4px 12px
+    !important;
+
+  border-radius:
+    6px !important;
+
+  margin-left:
+    6px !important;
+
+  transition:
+    background
+      0.15s,
+    border-color
+      0.15s
+      !important;
 }
 
-.wa-cal .fc .fc-addCal-button:hover {
-  background: rgba(213, 1, 55, 0.28) !important;
-  border-color: #d50137 !important;
+.wa-cal
+  .fc
+  .fc-addCal-button:hover {
+  background:
+    rgba(
+      213,
+      1,
+      55,
+      0.28
+    )
+    !important;
+
+  border-color:
+    #d50137
+    !important;
 }
 
-.wa-cal .fc .fc-addCal-button:focus,
-.wa-cal .fc .fc-addCal-button:active {
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: rgba(213, 1, 55, 0.5) !important;
+.wa-cal
+  .fc
+  .fc-addCal-button:focus,
+.wa-cal
+  .fc
+  .fc-addCal-button:active {
+  outline:
+    none !important;
+
+  box-shadow:
+    none !important;
+
+  border-color:
+    rgba(
+      213,
+      1,
+      55,
+      0.5
+    )
+    !important;
 }
 
-/* Prevent toolbar overflow on mid-size screens (tablets, folding phones unfolded) */
-.wa-cal .fc .fc-toolbar {
-  flex-wrap: wrap !important;
-  gap: 6px !important;
+/* Prevent toolbar overflow on mid-size screens */
+.wa-cal
+  .fc
+  .fc-toolbar {
+  flex-wrap:
+    wrap !important;
+
+  gap:
+    6px !important;
 }
 
-.wa-cal .fc .fc-toolbar-chunk {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 4px !important;
-  align-items: center !important;
+.wa-cal
+  .fc
+  .fc-toolbar-chunk {
+  display:
+    flex !important;
+
+  flex-wrap:
+    wrap !important;
+
+  gap:
+    4px !important;
+
+  align-items:
+    center !important;
 }
 
-/* On screens too narrow to show the addCal toolbar button, hide it and show the FAB instead */
 @media (max-width: 900px) {
-  .wa-cal:not(.is-phone) .fc .fc-addCal-button {
-    display: none !important;
+  .wa-cal:not(
+      .is-phone
+    )
+    .fc
+    .fc-addCal-button {
+    display:
+      none !important;
   }
 
   .wa-addcal-fab {
-    display: block !important;
+    display:
+      block !important;
   }
 }
 
-/* On phones the filter FAB is also present — stack the two FABs */
-.wa-cal.is-phone .wa-addcal-fab {
-  display: block !important;
+.wa-cal.is-phone
+  .wa-addcal-fab {
+  display:
+    block !important;
 }
 
 /* =========================================================
@@ -1970,36 +4764,107 @@ body {
    ========================================================= */
 
 .wa-addcal-fab {
-  display: none;
-  position: fixed;
-  bottom: 200px;
-  right: 20px;
-  z-index: 99996;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
+  display:
+    none;
+
+  position:
+    fixed;
+
+  bottom:
+    200px;
+
+  right:
+    20px;
+
+  z-index:
+    99996;
+
+  width:
+    54px;
+
+  height:
+    54px;
+
+  border-radius:
+    50%;
+
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h7v-2H5V9h14v3h2V5c0-1.1-.9-2-2-2zm0 4H5V5h14v2z'/%3E%3Cpath d='M18 14v3h-3v2h3v3h2v-3h3v-2h-3v-3z'/%3E%3C/svg%3E")
-    center / 62% no-repeat,
-    linear-gradient(135deg, #8c0023 0%, #6a001a 100%);
-  border: 1.5px solid rgba(255, 255, 255, 0.22);
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
+    url(
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h7v-2H5V9h14v3h2V5c0-1.1-.9-2-2-2zm0 4H5V5h14v2z'/%3E%3Cpath d='M18 14v3h-3v2h3v3h2v-3h3v-2h-3v-3z'/%3E%3C/svg%3E"
+    )
+    center / 62%
+    no-repeat,
+    linear-gradient(
+      135deg,
+      #8c0023 0%,
+      #6a001a 100%
+    );
+
+  border:
+    1.5px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.22
+    );
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 4px 14px
+    rgba(
+      0,
+      0,
+      0,
+      0.5
+    );
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  outline:
+    none;
+
+  -webkit-appearance:
+    none;
+
+  appearance:
+    none;
 }
 
 .wa-addcal-fab:focus,
 .wa-addcal-fab:focus-visible {
-  outline: none !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+  outline:
+    none !important;
+
+  box-shadow:
+    0 4px 14px
+    rgba(
+      0,
+      0,
+      0,
+      0.5
+    )
+    !important;
 }
 
 .wa-addcal-fab:active {
-  outline: none !important;
-  box-shadow: 0 0 0 3px #d50137, 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+  outline:
+    none !important;
+
+  box-shadow:
+    0 0 0 3px
+      #d50137,
+    0 4px 14px
+      rgba(
+        0,
+        0,
+        0,
+        0.5
+      )
+      !important;
 }
 
 /* =========================================================
@@ -2007,194 +4872,492 @@ body {
    ========================================================= */
 
 .wa-addcal-dropdown {
-  position: fixed;
-  z-index: 99998;
-  min-width: 260px;
-  background: #0f172a;
-  border: 1px solid #1f2a44;
-  border-radius: 14px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-  padding: 14px;
+  position:
+    fixed;
+
+  z-index:
+    99998;
+
+  min-width:
+    260px;
+
+  background:
+    #0f172a;
+
+  border:
+    1px solid
+    #1f2a44;
+
+  border-radius:
+    14px;
+
+  box-shadow:
+    0 20px 40px
+    rgba(
+      0,
+      0,
+      0,
+      0.6
+    );
+
+  padding:
+    14px;
 }
 
 .wa-addcal-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    8px;
 }
 
 .wa-addcal-section-title {
-  font-family: Oswald, sans-serif;
-  font-weight: 400;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
-  margin: 0;
+  font-family:
+    Oswald,
+    sans-serif;
+
+  font-weight:
+    400;
+
+  font-size:
+    10px;
+
+  letter-spacing:
+    0.12em;
+
+  text-transform:
+    uppercase;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.4
+    );
+
+  margin:
+    0;
 }
 
 .wa-addcal-link {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 9px 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 8px;
-  color: #fff;
-  font-family: Oswald, sans-serif;
-  font-weight: 300;
-  font-size: 13px;
-  text-decoration: none;
-  transition: background 0.15s;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+  padding:
+    9px 12px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.05
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+
+  border-radius:
+    8px;
+
+  color:
+    #fff;
+
+  font-family:
+    Oswald,
+    sans-serif;
+
+  font-weight:
+    300;
+
+  font-size:
+    13px;
+
+  text-decoration:
+    none;
+
+  transition:
+    background
+    0.15s;
 }
 
 .wa-addcal-link:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
 }
 
 .wa-addcal-link-icon {
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  flex:
+    0 0 18px;
+
+  width:
+    18px;
+
+  height:
+    18px;
+
+  background-size:
+    contain;
+
+  background-repeat:
+    no-repeat;
+
+  background-position:
+    center;
 }
 
 .wa-addcal-link-icon--google {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'/%3E%3C/svg%3E");
+  background-image:
+    url(
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 0 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'/%3E%3C/svg%3E"
+    );
 }
 
 .wa-addcal-link-icon--ical {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z'/%3E%3C/svg%3E");
+  background-image:
+    url(
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z'/%3E%3C/svg%3E"
+    );
 }
 
 .wa-addcal-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 12px 0;
+  height:
+    1px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  margin:
+    12px 0;
 }
 
 .wa-addcal-select {
-  width: 100%;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  color: #fff;
-  font-family: Oswald, sans-serif;
-  font-weight: 300;
-  font-size: 13px;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 18px;
-  padding-right: 32px;
+  width:
+    100%;
+
+  padding:
+    8px 10px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  border-radius:
+    8px;
+
+  color:
+    #fff;
+
+  font-family:
+    Oswald,
+    sans-serif;
+
+  font-weight:
+    300;
+
+  font-size:
+    13px;
+
+  cursor:
+    pointer;
+
+  appearance:
+    none;
+
+  -webkit-appearance:
+    none;
+
+  background-image:
+    url(
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"
+    );
+
+  background-repeat:
+    no-repeat;
+
+  background-position:
+    right 8px center;
+
+  background-size:
+    18px;
+
+  padding-right:
+    32px;
 }
 
-.wa-addcal-select option {
-  background: #0f172a;
+.wa-addcal-select
+  option {
+  background:
+    #0f172a;
 }
 
 .wa-addcal-select:focus {
-  outline: none;
-  border-color: rgba(213, 1, 55, 0.5);
+  outline:
+    none;
+
+  border-color:
+    rgba(
+      213,
+      1,
+      55,
+      0.5
+    );
 }
 
 .wa-addcal-download-btn {
-  width: 100%;
-  padding: 9px 0;
-  background: linear-gradient(135deg, #8c0023 0%, #6a001a 100%);
-  border: 1px solid rgba(213, 1, 55, 0.5);
-  border-radius: 8px;
-  color: #fff;
-  font-family: Oswald, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: background 0.15s;
-  -webkit-tap-highlight-color: transparent;
+  width:
+    100%;
+
+  padding:
+    9px 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8c0023 0%,
+      #6a001a 100%
+    );
+
+  border:
+    1px solid
+    rgba(
+      213,
+      1,
+      55,
+      0.5
+    );
+
+  border-radius:
+    8px;
+
+  color:
+    #fff;
+
+  font-family:
+    Oswald,
+    sans-serif;
+
+  font-weight:
+    400;
+
+  font-size:
+    14px;
+
+  letter-spacing:
+    0.04em;
+
+  cursor:
+    pointer;
+
+  transition:
+    background
+    0.15s;
+
+  -webkit-tap-highlight-color:
+    transparent;
 }
 
-.wa-addcal-download-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #a5002a 0%, #8c0023 100%);
+.wa-addcal-download-btn:hover:not(
+    :disabled
+  ) {
+  background:
+    linear-gradient(
+      135deg,
+      #a5002a 0%,
+      #8c0023 100%
+    );
 }
 
 .wa-addcal-download-btn:disabled {
-  opacity: 0.5;
-  cursor: default;
+  opacity:
+    0.5;
+
+  cursor:
+    default;
 }
 
 /* =========================================================
    ADD TO CALENDAR — mobile bottom sheet
    ========================================================= */
 
-/* Backdrop behind the sheet */
 .wa-addcal-backdrop {
-  display: none;
+  display:
+    none;
 }
 
 @media (max-width: 767px) {
-  /* Dim backdrop */
   .wa-addcal-backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 99997;
-    background: rgba(0, 0, 0, 0.5);
+    display:
+      block;
+
+    position:
+      fixed;
+
+    inset:
+      0;
+
+    z-index:
+      99997;
+
+    background:
+      rgba(
+        0,
+        0,
+        0,
+        0.5
+      );
   }
 
-  /* Override JS-positioned dropdown → bottom sheet */
   .wa-addcal-dropdown {
-    top: auto !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    min-width: unset !important;
-    width: 100% !important;
-    border-radius: 20px 20px 0 0 !important;
-    padding: 20px 16px calc(env(safe-area-inset-bottom, 0px) + 20px) !important;
-    box-sizing: border-box !important;
-    z-index: 99998 !important;
+    top:
+      auto !important;
+
+    left:
+      0 !important;
+
+    right:
+      0 !important;
+
+    bottom:
+      0 !important;
+
+    min-width:
+      unset !important;
+
+    width:
+      100% !important;
+
+    border-radius:
+      20px 20px
+      0 0
+      !important;
+
+    padding:
+      20px 16px
+      calc(
+        env(
+          safe-area-inset-bottom,
+          0px
+        )
+        + 20px
+      )
+      !important;
+
+    box-sizing:
+      border-box
+      !important;
+
+    z-index:
+      99998 !important;
   }
 
-  /* Drag handle visual cue */
   .wa-addcal-dropdown::before {
-    content: "";
-    display: block;
-    width: 36px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    margin: 0 auto 16px;
+    content:
+      "";
+
+    display:
+      block;
+
+    width:
+      36px;
+
+    height:
+      4px;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        0.2
+      );
+
+    border-radius:
+      2px;
+
+    margin:
+      0 auto 16px;
   }
 
-  /* Larger touch targets for links */
   .wa-addcal-link {
-    padding: 13px 14px !important;
-    font-size: 15px !important;
-    min-height: 52px !important;
+    padding:
+      13px 14px
+      !important;
+
+    font-size:
+      15px !important;
+
+    min-height:
+      52px !important;
   }
 
   .wa-addcal-link-icon {
-    flex: 0 0 22px !important;
-    width: 22px !important;
-    height: 22px !important;
+    flex:
+      0 0 22px
+      !important;
+
+    width:
+      22px !important;
+
+    height:
+      22px !important;
   }
 
-  /* Bigger select and section title */
   .wa-addcal-section-title {
-    font-size: 11px !important;
+    font-size:
+      11px !important;
   }
 
   .wa-addcal-select {
-    font-size: 15px !important;
-    padding: 11px 32px 11px 12px !important;
-    min-height: 48px !important;
+    font-size:
+      15px !important;
+
+    padding:
+      11px 32px
+      11px 12px
+      !important;
+
+    min-height:
+      48px !important;
   }
 }

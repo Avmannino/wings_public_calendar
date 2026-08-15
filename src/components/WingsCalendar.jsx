@@ -732,10 +732,10 @@ export default function WingsCalendar() {
     ? `timeGridWeek,timeGridDay,${MOBILE_LIST_VIEW},filterToggle`
     : "timeGridWeek,timeGridDay,filterToggle,addCal";
 
-  // Mobile list view should flow naturally. A fixed/100% FullCalendar height can
-  // collapse inside embeds/iframes and make the list appear blank.
-  const calendarHeight = isPhone ? "auto" : "100vh";
-  const calendarContentHeight = isPhone ? "auto" : "auto";
+  // Keep FullCalendar content-driven so the Wix iframe can measure
+  // the calendar's real height without a viewport-height feedback loop.
+  const calendarHeight = "auto";
+  const calendarContentHeight = "auto";
 
   const closureVisible = Boolean(
     viewRange.start &&
