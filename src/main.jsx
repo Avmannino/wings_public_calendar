@@ -10,4 +10,6 @@ createRoot(document.getElementById("root")).render(
   </StrictMode>
 );
 
-initWixAutoHeight();
+initWixAutoHeight({
+  enableScrollHandoff: true,
+});
